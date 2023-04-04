@@ -1,0 +1,31 @@
+﻿<Page x:Class="EJ.MainMenu.AttedancePage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:EJ.MainMenu"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="AttedancePage">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0" Orientation="Horizontal">
+            <Label Content="Subject:" Margin="10"/>
+            <ComboBox x:Name="ComboGroup" ItemsSource="{Binding Subjects}" DisplayMemberPath="Name" SelectedItem="{Binding SelectedSubject}" Margin="10"/>
+            <Label Content="Date:" Margin="10"/>
+            <DatePicker SelectedDate="{Binding SelectedDate}" Margin="10"/>
+            <Button Content="Filter" Command="{Binding FilterCommand}" Margin="10"/>
+        </StackPanel>
+        <DataGrid Grid.Row="1" ItemsSource="{Binding Attendance}" AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Name" Binding="{Binding Users.Name}"/>
+                <DataGridTextColumn Header="Group" Binding="{Binding StudentId}"/>
+                <DataGridCheckBoxColumn Header="Attended" Binding="{Binding Attended}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</Page>
