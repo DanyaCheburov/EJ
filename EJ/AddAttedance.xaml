@@ -20,7 +20,7 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <TextBlock Text="Group:" Margin="10" />
-        <ComboBox x:Name="ComboGroup" ItemsSource="{Binding Students}" DisplayMemberPath="GroupNumber" SelectedItem="{Binding SelectedGroup}" Grid.Column="1" Margin="10" />
+        <ComboBox x:Name="ComboGroup" ItemsSource="{Binding Students}" DisplayMemberPath="GroupName" SelectedItem="{Binding SelectedGroup}" Grid.Column="1" Margin="10" />
         <TextBlock Text="Student:" Margin="10" Grid.Row="1" />
         <ComboBox x:Name="ComboStudent" ItemsSource="{Binding Students}" DisplayMemberPath="UserId" SelectedItem="{Binding SelectedStudent}" Grid.Column="1" Margin="10" Grid.Row="1" />
         <TextBlock Text="Date:" Margin="10" Grid.Row="2" />

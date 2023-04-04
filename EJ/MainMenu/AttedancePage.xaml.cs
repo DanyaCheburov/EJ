@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -29,7 +30,8 @@ namespace EJ.MainMenu
             InitializeComponent();
             ComboSubject.ItemsSource = BDEntities.GetContext().Subjects.ToList();
             ComboGroup.ItemsSource = BDEntities.GetContext().Students.ToList();
-            
+
+
             using (var db = new BDEntities())
             {
                 var students = db.Students.Include("Users").ToList();
@@ -52,7 +54,6 @@ namespace EJ.MainMenu
             }
             comboBox.SelectedItem = currentYear;
         }
-
         private void ComboBox_Loaded(object sender, RoutedEventArgs e)
         {
             int currentMonthIndex = DateTime.Now.Month - 1;
@@ -65,5 +66,37 @@ namespace EJ.MainMenu
             var window = new AddAttedance();
             window.ShowDialog();
         }
+
+        private void ComboGroup_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            using (var db = new BDEntities())
+            {
+                // Получаем выбранную группу
+                var selectedGroup = ComboGroup.SelectedItem as Students;
+
+                // Фильтруем список студентов по выбранной группе
+                var filteredStudents = db.Students
+                    .Include("Users")
+                    .Where(s => s.GroupName == selectedGroup.GroupName)
+                    .ToList();
+
+                // Обновляем коллекцию студентов с отфильтрованными данными
+                Students.Clear();
+                foreach (var student in filteredStudents)
+                {
+                    Students.Add(student);
+                }
+            }
+
+            // Обновляем столбцы таблицы для отображения имени студента для выбранной группы
+            DataGridTextColumn nameColumn = DGridUser.Columns[0] as DataGridTextColumn;
+            nameColumn.Binding = new Binding("Users.Name");
+
+            // Добавляем столбцы для каждого месяца для отслеживания посещаемости
+            ComboBoxItem selectedMonthItem = ComboMonth.SelectedItem as ComboBoxItem;
+            string selectedMonth = selectedMonthItem.Content.ToString();
+            int selectedYear = (int)comboBox.SelectedItem;
+        }
+
     }
 }

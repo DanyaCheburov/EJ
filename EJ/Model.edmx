@@ -35,7 +35,7 @@
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UserId" Type="int" Nullable="false" />
-          <Property Name="GroupNumber" Type="int" Nullable="false" />
+          <Property Name="GroupName" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Faculty" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="Subjects">
@@ -63,7 +63,7 @@
           <Property Name="Email" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Password" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
-        <Association Name="FK__Administr__UserI__4222D4EF">
+        <Association Name="FK__Administr__UserI__5629CD9C">
           <End Role="Users" Type="Self.Users" Multiplicity="1" />
           <End Role="Administrators" Type="Self.Administrators" Multiplicity="*" />
           <ReferentialConstraint>
@@ -75,7 +75,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Attendanc__Stude__534D60F1">
+        <Association Name="FK__Attendanc__Stude__571DF1D5">
           <End Role="Students" Type="Self.Students" Multiplicity="1" />
           <End Role="Attendance" Type="Self.Attendance" Multiplicity="*" />
           <ReferentialConstraint>
@@ -87,7 +87,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Attendanc__Subje__5441852A">
+        <Association Name="FK__Attendanc__Subje__5812160E">
           <End Role="Subjects" Type="Self.Subjects" Multiplicity="1" />
           <End Role="Attendance" Type="Self.Attendance" Multiplicity="*" />
           <ReferentialConstraint>
@@ -99,7 +99,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Students__UserId__3A81B327">
+        <Association Name="FK__Students__UserId__59063A47">
           <End Role="Users" Type="Self.Users" Multiplicity="1" />
           <End Role="Students" Type="Self.Students" Multiplicity="*" />
           <ReferentialConstraint>
@@ -111,7 +111,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Teachers__UserId__3D5E1FD2">
+        <Association Name="FK__Teachers__UserId__59FA5E80">
           <End Role="Users" Type="Self.Users" Multiplicity="1" />
           <End Role="Teachers" Type="Self.Teachers" Multiplicity="*" />
           <ReferentialConstraint>
@@ -131,23 +131,23 @@
           <EntitySet Name="Subjects" EntityType="Self.Subjects" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Teachers" EntityType="Self.Teachers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK__Administr__UserI__4222D4EF" Association="Self.FK__Administr__UserI__4222D4EF">
+          <AssociationSet Name="FK__Administr__UserI__5629CD9C" Association="Self.FK__Administr__UserI__5629CD9C">
             <End Role="Users" EntitySet="Users" />
             <End Role="Administrators" EntitySet="Administrators" />
           </AssociationSet>
-          <AssociationSet Name="FK__Attendanc__Stude__534D60F1" Association="Self.FK__Attendanc__Stude__534D60F1">
+          <AssociationSet Name="FK__Attendanc__Stude__571DF1D5" Association="Self.FK__Attendanc__Stude__571DF1D5">
             <End Role="Students" EntitySet="Students" />
             <End Role="Attendance" EntitySet="Attendance" />
           </AssociationSet>
-          <AssociationSet Name="FK__Attendanc__Subje__5441852A" Association="Self.FK__Attendanc__Subje__5441852A">
+          <AssociationSet Name="FK__Attendanc__Subje__5812160E" Association="Self.FK__Attendanc__Subje__5812160E">
             <End Role="Subjects" EntitySet="Subjects" />
             <End Role="Attendance" EntitySet="Attendance" />
           </AssociationSet>
-          <AssociationSet Name="FK__Students__UserId__3A81B327" Association="Self.FK__Students__UserId__3A81B327">
+          <AssociationSet Name="FK__Students__UserId__59063A47" Association="Self.FK__Students__UserId__59063A47">
             <End Role="Users" EntitySet="Users" />
             <End Role="Students" EntitySet="Students" />
           </AssociationSet>
-          <AssociationSet Name="FK__Teachers__UserId__3D5E1FD2" Association="Self.FK__Teachers__UserId__3D5E1FD2">
+          <AssociationSet Name="FK__Teachers__UserId__59FA5E80" Association="Self.FK__Teachers__UserId__59FA5E80">
             <End Role="Users" EntitySet="Users" />
             <End Role="Teachers" EntitySet="Teachers" />
           </AssociationSet>
@@ -163,7 +163,7 @@
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="UserId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Users" Relationship="Self.FK__Administr__UserI__4222D4EF" FromRole="Administrators" ToRole="Users" />
+          <NavigationProperty Name="Users" Relationship="Self.FK__Administr__UserI__5629CD9C" FromRole="Administrators" ToRole="Users" />
         </EntityType>
         <EntityType Name="Attendance">
           <Key>
@@ -174,8 +174,8 @@
           <Property Name="Attended" Type="Boolean" Nullable="false" />
           <Property Name="Date" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="SubjectId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Students" Relationship="Self.FK__Attendanc__Stude__534D60F1" FromRole="Attendance" ToRole="Students" />
-          <NavigationProperty Name="Subjects" Relationship="Self.FK__Attendanc__Subje__5441852A" FromRole="Attendance" ToRole="Subjects" />
+          <NavigationProperty Name="Students" Relationship="Self.FK__Attendanc__Stude__571DF1D5" FromRole="Attendance" ToRole="Students" />
+          <NavigationProperty Name="Subjects" Relationship="Self.FK__Attendanc__Subje__5812160E" FromRole="Attendance" ToRole="Subjects" />
         </EntityType>
         <EntityType Name="Departments">
           <Key>
@@ -190,10 +190,10 @@
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="UserId" Type="Int32" Nullable="false" />
-          <Property Name="GroupNumber" Type="Int32" Nullable="false" />
+          <Property Name="GroupName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Faculty" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="Attendance" Relationship="Self.FK__Attendanc__Stude__534D60F1" FromRole="Students" ToRole="Attendance" />
-          <NavigationProperty Name="Users" Relationship="Self.FK__Students__UserId__3A81B327" FromRole="Students" ToRole="Users" />
+          <NavigationProperty Name="Attendance" Relationship="Self.FK__Attendanc__Stude__571DF1D5" FromRole="Students" ToRole="Attendance" />
+          <NavigationProperty Name="Users" Relationship="Self.FK__Students__UserId__59063A47" FromRole="Students" ToRole="Users" />
         </EntityType>
         <EntityType Name="Subjects">
           <Key>
@@ -201,7 +201,7 @@
           </Key>
           <Property Name="SubjectId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="Attendance" Relationship="Self.FK__Attendanc__Subje__5441852A" FromRole="Subjects" ToRole="Attendance" />
+          <NavigationProperty Name="Attendance" Relationship="Self.FK__Attendanc__Subje__5812160E" FromRole="Subjects" ToRole="Attendance" />
         </EntityType>
         <EntityType Name="Teachers">
           <Key>
@@ -211,7 +211,7 @@
           <Property Name="UserId" Type="Int32" Nullable="false" />
           <Property Name="Department" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Position" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="Users" Relationship="Self.FK__Teachers__UserId__3D5E1FD2" FromRole="Teachers" ToRole="Users" />
+          <NavigationProperty Name="Users" Relationship="Self.FK__Teachers__UserId__59FA5E80" FromRole="Teachers" ToRole="Users" />
         </EntityType>
         <EntityType Name="Users">
           <Key>
@@ -221,11 +221,11 @@
           <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="Administrators" Relationship="Self.FK__Administr__UserI__4222D4EF" FromRole="Users" ToRole="Administrators" />
-          <NavigationProperty Name="Students" Relationship="Self.FK__Students__UserId__3A81B327" FromRole="Users" ToRole="Students" />
-          <NavigationProperty Name="Teachers" Relationship="Self.FK__Teachers__UserId__3D5E1FD2" FromRole="Users" ToRole="Teachers" />
+          <NavigationProperty Name="Administrators" Relationship="Self.FK__Administr__UserI__5629CD9C" FromRole="Users" ToRole="Administrators" />
+          <NavigationProperty Name="Students" Relationship="Self.FK__Students__UserId__59063A47" FromRole="Users" ToRole="Students" />
+          <NavigationProperty Name="Teachers" Relationship="Self.FK__Teachers__UserId__59FA5E80" FromRole="Users" ToRole="Teachers" />
         </EntityType>
-        <Association Name="FK__Administr__UserI__4222D4EF">
+        <Association Name="FK__Administr__UserI__5629CD9C">
           <End Role="Users" Type="Self.Users" Multiplicity="1" />
           <End Role="Administrators" Type="Self.Administrators" Multiplicity="*" />
           <ReferentialConstraint>
@@ -237,7 +237,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Attendanc__Stude__534D60F1">
+        <Association Name="FK__Attendanc__Stude__571DF1D5">
           <End Role="Students" Type="Self.Students" Multiplicity="1" />
           <End Role="Attendance" Type="Self.Attendance" Multiplicity="*" />
           <ReferentialConstraint>
@@ -249,7 +249,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Attendanc__Subje__5441852A">
+        <Association Name="FK__Attendanc__Subje__5812160E">
           <End Role="Subjects" Type="Self.Subjects" Multiplicity="1" />
           <End Role="Attendance" Type="Self.Attendance" Multiplicity="*" />
           <ReferentialConstraint>
@@ -261,7 +261,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Students__UserId__3A81B327">
+        <Association Name="FK__Students__UserId__59063A47">
           <End Role="Users" Type="Self.Users" Multiplicity="1" />
           <End Role="Students" Type="Self.Students" Multiplicity="*" />
           <ReferentialConstraint>
@@ -273,7 +273,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Teachers__UserId__3D5E1FD2">
+        <Association Name="FK__Teachers__UserId__59FA5E80">
           <End Role="Users" Type="Self.Users" Multiplicity="1" />
           <End Role="Teachers" Type="Self.Teachers" Multiplicity="*" />
           <ReferentialConstraint>
@@ -293,23 +293,23 @@
           <EntitySet Name="Subjects" EntityType="Self.Subjects" />
           <EntitySet Name="Teachers" EntityType="Self.Teachers" />
           <EntitySet Name="Users" EntityType="Self.Users" />
-          <AssociationSet Name="FK__Administr__UserI__4222D4EF" Association="Self.FK__Administr__UserI__4222D4EF">
+          <AssociationSet Name="FK__Administr__UserI__5629CD9C" Association="Self.FK__Administr__UserI__5629CD9C">
             <End Role="Users" EntitySet="Users" />
             <End Role="Administrators" EntitySet="Administrators" />
           </AssociationSet>
-          <AssociationSet Name="FK__Attendanc__Stude__534D60F1" Association="Self.FK__Attendanc__Stude__534D60F1">
+          <AssociationSet Name="FK__Attendanc__Stude__571DF1D5" Association="Self.FK__Attendanc__Stude__571DF1D5">
             <End Role="Students" EntitySet="Students" />
             <End Role="Attendance" EntitySet="Attendance" />
           </AssociationSet>
-          <AssociationSet Name="FK__Attendanc__Subje__5441852A" Association="Self.FK__Attendanc__Subje__5441852A">
+          <AssociationSet Name="FK__Attendanc__Subje__5812160E" Association="Self.FK__Attendanc__Subje__5812160E">
             <End Role="Subjects" EntitySet="Subjects" />
             <End Role="Attendance" EntitySet="Attendance" />
           </AssociationSet>
-          <AssociationSet Name="FK__Students__UserId__3A81B327" Association="Self.FK__Students__UserId__3A81B327">
+          <AssociationSet Name="FK__Students__UserId__59063A47" Association="Self.FK__Students__UserId__59063A47">
             <End Role="Users" EntitySet="Users" />
             <End Role="Students" EntitySet="Students" />
           </AssociationSet>
-          <AssociationSet Name="FK__Teachers__UserId__3D5E1FD2" Association="Self.FK__Teachers__UserId__3D5E1FD2">
+          <AssociationSet Name="FK__Teachers__UserId__59FA5E80" Association="Self.FK__Teachers__UserId__59FA5E80">
             <End Role="Users" EntitySet="Users" />
             <End Role="Teachers" EntitySet="Teachers" />
           </AssociationSet>
@@ -352,7 +352,7 @@
               <MappingFragment StoreEntitySet="Students">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="GroupNumber" ColumnName="GroupNumber" />
+                <ScalarProperty Name="GroupName" ColumnName="GroupName" />
                 <ScalarProperty Name="Faculty" ColumnName="Faculty" />
               </MappingFragment>
             </EntityTypeMapping>

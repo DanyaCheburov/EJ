@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="7023260552384c86afd990ffe1836d77" Name="Diagram1">
+      <Diagram DiagramId="75c23881df6b4f278c19f0753bd265df" Name="Diagram1">
         <EntityTypeShape EntityType="BDModel.Administrators" Width="1.5" PointX="3" PointY="1.25" IsExpanded="true" />
         <EntityTypeShape EntityType="BDModel.Attendance" Width="1.5" PointX="5.25" PointY="3.5" IsExpanded="true" />
         <EntityTypeShape EntityType="BDModel.Departments" Width="1.5" PointX="5.75" PointY="0.75" IsExpanded="true" />
@@ -12,11 +12,11 @@
         <EntityTypeShape EntityType="BDModel.Subjects" Width="1.5" PointX="3" PointY="9.875" IsExpanded="true" />
         <EntityTypeShape EntityType="BDModel.Teachers" Width="1.5" PointX="3" PointY="6.5" IsExpanded="true" />
         <EntityTypeShape EntityType="BDModel.Users" Width="1.5" PointX="0.75" PointY="3.75" IsExpanded="true" />
-        <AssociationConnector Association="BDModel.FK__Administr__UserI__4222D4EF" ManuallyRouted="false" />
-        <AssociationConnector Association="BDModel.FK__Attendanc__Stude__534D60F1" ManuallyRouted="false" />
-        <AssociationConnector Association="BDModel.FK__Attendanc__Subje__5441852A" ManuallyRouted="false" />
-        <AssociationConnector Association="BDModel.FK__Students__UserId__3A81B327" ManuallyRouted="false" />
-        <AssociationConnector Association="BDModel.FK__Teachers__UserId__3D5E1FD2" ManuallyRouted="false" />
+        <AssociationConnector Association="BDModel.FK__Administr__UserI__5629CD9C" ManuallyRouted="false" />
+        <AssociationConnector Association="BDModel.FK__Attendanc__Stude__571DF1D5" ManuallyRouted="false" />
+        <AssociationConnector Association="BDModel.FK__Attendanc__Subje__5812160E" ManuallyRouted="false" />
+        <AssociationConnector Association="BDModel.FK__Students__UserId__59063A47" ManuallyRouted="false" />
+        <AssociationConnector Association="BDModel.FK__Teachers__UserId__59FA5E80" ManuallyRouted="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

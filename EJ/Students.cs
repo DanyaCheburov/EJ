@@ -22,7 +22,7 @@ namespace EJ
     
         public int Id { get; set; }
         public int UserId { get; set; }
-        public int GroupNumber { get; set; }
+        public string GroupName { get; set; }
         public string Faculty { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

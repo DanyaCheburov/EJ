@@ -17,7 +17,7 @@
             <Label Content="Предмет:" Margin="10"/>
             <ComboBox x:Name="ComboSubject" ItemsSource="{Binding Subjects}" DisplayMemberPath="Name" SelectedItem="{Binding SelectedSubject}" Margin="10"/>
             <Label Content="Группа:" Margin="10"/>
-            <ComboBox x:Name="ComboGroup" ItemsSource="{Binding Students}" DisplayMemberPath="GroupNumber" SelectedItem="{Binding SelectedGroup}" Margin="10"/>
+            <ComboBox x:Name="ComboGroup" ItemsSource="{Binding Students}" DisplayMemberPath="GroupName" SelectionChanged="ComboGroup_SelectionChanged" Margin="10"/>
             <Label Content="Месяц:" Margin="10"/>
             <ComboBox x:Name="ComboMonth" SelectedIndex="{Binding SelectedMonthIndex}" Margin="10" Loaded="ComboBox_Loaded">
                 <ComboBoxItem>Январь</ComboBoxItem>
@@ -40,7 +40,7 @@
         <DataGrid x:Name="DGridUser" ItemsSource="{Binding Students}" Grid.Row="1" AutoGenerateColumns="False">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="ФИО" Binding="{Binding Users.Name}" IsReadOnly="True"/>
-                <DataGridCheckBoxColumn Header="1" />
+                <DataGridTextColumn Header="1" />
             </DataGrid.Columns>
         </DataGrid>
     </Grid>
