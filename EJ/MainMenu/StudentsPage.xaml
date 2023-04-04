@@ -17,7 +17,7 @@
             <DataGrid.Columns>
                 <DataGridTextColumn Header="ID" Binding="{Binding Id}" IsReadOnly="True"/>
                 <DataGridTextColumn Header="ФИО" Binding="{Binding Users.Name}"/>
-                <DataGridTextColumn Header="Группа" Binding="{Binding GroupNumber}"/>
+                <DataGridTextColumn Header="Группа" Binding="{Binding GroupName}"/>
                     <DataGridTextColumn Header="Факультет" Binding="{Binding Faculty}"/>
                 </DataGrid.Columns>
         </DataGrid>
