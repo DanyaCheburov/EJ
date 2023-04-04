@@ -14,17 +14,33 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <StackPanel Grid.Row="0" Orientation="Horizontal">
-            <Label Content="Subject:" Margin="10"/>
-            <ComboBox x:Name="ComboGroup" ItemsSource="{Binding Subjects}" DisplayMemberPath="Name" SelectedItem="{Binding SelectedSubject}" Margin="10"/>
-            <Label Content="Date:" Margin="10"/>
-            <DatePicker SelectedDate="{Binding SelectedDate}" Margin="10"/>
-            <Button Content="Filter" Command="{Binding FilterCommand}" Margin="10"/>
+            <Label Content="Предмет:" Margin="10"/>
+            <ComboBox x:Name="ComboSubject" ItemsSource="{Binding Subjects}" DisplayMemberPath="Name" SelectedItem="{Binding SelectedSubject}" Margin="10"/>
+            <Label Content="Группа:" Margin="10"/>
+            <ComboBox x:Name="ComboGroup" ItemsSource="{Binding Students}" DisplayMemberPath="GroupNumber" SelectedItem="{Binding SelectedGroup}" Margin="10"/>
+            <Label Content="Месяц:" Margin="10"/>
+            <ComboBox x:Name="ComboMonth" SelectedIndex="{Binding SelectedMonthIndex}" Margin="10" Loaded="ComboBox_Loaded">
+                <ComboBoxItem>Январь</ComboBoxItem>
+                <ComboBoxItem>Февраль</ComboBoxItem>
+                <ComboBoxItem>Март</ComboBoxItem>
+                <ComboBoxItem>Апрель</ComboBoxItem>
+                <ComboBoxItem>Май</ComboBoxItem>
+                <ComboBoxItem>Июнь</ComboBoxItem>
+                <ComboBoxItem>Июль</ComboBoxItem>
+                <ComboBoxItem>Август</ComboBoxItem>
+                <ComboBoxItem>Сентябрь</ComboBoxItem>
+                <ComboBoxItem>Октябрь</ComboBoxItem>
+                <ComboBoxItem>Ноябрь</ComboBoxItem>
+                <ComboBoxItem>Декабрь</ComboBoxItem>
+            </ComboBox>
+            <Label Content="Год:" Margin="10"/>
+            <ComboBox x:Name="comboBox" Margin="10"/>
+            <Button x:Name="add_attedance" Click="add_attedance_Click" Content="Добавить пропуск" Margin="10"/>
         </StackPanel>
-        <DataGrid Grid.Row="1" ItemsSource="{Binding Attendance}" AutoGenerateColumns="False">
+        <DataGrid x:Name="DGridUser" ItemsSource="{Binding Students}" Grid.Row="1" AutoGenerateColumns="False">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Name" Binding="{Binding Users.Name}"/>
-                <DataGridTextColumn Header="Group" Binding="{Binding StudentId}"/>
-                <DataGridCheckBoxColumn Header="Attended" Binding="{Binding Attended}"/>
+                <DataGridTextColumn Header="ФИО" Binding="{Binding Users.Name}" IsReadOnly="True"/>
+                <DataGridCheckBoxColumn Header="1" />
             </DataGrid.Columns>
         </DataGrid>
     </Grid>

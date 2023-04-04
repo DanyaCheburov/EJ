@@ -1,0 +1,30 @@
+﻿<Window x:Class="EJ.AddAttedance"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:EJ"
+        mc:Ignorable="d"
+        Title="AddAttedance" Height="250" Width="300"
+        WindowStartupLocation="CenterScreen">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <TextBlock Text="Group:" Margin="10" />
+        <ComboBox x:Name="ComboGroup" ItemsSource="{Binding Students}" DisplayMemberPath="GroupNumber" SelectedItem="{Binding SelectedGroup}" Grid.Column="1" Margin="10" />
+        <TextBlock Text="Student:" Margin="10" Grid.Row="1" />
+        <ComboBox x:Name="ComboStudent" ItemsSource="{Binding Students}" DisplayMemberPath="UserId" SelectedItem="{Binding SelectedStudent}" Grid.Column="1" Margin="10" Grid.Row="1" />
+        <TextBlock Text="Date:" Margin="10" Grid.Row="2" />
+        <DatePicker SelectedDate="{Binding Date}" Grid.Column="1" Margin="10" Grid.Row="2" />
+        <Button Content="Добавить" Margin="10" Grid.Row="3" Grid.ColumnSpan="2" />
+    </Grid>
+</Window>
