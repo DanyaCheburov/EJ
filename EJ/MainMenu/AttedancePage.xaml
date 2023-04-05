@@ -41,6 +41,7 @@
             <DataGrid.Columns>
                 <DataGridTextColumn Header="ФИО" Binding="{Binding Users.Name}" IsReadOnly="True"/>
                 <DataGridTextColumn Header="1" />
+                <DataGridTextColumn Header="2" />
             </DataGrid.Columns>
         </DataGrid>
     </Grid>
