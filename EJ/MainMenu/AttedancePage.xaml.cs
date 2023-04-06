@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -24,10 +25,17 @@ namespace EJ.MainMenu
     public partial class AttedancePage : Page
     {
         public ObservableCollection<Students> Students { get; set; }
+        private ObservableCollection<EmployeeAttendance> employeeAttendanceList = new ObservableCollection<EmployeeAttendance>();
+
+        private int DaysInMonth;
+        private DateTime dtStart;
+        private DateTime dtEnd;
 
         public AttedancePage()
         {
             InitializeComponent();
+            CreateTable();
+            LoadGrid();
             ComboSubject.ItemsSource = BDEntities.GetContext().Subjects.ToList();
             ComboGroup.ItemsSource = BDEntities.GetContext().Groups.ToList();
 
@@ -89,7 +97,7 @@ namespace EJ.MainMenu
             }
 
             // Обновляем столбцы таблицы для отображения имени студента для выбранной группы
-            DataGridTextColumn nameColumn = DGridUser.Columns[0] as DataGridTextColumn;
+            DataGridTextColumn nameColumn = myDataGrid.Columns[0] as DataGridTextColumn;
             nameColumn.Binding = new Binding("Users.Name");
 
             // Добавляем столбцы для каждого месяца для отслеживания посещаемости
@@ -98,5 +106,66 @@ namespace EJ.MainMenu
             int selectedYear = (int)comboBox.SelectedItem;
         }
 
+
+        private void CreateTable()
+        {
+            var dt = DateTime.Today;
+
+            DaysInMonth = DateTime.DaysInMonth(dt.Year, dt.Month);
+            dtStart = new DateTime(dt.Year, dt.Month, 1);
+            dtEnd = dtStart.AddDays(DaysInMonth - 1);
+
+            for (int i = 1; i <= DaysInMonth; i++)
+            {
+                myDataGrid.Columns.Add(new DataGridTextColumn
+                {
+                    Header = i.ToString(),
+                    Binding = new Binding($"Day{i}")
+                });
+            }
+        }
+
+        private void LoadGrid()
+        {
+            var strSQL = "SELECT StudentId, Date FROM Attendance " +
+                         "WHERE Date BETWEEN @dtStart AND @dtEnd " +
+                         "ORDER BY StudentId, Date ";
+
+            using (var conn = new SqlConnection(@"Data Source=localhost\SQLEXPRESS; Initial Catalog=BD; Integrated Security=True"))
+            {
+                var cmdSQL = new SqlCommand(strSQL, conn);
+                cmdSQL.Parameters.Add("@dtStart", System.Data.SqlDbType.Date).Value = dtStart;
+                cmdSQL.Parameters.Add("@dtEnd", System.Data.SqlDbType.Date).Value = dtEnd;
+
+                conn.Open();
+                var rstEdata = new System.Data.DataTable();
+                rstEdata.Load(cmdSQL.ExecuteReader());
+
+                var employeeAttendance = new EmployeeAttendance();
+                var lastEmpID = -1;
+
+                foreach (System.Data.DataRow row in rstEdata.Rows)
+                {
+                    var empID = (int)row["StudentId"];
+                    var day = ((DateTime)row["Date"]).Day.ToString();
+
+                    if (empID != lastEmpID)
+                    {
+                        if (lastEmpID != -1)
+                        {
+                            employeeAttendanceList.Add(employeeAttendance);
+                        }
+                        employeeAttendance = new EmployeeAttendance { StudentId = empID };
+                        lastEmpID = empID;
+                    }
+
+                    employeeAttendance.GetType().GetProperty($"Day{day}").SetValue(employeeAttendance, "H");
+                }
+
+                employeeAttendanceList.Add(employeeAttendance);
+
+                myDataGrid.ItemsSource = employeeAttendanceList;
+            }
+        }
     }
 }

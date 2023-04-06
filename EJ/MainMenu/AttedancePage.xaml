@@ -37,11 +37,9 @@
             <ComboBox x:Name="comboBox" Margin="10"/>
             <Button x:Name="add_attedance" Click="add_attedance_Click" Content="Добавить пропуск" Margin="10"/>
         </StackPanel>
-        <DataGrid x:Name="DGridUser" ItemsSource="{Binding Students}" Grid.Row="1" AutoGenerateColumns="False">
+        <DataGrid x:Name="myDataGrid" ItemsSource="{Binding Students}" Grid.Row="1" AutoGenerateColumns="False">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="ФИО" Binding="{Binding Users.Name}" IsReadOnly="True"/>
-                <DataGridTextColumn Header="1" />
-                <DataGridTextColumn Header="2" />
+                <DataGridTextColumn Header="ФИО" Binding="{Binding StudentId}" IsReadOnly="True"/>
             </DataGrid.Columns>
         </DataGrid>
     </Grid>
