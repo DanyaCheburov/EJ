@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
@@ -25,11 +26,46 @@ namespace EJ.MainMenu
     public partial class AttedancePage : Page
     {
         public ObservableCollection<Students> Students { get; set; }
-        private ObservableCollection<EmployeeAttendance> employeeAttendanceList = new ObservableCollection<EmployeeAttendance>();
-
+        
         private int DaysInMonth;
         private DateTime dtStart;
         private DateTime dtEnd;
+
+        public class EmployeeAttendance
+        {
+            public string StudentId { get; set; }
+            public string Day1 { get; set; }
+            public string Day2 { get; set; }
+            public string Day3 { get; set; }
+            public string Day4 { get; set; }
+            public string Day5 { get; set; }
+            public string Day6 { get; set; }
+            public string Day7 { get; set; }
+            public string Day8 { get; set; }
+            public string Day9 { get; set; }
+            public string Day10 { get; set; }
+            public string Day11 { get; set; }
+            public string Day12 { get; set; }
+            public string Day13 { get; set; }
+            public string Day14 { get; set; }
+            public string Day15 { get; set; }
+            public string Day16 { get; set; }
+            public string Day17 { get; set; }
+            public string Day18 { get; set; }
+            public string Day19 { get; set; }
+            public string Day20 { get; set; }
+            public string Day21 { get; set; }
+            public string Day22 { get; set; }
+            public string Day23 { get; set; }
+            public string Day24 { get; set; }
+            public string Day25 { get; set; }
+            public string Day26 { get; set; }
+            public string Day27 { get; set; }
+            public string Day28 { get; set; }
+            public string Day29 { get; set; }
+            public string Day30 { get; set; }
+            public string Day31 { get; set; }
+        }
 
         public AttedancePage()
         {
@@ -38,9 +74,9 @@ namespace EJ.MainMenu
             LoadGrid();
             ComboSubject.ItemsSource = BDEntities.GetContext().Subjects.ToList();
             ComboGroup.ItemsSource = BDEntities.GetContext().Groups.ToList();
+           
 
-
-            using (var db = new BDEntities())
+           using (var db = new BDEntities())
             {
                 var students = db.Students.Include("Users").ToList();
                 Students = new ObservableCollection<Students>(students);
@@ -64,7 +100,7 @@ namespace EJ.MainMenu
         }
         private void ComboBox_Loaded(object sender, RoutedEventArgs e)
         {
-            int currentMonthIndex = DateTime.Now.Month - 1;
+           int currentMonthIndex = DateTime.Now.Month - 1;
             ComboBox ComboMonth = sender as ComboBox;
             ComboMonth.SelectedIndex = currentMonthIndex;
         }
@@ -98,7 +134,7 @@ namespace EJ.MainMenu
 
             // Обновляем столбцы таблицы для отображения имени студента для выбранной группы
             DataGridTextColumn nameColumn = myDataGrid.Columns[0] as DataGridTextColumn;
-            nameColumn.Binding = new Binding("Users.Name");
+            nameColumn.Binding = new Binding("StudentId");
 
             // Добавляем столбцы для каждого месяца для отслеживания посещаемости
             ComboBoxItem selectedMonthItem = ComboMonth.SelectedItem as ComboBoxItem;
@@ -127,27 +163,23 @@ namespace EJ.MainMenu
 
         private void LoadGrid()
         {
-            var strSQL = "SELECT StudentId, Date FROM Attendance " +
-                         "WHERE Date BETWEEN @dtStart AND @dtEnd " +
-                         "ORDER BY StudentId, Date ";
-
-            using (var conn = new SqlConnection(@"Data Source=localhost\SQLEXPRESS; Initial Catalog=BD; Integrated Security=True"))
+            using (var db = new BDEntities())
             {
-                var cmdSQL = new SqlCommand(strSQL, conn);
-                cmdSQL.Parameters.Add("@dtStart", System.Data.SqlDbType.Date).Value = dtStart;
-                cmdSQL.Parameters.Add("@dtEnd", System.Data.SqlDbType.Date).Value = dtEnd;
+                var query = from a in db.Attendance
+                            where a.Date >= dtStart && a.Date <= dtEnd
+                            orderby a.StudentId, a.Date
+                            select new { a.StudentId, a.Date };
 
-                conn.Open();
-                var rstEdata = new System.Data.DataTable();
-                rstEdata.Load(cmdSQL.ExecuteReader());
+                var rstEdata = query.ToList();
 
+                var employeeAttendanceList = new List<EmployeeAttendance>();
                 var employeeAttendance = new EmployeeAttendance();
                 var lastEmpID = -1;
 
-                foreach (System.Data.DataRow row in rstEdata.Rows)
+                foreach (var row in rstEdata)
                 {
-                    var empID = (int)row["StudentId"];
-                    var day = ((DateTime)row["Date"]).Day.ToString();
+                    var empID = row.StudentId;
+                    var day = row.Date.Day.ToString();
 
                     if (empID != lastEmpID)
                     {
@@ -155,17 +187,26 @@ namespace EJ.MainMenu
                         {
                             employeeAttendanceList.Add(employeeAttendance);
                         }
-                        employeeAttendance = new EmployeeAttendance { StudentId = empID };
+                        employeeAttendance = new EmployeeAttendance { StudentId = empID.ToString() };
                         lastEmpID = empID;
                     }
 
-                    employeeAttendance.GetType().GetProperty($"Day{day}").SetValue(employeeAttendance, "H");
+                    var propertyDescriptor = TypeDescriptor.GetProperties(typeof(EmployeeAttendance))[$"Day{day}"];
+                    if (propertyDescriptor != null)
+                    {
+                        propertyDescriptor.SetValue(employeeAttendance, "H");
+                    }
                 }
 
                 employeeAttendanceList.Add(employeeAttendance);
 
                 myDataGrid.ItemsSource = employeeAttendanceList;
             }
+        }
+
+        private void reflesh_attedance_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationService.Refresh();
         }
     }
 }

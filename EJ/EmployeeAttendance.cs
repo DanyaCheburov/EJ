@@ -8,7 +8,7 @@ namespace EJ
 {
     public class EmployeeAttendance : MainMenu.AttedancePage
     {
-        public int StudentId { get; set; }
+       /* public int StudentId { get; set; }
         public string Day1 { get; set; }
         public string Day2 { get; set; }
         public string Day3 { get; set; }
@@ -39,6 +39,6 @@ namespace EJ
         public string Day28 { get; set; }
         public string Day29 { get; set; }
         public string Day30 { get; set; }
-        public string Day31 { get; set; }
+        public string Day31 { get; set; }*/
     }
 }

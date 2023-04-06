@@ -20,11 +20,11 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <TextBlock Text="Group:" Margin="10" />
-        <ComboBox x:Name="ComboGroup" ItemsSource="{Binding Students}" DisplayMemberPath="GroupName" SelectedItem="{Binding SelectedGroup}" Grid.Column="1" Margin="10" />
+        <ComboBox x:Name="ComboGroup" ItemsSource="{Binding Groups}" DisplayMemberPath="GroupName" SelectedItem="{Binding SelectedGroup}" Grid.Column="1" Margin="10" />
         <TextBlock Text="Student:" Margin="10" Grid.Row="1" />
-        <ComboBox x:Name="ComboStudent" ItemsSource="{Binding Students}" DisplayMemberPath="UserId" SelectedItem="{Binding SelectedStudent}" Grid.Column="1" Margin="10" Grid.Row="1" />
+        <ComboBox x:Name="ComboStudent" ItemsSource="{Binding Students}" DisplayMemberPath="UserId" Grid.Column="1" Margin="10" Grid.Row="1" />
         <TextBlock Text="Date:" Margin="10" Grid.Row="2" />
-        <DatePicker SelectedDate="{Binding Date}" Grid.Column="1" Margin="10" Grid.Row="2" />
-        <Button Content="Добавить" Margin="10" Grid.Row="3" Grid.ColumnSpan="2" />
+        <DatePicker x:Name="datePicker" SelectedDate="{Binding Date}" Grid.Column="1" Margin="10" Grid.Row="2" />
+        <Button x:Name="add_attendance" Click="add_attendance_Click" Content="Добавить" Margin="10" Grid.Row="3" Grid.ColumnSpan="2" />
     </Grid>
 </Window>

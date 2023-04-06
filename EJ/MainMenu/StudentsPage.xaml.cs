@@ -23,10 +23,11 @@ namespace EJ.MainMenu
         public StudentsPage()
         {
             InitializeComponent();
-
+           
             using (var db = new BDEntities())
             {
                 var students = db.Students.Include("Users").ToList();
+                var groups = db.Students.Include("Groups").ToList();
                 Students = new ObservableCollection<Students>(students);
             }
 
