@@ -29,7 +29,7 @@ namespace EJ.MainMenu
         {
             InitializeComponent();
             ComboSubject.ItemsSource = BDEntities.GetContext().Subjects.ToList();
-            ComboGroup.ItemsSource = BDEntities.GetContext().Students.ToList();
+            ComboGroup.ItemsSource = BDEntities.GetContext().Groups.ToList();
 
 
             using (var db = new BDEntities())
@@ -72,12 +72,12 @@ namespace EJ.MainMenu
             using (var db = new BDEntities())
             {
                 // Получаем выбранную группу
-                var selectedGroup = ComboGroup.SelectedItem as Students;
+                var selectedGroup = ComboGroup.SelectedItem as Groups;
 
                 // Фильтруем список студентов по выбранной группе
                 var filteredStudents = db.Students
                     .Include("Users")
-                    .Where(s => s.GroupName == selectedGroup.GroupName)
+                    .Where(s => s.GroupId == selectedGroup.GroupId)
                     .ToList();
 
                 // Обновляем коллекцию студентов с отфильтрованными данными

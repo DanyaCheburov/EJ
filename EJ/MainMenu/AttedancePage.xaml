@@ -17,7 +17,7 @@
             <Label Content="Предмет:" Margin="10"/>
             <ComboBox x:Name="ComboSubject" ItemsSource="{Binding Subjects}" DisplayMemberPath="Name" SelectedItem="{Binding SelectedSubject}" Margin="10"/>
             <Label Content="Группа:" Margin="10"/>
-            <ComboBox x:Name="ComboGroup" ItemsSource="{Binding Students}" DisplayMemberPath="GroupName" SelectionChanged="ComboGroup_SelectionChanged" Margin="10"/>
+            <ComboBox x:Name="ComboGroup" ItemsSource="{Binding Groups}" DisplayMemberPath="GroupName" SelectionChanged="ComboGroup_SelectionChanged" Margin="10"/>
             <Label Content="Месяц:" Margin="10"/>
             <ComboBox x:Name="ComboMonth" SelectedIndex="{Binding SelectedMonthIndex}" Margin="10" Loaded="ComboBox_Loaded">
                 <ComboBoxItem>Январь</ComboBoxItem>

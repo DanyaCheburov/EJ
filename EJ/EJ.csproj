@@ -87,6 +87,9 @@
     <Compile Include="Departments.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
+    <Compile Include="Groups.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
     <Compile Include="MainMenu\AttedancePage.xaml.cs">
       <DependentUpon>AttedancePage.xaml</DependentUpon>
     </Compile>
@@ -99,6 +102,9 @@
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Subjects.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="sysdiagrams.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Teachers.cs">
