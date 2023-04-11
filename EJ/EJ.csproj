@@ -87,7 +87,6 @@
     <Compile Include="Departments.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
-    <Compile Include="EmployeeAttendance.cs" />
     <Compile Include="Groups.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>

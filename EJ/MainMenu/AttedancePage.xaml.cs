@@ -2,21 +2,12 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Data.SqlClient;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
-using EJ.Properties;
 
 namespace EJ.MainMenu
 {
@@ -26,13 +17,14 @@ namespace EJ.MainMenu
     public partial class AttedancePage : Page
     {
         public ObservableCollection<Students> Students { get; set; }
-        
+
         private int DaysInMonth;
         private DateTime dtStart;
         private DateTime dtEnd;
 
         public class EmployeeAttendance
         {
+            public string Name { get; set; }
             public string StudentId { get; set; }
             public string Day1 { get; set; }
             public string Day2 { get; set; }
@@ -71,12 +63,10 @@ namespace EJ.MainMenu
         {
             InitializeComponent();
             CreateTable();
-            LoadGrid();
             ComboSubject.ItemsSource = BDEntities.GetContext().Subjects.ToList();
             ComboGroup.ItemsSource = BDEntities.GetContext().Groups.ToList();
-           
 
-           using (var db = new BDEntities())
+            using (var db = new BDEntities())
             {
                 var students = db.Students.Include("Users").ToList();
                 Students = new ObservableCollection<Students>(students);
@@ -100,7 +90,7 @@ namespace EJ.MainMenu
         }
         private void ComboBox_Loaded(object sender, RoutedEventArgs e)
         {
-           int currentMonthIndex = DateTime.Now.Month - 1;
+            int currentMonthIndex = DateTime.Now.Month - 1;
             ComboBox ComboMonth = sender as ComboBox;
             ComboMonth.SelectedIndex = currentMonthIndex;
         }
@@ -111,35 +101,65 @@ namespace EJ.MainMenu
             window.ShowDialog();
         }
 
-        private void ComboGroup_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void LoadGrid()
         {
+            string groupName = null;
+            if (ComboGroup.SelectedItem != null)
+            {
+                groupName = ((Groups)ComboGroup.SelectedItem).GroupName;
+            }
+            if (string.IsNullOrEmpty(groupName))
+            {
+                return;
+            }
             using (var db = new BDEntities())
             {
-                // Получаем выбранную группу
-                var selectedGroup = ComboGroup.SelectedItem as Groups;
+                var query = from a in db.Attendance
+                            join s in db.Students on a.StudentId equals s.Id
+                            join g in db.Groups on s.GroupId equals g.GroupId
+                            join u in db.Users on s.UserId equals u.Id
+                            where a.Date >= dtStart && a.Date <= dtEnd && g.GroupName == groupName
+                            orderby s.Id, a.Date
+                            select new { u.Name, a.Date, a.StudentId };
 
-                // Фильтруем список студентов по выбранной группе
-                var filteredStudents = db.Students
-                    .Include("Users")
-                    .Where(s => s.GroupId == selectedGroup.GroupId)
-                    .ToList();
+                var rstEdata = query.ToList();
 
-                // Обновляем коллекцию студентов с отфильтрованными данными
-                Students.Clear();
-                foreach (var student in filteredStudents)
+                var employeeAttendanceList = new List<EmployeeAttendance>();
+                var employeeAttendance = new EmployeeAttendance();
+                var lastEmpID = -1;
+
+                foreach (var row in rstEdata)
                 {
-                    Students.Add(student);
+                    var empID = row.StudentId;
+                    var day = row.Date.Day.ToString();
+
+                    if (empID != lastEmpID)
+                    {
+                        if (lastEmpID != -1)
+                        {
+                            employeeAttendanceList.Add(employeeAttendance);
+                        }
+                        employeeAttendance = new EmployeeAttendance { Name = row.Name }; // заменяем StudentId на Name
+                        lastEmpID = empID;
+                    }
+
+                    var propertyDescriptor = TypeDescriptor.GetProperties(typeof(EmployeeAttendance))[$"Day{day}"];
+                    if (propertyDescriptor != null)
+                    {
+                        propertyDescriptor.SetValue(employeeAttendance, "H");
+                    }
                 }
+
+                employeeAttendanceList.Add(employeeAttendance);
+
+                myDataGrid.ItemsSource = employeeAttendanceList;
             }
+        }
 
-            // Обновляем столбцы таблицы для отображения имени студента для выбранной группы
-            DataGridTextColumn nameColumn = myDataGrid.Columns[0] as DataGridTextColumn;
-            nameColumn.Binding = new Binding("StudentId");
-
-            // Добавляем столбцы для каждого месяца для отслеживания посещаемости
-            ComboBoxItem selectedMonthItem = ComboMonth.SelectedItem as ComboBoxItem;
-            string selectedMonth = selectedMonthItem.Content.ToString();
-            int selectedYear = (int)comboBox.SelectedItem;
+        private void ComboGroup_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+ 
+            LoadGrid();
         }
 
 
@@ -161,48 +181,6 @@ namespace EJ.MainMenu
             }
         }
 
-        private void LoadGrid()
-        {
-            using (var db = new BDEntities())
-            {
-                var query = from a in db.Attendance
-                            where a.Date >= dtStart && a.Date <= dtEnd
-                            orderby a.StudentId, a.Date
-                            select new { a.StudentId, a.Date };
-
-                var rstEdata = query.ToList();
-
-                var employeeAttendanceList = new List<EmployeeAttendance>();
-                var employeeAttendance = new EmployeeAttendance();
-                var lastEmpID = -1;
-
-                foreach (var row in rstEdata)
-                {
-                    var empID = row.StudentId;
-                    var day = row.Date.Day.ToString();
-
-                    if (empID != lastEmpID)
-                    {
-                        if (lastEmpID != -1)
-                        {
-                            employeeAttendanceList.Add(employeeAttendance);
-                        }
-                        employeeAttendance = new EmployeeAttendance { StudentId = empID.ToString() };
-                        lastEmpID = empID;
-                    }
-
-                    var propertyDescriptor = TypeDescriptor.GetProperties(typeof(EmployeeAttendance))[$"Day{day}"];
-                    if (propertyDescriptor != null)
-                    {
-                        propertyDescriptor.SetValue(employeeAttendance, "H");
-                    }
-                }
-
-                employeeAttendanceList.Add(employeeAttendance);
-
-                myDataGrid.ItemsSource = employeeAttendanceList;
-            }
-        }
 
         private void reflesh_attedance_Click(object sender, RoutedEventArgs e)
         {
