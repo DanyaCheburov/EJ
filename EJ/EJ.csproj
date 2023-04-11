@@ -93,6 +93,7 @@
     <Compile Include="MainMenu\AttedancePage.xaml.cs">
       <DependentUpon>AttedancePage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="MainMenu\EmployeeAttendance.cs" />
     <Compile Include="Model.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
