@@ -4,24 +4,109 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
         xmlns:local="clr-namespace:EJ"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800"
+        Title="MainWindow" Height="700" Width="1140"
         
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        Background="{x:Null}"
+        AllowsTransparency="True"
+        WindowStyle="None"
         WindowStartupLocation="CenterScreen">
 
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="auto"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-        <StackPanel Grid.Column="0">
-            <Button Content="Пользователи" Click="UserButton_Click"/>
-            <Button Content="Студенты" Click="StudentButton_Click"/>
-            <Button Content="Преподаватели" Click="TeacherButton_Click"/>
-            <Button Content="Кафедра" Click="DepartmentButton_Click"/>
-            <Button Content="Посещаемость" Click="AttendanceButton_Click"/>
-        </StackPanel>
-        <Frame Grid.Column="1" Name="MainContentFrame" NavigationUIVisibility="Hidden"/>
-    </Grid>
+    <materialDesign:Card Background="{DynamicResource MaterialDesignPaper}" UniformCornerRadius="15" Margin="25" materialDesign:ElevationAssist.Elevation= "Dp4">
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="195"/>
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <materialDesign:ColorZone Grid.Column="0" Height="650" CornerRadius="15 0 0 15" Background="White">
+                <StackPanel Margin="15">
+                    <WrapPanel Margin="0 10 5 60" HorizontalAlignment="Center">
+                        <Image RenderOptions.BitmapScalingMode="HighQuality" Height="60" Width="60" Source="/Resources/logo.png" />
+                        <TextBlock Text="Test" FontSize="20" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10 0 0 0"/>
+                    </WrapPanel>
+
+                    <Button x:Name="UserButton" Click="UserButton_Click" Style="{StaticResource MaterialDesignFlatButton}" Foreground="{DynamicResource PrimaryHueLightForegroundBrush}"
+                            materialDesign:ButtonAssist.CornerRadius="6" Width="auto" Height="35" materialDesign:RippleAssist.Feedback="White"
+                            Margin="0 0 0 15" HorizontalAlignment="Right">
+                        <WrapPanel Width="120">
+                            <materialDesign:PackIcon Kind="Account" VerticalAlignment="Center" Margin="0 0 0 0" />
+                            <TextBlock>Пользователи</TextBlock>
+                        </WrapPanel>
+                    </Button>
+
+                    <Button x:Name="Attendance" Click="AttendanceButton_Click" Style="{StaticResource MaterialDesignFlatButton}" Foreground="{DynamicResource PrimaryHueLightForegroundBrush}"
+                            materialDesign:ButtonAssist.CornerRadius="6" Width="auto" Height="35" materialDesign:RippleAssist.Feedback="White"
+                            Margin="0 0 0 15">
+                        <WrapPanel Width="120">
+                            <materialDesign:PackIcon Kind="Lecture" VerticalAlignment="Center" Margin="0 0 0 0" />
+                            <TextBlock>Посещаемость</TextBlock>
+                        </WrapPanel>
+                    </Button>
+
+                    <Button Style="{StaticResource MaterialDesignFlatButton}" Foreground="{DynamicResource PrimaryHueLightForegroundBrush}"
+                            materialDesign:ButtonAssist.CornerRadius="6" Width="auto" Height="35" materialDesign:RippleAssist.Feedback="White"
+                            Margin="0 0 0 15" x:Name="StudentButton" Click="StudentButton_Click" Cursor="Hand">
+                        <WrapPanel Width="120">
+                            <materialDesign:PackIcon Kind="AccountMultiple" VerticalAlignment="Center" Margin="0 0 20 0" />
+                            <TextBlock>Студенты</TextBlock>
+                        </WrapPanel>
+                    </Button>
+
+                    <Button Style="{StaticResource MaterialDesignFlatButton}" Foreground="{DynamicResource PrimaryHueLightForegroundBrush}"
+                            materialDesign:ButtonAssist.CornerRadius="6" Width="auto" Height="35" materialDesign:RippleAssist.Feedback="White"
+                            Margin="0 0 0 15" x:Name="TeacherButton" Click="TeacherButton_Click">
+                        <WrapPanel Width="120">
+                            <materialDesign:PackIcon Kind="AccountMultiple" VerticalAlignment="Center" Margin="0 0 0 0" />
+                            <TextBlock>Преподаватели</TextBlock>
+                        </WrapPanel>
+                    </Button>
+
+                    <Button Style="{StaticResource MaterialDesignFlatButton}" Foreground="{DynamicResource PrimaryHueLightForegroundBrush}"
+                            materialDesign:ButtonAssist.CornerRadius="6" Width="auto" Height="35" materialDesign:RippleAssist.Feedback="White"
+                            Margin="0 0 0 15">
+                        <WrapPanel Width="120">
+                            <materialDesign:PackIcon Kind="Settings" VerticalAlignment="Center" Margin="0 0 20 0" />
+                            <TextBlock>Settings</TextBlock>
+                        </WrapPanel>
+                    </Button>
+
+                    <Button Style="{StaticResource MaterialDesignFlatButton}" Foreground="{DynamicResource PrimaryHueLightForegroundBrush}"
+                            materialDesign:ButtonAssist.CornerRadius="6" Width="auto" Height="35" materialDesign:RippleAssist.Feedback="White"
+                            Margin="0 0 0 15">
+                        <WrapPanel Width="120">
+                            <materialDesign:PackIcon Kind="Help" VerticalAlignment="Center" Margin="0 0 20 0" />
+                            <TextBlock>Help</TextBlock>
+                        </WrapPanel>
+                    </Button>
+                </StackPanel>
+            </materialDesign:ColorZone>
+
+            <StackPanel Margin="30 12 0 0" Grid.Column="1">
+                <DockPanel Margin="0 12 5 0">
+                    <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="15" FontWeight="Bold" Text="Testing"/>
+
+                    <Button Name="BtnExit" Click="BtnExit_Click" Style="{StaticResource MaterialDesignIconButton}" materialDesign:ButtonAssist.CornerRadius="6"
+                                Width="40" Height="40" DockPanel.Dock="Right" HorizontalAlignment="Right">
+                        <materialDesign:PackIcon Kind="LogoutVariant" />
+                    </Button>
+
+                    <TextBlock Text="{Binding Source={x:Static sys:DateTime.Now}, StringFormat='{}{0:dd MMM yyyy, dddd}'}" Foreground="SlateGray" FontSize="12" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Right"
+                               DockPanel.Dock="Right" Margin="0 0 20 0"/>
+                </DockPanel>
+
+
+                <Grid Cursor="">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <Frame x:Name="MainContentFrame" Margin="0 35 0 0" Grid.Column="0" Height="520" Width="800" NavigationUIVisibility="Hidden"></Frame>
+                </Grid>
+            </StackPanel>
+        </Grid>
+    </materialDesign:Card>
 </Window>

@@ -7,7 +7,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Navigation;
-using EJ.MainMenu;
 
 namespace EJ.MainMenu
 {
@@ -107,10 +106,7 @@ namespace EJ.MainMenu
                     }
 
                     var propertyDescriptor = TypeDescriptor.GetProperties(typeof(EmployeeAttendance))[$"Day{day}"];
-                    if (propertyDescriptor != null)
-                    {
-                        propertyDescriptor.SetValue(employeeAttendance, "H");
-                    }
+                    propertyDescriptor?.SetValue(employeeAttendance, "H");
                 }
 
                 employeeAttendanceList.Add(employeeAttendance);
@@ -121,7 +117,6 @@ namespace EJ.MainMenu
 
         private void ComboGroup_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
             LoadGrid();
         }
 

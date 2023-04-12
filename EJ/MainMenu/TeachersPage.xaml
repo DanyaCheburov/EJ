@@ -9,6 +9,6 @@
       Title="TeachersPage">
 
     <Grid>
-        <TextBlock Text="Хуй" Foreground="Blue" FontSize="125" HorizontalAlignment="Center" Margin="0,155,0,0" TextWrapping="Wrap" VerticalAlignment="Top"/>
+        <TextBlock Text="В разработке" Foreground="Blue" FontSize="125" HorizontalAlignment="Center" Margin="0,155,0,0" TextWrapping="Wrap" VerticalAlignment="Top"/>
     </Grid>
 </Page>

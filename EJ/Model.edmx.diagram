@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="c77e7e36a998446b9e890c37cc0d4c1d" Name="Diagram1">
+      <Diagram DiagramId="ecd6d4489b46423482b451fb2959db7b" Name="Diagram1">
         <EntityTypeShape EntityType="BDModel.Administrators" Width="1.5" PointX="3" PointY="2.75" IsExpanded="true" />
         <EntityTypeShape EntityType="BDModel.Attendance" Width="1.5" PointX="8.25" PointY="3.75" IsExpanded="true" />
         <EntityTypeShape EntityType="BDModel.Departments" Width="1.5" PointX="5.75" PointY="7.75" IsExpanded="true" />
@@ -14,12 +14,12 @@
         <EntityTypeShape EntityType="BDModel.sysdiagrams" Width="1.5" PointX="7.75" PointY="7.75" IsExpanded="true" />
         <EntityTypeShape EntityType="BDModel.Teachers" Width="1.5" PointX="3" PointY="8.25" IsExpanded="true" />
         <EntityTypeShape EntityType="BDModel.Users" Width="1.5" PointX="0.75" PointY="3.75" IsExpanded="true" />
-        <AssociationConnector Association="BDModel.FK__Administr__UserI__5629CD9C" ManuallyRouted="false" />
+        <AssociationConnector Association="BDModel.FK__Administr__UserI__5812160E" ManuallyRouted="false" />
         <AssociationConnector Association="BDModel.FK__Attendanc__Stude__571DF1D5" ManuallyRouted="false" />
-        <AssociationConnector Association="BDModel.FK__Attendanc__Subje__571DF1D5" ManuallyRouted="false" />
+        <AssociationConnector Association="BDModel.FK__Attendanc__Subje__59063A47" ManuallyRouted="false" />
         <AssociationConnector Association="BDModel.FK_Students_Groups" ManuallyRouted="false" />
         <AssociationConnector Association="BDModel.FK__Students__UserId__59063A47" ManuallyRouted="false" />
-        <AssociationConnector Association="BDModel.FK__Teachers__UserId__59FA5E80" ManuallyRouted="false" />
+        <AssociationConnector Association="BDModel.FK__Teachers__UserId__5CD6CB2B" ManuallyRouted="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
