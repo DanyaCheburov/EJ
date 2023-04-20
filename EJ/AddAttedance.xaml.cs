@@ -38,7 +38,7 @@ namespace EJ
                     var entity = ComboStudent.SelectedItem as Students;
                     context.Entry(entity).State = EntityState.Detached;
 
-                    using (SqlConnection connection = new SqlConnection(@"Data Source=localhost\SQLEXPRESS1;Initial Catalog=BD;Integrated Security=True"))
+                    using (SqlConnection connection = new SqlConnection(@"Data Source=localhost\SQLEXPRESS;Initial Catalog=BD;Integrated Security=True"))
                     {
                         connection.Open();
 

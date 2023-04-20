@@ -17,10 +17,6 @@ namespace EJ.MainMenu
     {
         public ObservableCollection<Students> Students { get; set; }
 
-        private int DaysInMonth;
-        private DateTime dtStart;
-        private DateTime dtEnd;
-
         public AttedancePage()
         {
             InitializeComponent();
@@ -37,18 +33,18 @@ namespace EJ.MainMenu
             DataContext = this;
 
             //Автоматическое добавление даты
-            comboBox.Items.Add(2019);
+            СomboYear.Items.Add(2019);
 
             // Add all years between 2019 and the current year to the combo box
             int currentYear = DateTime.Now.Year;
             for (int year = 2019; year <= currentYear; year++)
             {
-                if (!comboBox.Items.Contains(year))
+                if (!СomboYear.Items.Contains(year))
                 {
-                    comboBox.Items.Add(year);
+                    СomboYear.Items.Add(year);
                 }
             }
-            comboBox.SelectedItem = currentYear;
+            СomboYear.SelectedItem = currentYear;
         }
         private void ComboBox_Loaded(object sender, RoutedEventArgs e)
         {
@@ -74,13 +70,19 @@ namespace EJ.MainMenu
             {
                 return;
             }
+
+            int year = (int)СomboYear.SelectedItem;
+            int month = ComboMonth.SelectedIndex + 1;
+            DateTime startDate = new DateTime(year, month, 1);
+            DateTime endDate = startDate.AddMonths(1).AddDays(-1);
+
             using (var db = new BDEntities())
             {
                 var query = from a in db.Attendance
                             join s in db.Students on a.StudentId equals s.Id
                             join g in db.Groups on s.GroupId equals g.GroupId
                             join u in db.Users on s.UserId equals u.Id
-                            where a.Date >= dtStart && a.Date <= dtEnd && g.GroupName == groupName
+                            where a.Date >= startDate && a.Date <= endDate && g.GroupName == groupName
                             orderby s.Id, a.Date
                             select new { u.Name, a.Date, a.StudentId };
 
@@ -123,13 +125,7 @@ namespace EJ.MainMenu
 
         private void CreateTable()
         {
-            var dt = DateTime.Today;
-
-            DaysInMonth = DateTime.DaysInMonth(dt.Year, dt.Month);
-            dtStart = new DateTime(dt.Year, dt.Month, 1);
-            dtEnd = dtStart.AddDays(DaysInMonth - 1);
-
-            for (int i = 1; i <= DaysInMonth; i++)
+            for (int i = 1; i <= 31; i++)
             {
                 myDataGrid.Columns.Add(new DataGridTextColumn
                 {
@@ -139,10 +135,19 @@ namespace EJ.MainMenu
             }
         }
 
-
         private void reflesh_attedance_Click(object sender, RoutedEventArgs e)
         {
             NavigationService.Refresh();
+        }
+
+        private void ComboMonth_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            LoadGrid();
+        }
+
+        private void ComboYear_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            LoadGrid();
         }
     }
 }
