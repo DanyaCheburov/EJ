@@ -88,7 +88,6 @@ namespace EJ.MainMenu
                             orderby s.Id
                             select new { u.Name, StudentId = s.Id, Date = (a != null ? a.Date : default(DateTime?)), HasAbsence = (a != null) };
 
-
                 var rstEdata = query.ToList();
 
                 var employeeAttendanceList = new List<EmployeeAttendance>();
