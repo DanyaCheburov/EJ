@@ -78,13 +78,16 @@ namespace EJ.MainMenu
 
             using (var db = new BDEntities())
             {
-                var query = from a in db.Attendance
-                            join s in db.Students on a.StudentId equals s.Id
+                var query = from s in db.Students
                             join g in db.Groups on s.GroupId equals g.GroupId
                             join u in db.Users on s.UserId equals u.Id
-                            where a.Date >= startDate && a.Date <= endDate && g.GroupName == groupName
-                            orderby s.Id, a.Date
-                            select new { u.Name, a.Date, a.StudentId };
+                            join a in db.Attendance.Where(a => a.Date >= startDate && a.Date <= endDate)
+                                on s.Id equals a.StudentId into aGroup
+                            from a in aGroup.DefaultIfEmpty()
+                            where g.GroupName == groupName
+                            orderby s.Id
+                            select new { u.Name, StudentId = s.Id, Date = (a != null ? a.Date : default(DateTime?)), HasAbsence = (a != null) };
+
 
                 var rstEdata = query.ToList();
 
@@ -95,7 +98,7 @@ namespace EJ.MainMenu
                 foreach (var row in rstEdata)
                 {
                     var empID = row.StudentId;
-                    var day = row.Date.Day.ToString();
+                    var day = row.Date?.Day.ToString() ?? "";
 
                     if (empID != lastEmpID)
                     {
