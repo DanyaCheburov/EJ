@@ -1,4 +1,6 @@
-﻿namespace EJ.MainMenu
+﻿using System;
+
+namespace EJ.MainMenu
 {
     public class EmployeeAttendance
     {

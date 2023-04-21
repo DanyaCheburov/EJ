@@ -7,7 +7,7 @@
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
         xmlns:local="clr-namespace:EJ"
         mc:Ignorable="d"
-        Title="MainWindow" Height="700" Width="1140"
+        Title="MainWindow" Height="700" Width="1240"
         
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         Background="{x:Null}"
@@ -104,7 +104,7 @@
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
 
-                    <Frame x:Name="MainContentFrame" Margin="0 35 0 0" Grid.Column="0" Height="520" Width="800" NavigationUIVisibility="Hidden"></Frame>
+                    <Frame x:Name="MainContentFrame" Margin="0,35,10,0" Grid.Column="0" Height="520" NavigationUIVisibility="Hidden"/>
                 </Grid>
             </StackPanel>
         </Grid>

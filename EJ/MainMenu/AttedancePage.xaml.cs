@@ -7,6 +7,9 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Navigation;
+using System.Windows.Media.Imaging;
+using System.Xml.Linq;
+
 
 namespace EJ.MainMenu
 {
@@ -76,17 +79,25 @@ namespace EJ.MainMenu
             DateTime startDate = new DateTime(year, month, 1);
             DateTime endDate = startDate.AddMonths(1).AddDays(-1);
 
+            int subjectId = 0;
+            if (ComboSubject.SelectedItem != null)
+            {
+                subjectId = ((Subjects)ComboSubject.SelectedItem).SubjectId;
+            }
+
             using (var db = new BDEntities())
             {
                 var query = from s in db.Students
                             join g in db.Groups on s.GroupId equals g.GroupId
                             join u in db.Users on s.UserId equals u.Id
-                            join a in db.Attendance.Where(a => a.Date >= startDate && a.Date <= endDate)
+                            join a in db.Attendance.Where(a => a.Date >= startDate && a.Date <= endDate && a.SubjectId == subjectId)
                                 on s.Id equals a.StudentId into aGroup
                             from a in aGroup.DefaultIfEmpty()
+                            join sub in db.Subjects on a.SubjectId equals sub.SubjectId into subGroup
+                            from sub in subGroup.DefaultIfEmpty()
                             where g.GroupName == groupName
                             orderby s.Id
-                            select new { u.Name, StudentId = s.Id, Date = (a != null ? a.Date : default(DateTime?)), HasAbsence = (a != null) };
+                            select new { u.Name, StudentId = s.Id, Date = (a != null ? a.Date : default(DateTime?)), HasAbsence = (a != null), SubjectName = (sub != null ? sub.Name : "") };
 
                 var rstEdata = query.ToList();
 
@@ -110,7 +121,7 @@ namespace EJ.MainMenu
                     }
 
                     var propertyDescriptor = TypeDescriptor.GetProperties(typeof(EmployeeAttendance))[$"Day{day}"];
-                    propertyDescriptor?.SetValue(employeeAttendance, "H");
+                   propertyDescriptor?.SetValue(employeeAttendance, "H");
                 }
 
                 employeeAttendanceList.Add(employeeAttendance);
@@ -118,6 +129,7 @@ namespace EJ.MainMenu
                 myDataGrid.ItemsSource = employeeAttendanceList;
             }
         }
+
 
         private void ComboGroup_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -148,6 +160,11 @@ namespace EJ.MainMenu
         }
 
         private void ComboYear_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            LoadGrid();
+        }
+
+        private void ComboSubject_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             LoadGrid();
         }

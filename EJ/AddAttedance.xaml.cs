@@ -25,8 +25,27 @@ namespace EJ
         public AddAttedance()
         {
             InitializeComponent();
-            ComboStudent.ItemsSource = BDEntities.GetContext().Students.ToList();
             ComboGroup.ItemsSource = BDEntities.GetContext().Groups.Local;
+            ComboSubject.ItemsSource = BDEntities.GetContext().Subjects.ToList();
+            ComboStudent.ItemsSource = Students;
+        }
+
+        private List<Students> Students
+        {
+            get
+            {
+                if (ComboGroup.SelectedItem != null)
+                {
+                    var selectedGroup = ComboGroup.SelectedItem as Groups;
+                    return BDEntities.GetContext().Students.Where(s => s.GroupId == selectedGroup.GroupId).ToList();
+                }
+                return null;
+            }
+        }
+
+        private void ComboGroup_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ComboStudent.ItemsSource = Students;
         }
 
         private void add_attendance_Click(object sender, RoutedEventArgs e)
@@ -36,20 +55,20 @@ namespace EJ
                 using (var context = new BDEntities())
                 {
                     var entity = ComboStudent.SelectedItem as Students;
+                    var entity2 = ComboSubject.SelectedItem as Subjects;
                     context.Entry(entity).State = EntityState.Detached;
 
                     using (SqlConnection connection = new SqlConnection(@"Data Source=localhost\SQLEXPRESS;Initial Catalog=BD;Integrated Security=True"))
                     {
                         connection.Open();
 
-                        using (SqlCommand command = new SqlCommand("INSERT INTO Attendance (StudentId, Attended , Date, SubjectId) VALUES (@Value, @Value1,  @Value2, @Value3)", connection))
+                        using (SqlCommand command = new SqlCommand("INSERT INTO Attendance (StudentId, Date, SubjectId) VALUES (@Value,  @Value1, @Value2)", connection))
                         {
                             if (datePicker.SelectedDate != null && entity != null)
                             {
                                 command.Parameters.AddWithValue("@Value", entity.Id);
-                                command.Parameters.AddWithValue("@Value1", 0);
-                                command.Parameters.AddWithValue("@Value2", datePicker.SelectedDate.Value.ToString("yyyy-MM-dd"));
-                                command.Parameters.AddWithValue("@Value3", 1);
+                                command.Parameters.AddWithValue("@Value1", datePicker.SelectedDate.Value.ToString("yyyy-MM-dd"));
+                                command.Parameters.AddWithValue("@Value2", entity2.SubjectId);
                                 command.ExecuteNonQuery();
                                 MessageBox.Show("Data saved successfully.");
                             }

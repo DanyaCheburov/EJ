@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EJ"
         mc:Ignorable="d"
-        Title="AddAttedance" Height="250" Width="300"
+        Title="AddAttedance" Height="280" Width="330"
         WindowStartupLocation="CenterScreen">
     <Grid>
         <Grid.RowDefinitions>
@@ -19,12 +19,14 @@
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-        <TextBlock Text="Group:" Margin="10" />
-        <ComboBox x:Name="ComboGroup" ItemsSource="{Binding Groups}" DisplayMemberPath="GroupName" SelectedItem="{Binding SelectedGroup}" Grid.Column="1" Margin="10" />
-        <TextBlock Text="Student:" Margin="10" Grid.Row="1" />
-        <ComboBox x:Name="ComboStudent" ItemsSource="{Binding Students}" DisplayMemberPath="UserId" Grid.Column="1" Margin="10" Grid.Row="1" />
-        <TextBlock Text="Date:" Margin="10" Grid.Row="2" />
-        <DatePicker x:Name="datePicker" SelectedDate="{Binding Date}" Grid.Column="1" Margin="10" Grid.Row="2" />
-        <Button x:Name="add_attendance" Click="add_attendance_Click" Content="Добавить" Margin="10" Grid.Row="3" Grid.ColumnSpan="2" />
+        <TextBlock Text="Выберите группу:" Margin="10" />
+        <ComboBox x:Name="ComboGroup" ItemsSource="{Binding Groups}" DisplayMemberPath="GroupName" SelectedItem="{Binding SelectedGroup}" SelectionChanged="ComboGroup_SelectionChanged" Grid.Column="1" Margin="10" />
+        <TextBlock Text="Выберите студента:" Margin="10" Grid.Row="1" />
+        <ComboBox x:Name="ComboStudent" ItemsSource="{Binding Students}" DisplayMemberPath="Users.Name" Grid.Column="1" Margin="10" Grid.Row="1" />
+        <TextBlock Text="Выберите предмет:" Margin="10" Grid.Row="2" />
+        <ComboBox x:Name="ComboSubject" ItemsSource="{Binding Subjects}" DisplayMemberPath="Name" Grid.Column="1" Margin="10" Grid.Row="2" />
+        <TextBlock Text="Выберите дату:" Margin="10" Grid.Row="3" />
+        <DatePicker x:Name="datePicker" SelectedDate="{Binding Date}" Grid.Column="1" Margin="10" Grid.Row="3" />
+        <Button x:Name="add_attendance" Click="add_attendance_Click" Content="Добавить" Margin="10" Grid.Row="4" Grid.ColumnSpan="2" />
     </Grid>
 </Window>
