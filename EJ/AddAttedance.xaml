@@ -3,30 +3,45 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:local="clr-namespace:EJ"
         mc:Ignorable="d"
-        Title="AddAttedance" Height="280" Width="330"
+        Title="AddAttedance" Height="340" Width="430"
+        
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        Background="{x:Null}"
+        AllowsTransparency="True"
+        WindowStyle="None"
         WindowStartupLocation="CenterScreen">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
-        <TextBlock Text="Выберите группу:" Margin="10" />
-        <ComboBox x:Name="ComboGroup" ItemsSource="{Binding Groups}" DisplayMemberPath="GroupName" SelectedItem="{Binding SelectedGroup}" SelectionChanged="ComboGroup_SelectionChanged" Grid.Column="1" Margin="10" />
-        <TextBlock Text="Выберите студента:" Margin="10" Grid.Row="1" />
-        <ComboBox x:Name="ComboStudent" ItemsSource="{Binding Students}" DisplayMemberPath="Users.Name" Grid.Column="1" Margin="10" Grid.Row="1" />
-        <TextBlock Text="Выберите предмет:" Margin="10" Grid.Row="2" />
-        <ComboBox x:Name="ComboSubject" ItemsSource="{Binding Subjects}" DisplayMemberPath="Name" Grid.Column="1" Margin="10" Grid.Row="2" />
-        <TextBlock Text="Выберите дату:" Margin="10" Grid.Row="3" />
-        <DatePicker x:Name="datePicker" SelectedDate="{Binding Date}" Grid.Column="1" Margin="10" Grid.Row="3" />
-        <Button x:Name="add_attendance" Click="add_attendance_Click" Content="Добавить" Margin="10" Grid.Row="4" Grid.ColumnSpan="2" />
-    </Grid>
+
+    <materialDesign:Card Background="{DynamicResource MaterialDesignPaper}" UniformCornerRadius="15" Margin="25" materialDesign:ElevationAssist.Elevation= "Dp4">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="Добавить пропуск" FontSize="15" FontWeight="Bold" Margin="10 15 0 0"></TextBlock>
+            <Button Name="BtnExit" Click="BtnExit_Click" Style="{StaticResource MaterialDesignIconButton}" materialDesign:ButtonAssist.CornerRadius="6"
+                                Width="40" Height="40" DockPanel.Dock="Right" HorizontalAlignment="Right" Grid.Column="2">
+                <materialDesign:PackIcon Kind="LogoutVariant" />
+            </Button>
+            <TextBlock Text="Выберите группу:" Margin="10" Grid.Row="1"/>
+            <ComboBox x:Name="ComboGroup" ItemsSource="{Binding Groups}" DisplayMemberPath="GroupName" SelectedItem="{Binding SelectedGroup}" SelectionChanged="ComboGroup_SelectionChanged" Grid.Row="1" Grid.Column="1" Margin="10" />
+            <TextBlock Text="Выберите студента:" Margin="10" Grid.Row="2" />
+            <ComboBox x:Name="ComboStudent" ItemsSource="{Binding Students}" DisplayMemberPath="Users.Name" Grid.Column="1" Margin="10" Grid.Row="2" />
+            <TextBlock Text="Выберите предмет:" Margin="10" Grid.Row="3" />
+            <ComboBox x:Name="ComboSubject" ItemsSource="{Binding Subjects}" DisplayMemberPath="Name" Grid.Column="1" Margin="10" Grid.Row="3" />
+            <TextBlock Text="Выберите дату:" Margin="10" Grid.Row="4" />
+            <DatePicker x:Name="datePicker" SelectedDate="{Binding Date}" Grid.Column="1" Margin="10" Grid.Row="4" />
+            <Button x:Name="add_attendance" Click="Add_attendance_Click" Content="Добавить" Margin="10" Grid.Row="5" Grid.ColumnSpan="2" />
+        </Grid>
+    </materialDesign:Card>
 </Window>

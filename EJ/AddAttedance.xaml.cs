@@ -48,7 +48,7 @@ namespace EJ
             ComboStudent.ItemsSource = Students;
         }
 
-        private void add_attendance_Click(object sender, RoutedEventArgs e)
+        private void Add_attendance_Click(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -58,7 +58,7 @@ namespace EJ
                     var entity2 = ComboSubject.SelectedItem as Subjects;
                     context.Entry(entity).State = EntityState.Detached;
 
-                    using (SqlConnection connection = new SqlConnection(@"Data Source=localhost\SQLEXPRESS;Initial Catalog=BD;Integrated Security=True"))
+                    using (SqlConnection connection = new SqlConnection(@"Data Source=localhost\SQLEXPRESS1;Initial Catalog=BD;Integrated Security=True"))
                     {
                         connection.Open();
 
@@ -70,7 +70,7 @@ namespace EJ
                                 command.Parameters.AddWithValue("@Value1", datePicker.SelectedDate.Value.ToString("yyyy-MM-dd"));
                                 command.Parameters.AddWithValue("@Value2", entity2.SubjectId);
                                 command.ExecuteNonQuery();
-                                MessageBox.Show("Data saved successfully.");
+                                MessageBox.Show("Пропуск добавлен.");
                             }
                             else
                             {
@@ -86,6 +86,11 @@ namespace EJ
             {
                 MessageBox.Show("Error saving data: " + ex.Message);
             }
+        }
+
+        private void BtnExit_Click(object sender, RoutedEventArgs e)
+        {
+            this.Hide();
         }
     }
 }

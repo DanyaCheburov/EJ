@@ -56,7 +56,7 @@ namespace EJ.MainMenu
             ComboMonth.SelectedIndex = currentMonthIndex;
         }
 
-        private void add_attedance_Click(object sender, RoutedEventArgs e)
+        private void Add_attedance_Click(object sender, RoutedEventArgs e)
         {
             var window = new AddAttedance();
             window.ShowDialog();
@@ -149,7 +149,7 @@ namespace EJ.MainMenu
             }
         }
 
-        private void reflesh_attedance_Click(object sender, RoutedEventArgs e)
+        private void Reflesh_attedance_Click(object sender, RoutedEventArgs e)
         {
             NavigationService.Refresh();
         }
