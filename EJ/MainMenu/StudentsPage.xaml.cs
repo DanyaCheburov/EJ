@@ -47,5 +47,10 @@ namespace EJ.MainMenu
                 db.SaveChanges();
             }
         }
+
+        private void AddStudentGroup_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

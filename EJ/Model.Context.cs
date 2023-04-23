@@ -29,6 +29,8 @@ namespace EJ
             return _context;
         }
 
+        public static BDEntities db = new BDEntities();
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             throw new UnintentionalCodeFirstException();
