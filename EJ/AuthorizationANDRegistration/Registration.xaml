@@ -23,7 +23,10 @@
             <StackPanel Grid.Column="0">
                 <TextBlock Margin="200 75 0 5" Foreground="DodgerBlue" HorizontalAlignment="Left" FontSize="28" FontWeight="Bold" Text="Регистрация" />
                 <TextBlock Margin="200 0 0 0" Foreground="Black" HorizontalAlignment="Left" FontSize="17" FontWeight="SemiBold" Text="Заполните все поля"></TextBlock>
-                <TextBox Margin="200 50 0 0" x:Name="regtxtUsername" Width="300" FontSize="18" 
+                <TextBox Margin="200 30 0 0" x:Name="regtxtFIO" Width="300" FontSize="18" 
+                         materialDesign:HintAssist.Hint="ФИО" BorderThickness="2" 
+                         BorderBrush="{DynamicResource MaterialDesignDivider}" Style="{StaticResource MaterialDesignOutlinedTextBox}" HorizontalAlignment="Left"/>
+                <TextBox Margin="200 20 0 0" x:Name="regtxtEmail" Width="300" FontSize="18" 
                          materialDesign:HintAssist.Hint="Email" BorderThickness="2" 
                          BorderBrush="{DynamicResource MaterialDesignDivider}" Style="{StaticResource MaterialDesignOutlinedTextBox}" HorizontalAlignment="Left"/>
                 <PasswordBox Margin="200 20 0 0" x:Name="regtxtPassword" Width="300"  FontSize="18"
@@ -34,16 +37,16 @@
                              materialDesign:HintAssist.Hint="Подтвердить пароль" BorderThickness="2" 
                              BorderBrush="{DynamicResource MaterialDesignDivider}" 
                              Style="{StaticResource MaterialDesignOutlinedPasswordBox}" HorizontalAlignment="Left"/>
-                <Button Margin="200 20 0 0" x:Name="registerBtn" Style="{StaticResource MaterialDesignFlatMidBgButton}"
+                <Button Margin="200 15 0 0" x:Name="registerBtn" Style="{StaticResource MaterialDesignFlatMidBgButton}"
                         materialDesign:ElevationAssist.Elevation="Dp0" Height="53" Width="300" 
                         materialDesign:ButtonAssist.CornerRadius="10" FontSize="18" Content="Регистрация" Click="RegisterBtn_Click" HorizontalAlignment="Left"/>
-                <Button Margin="200 20 0 0" x:Name="clearBtn" Style="{StaticResource MaterialDesignFlatButton}"
+                <Button Margin="200 5 0 0" x:Name="clearBtn" Style="{StaticResource MaterialDesignFlatButton}"
                         materialDesign:ElevationAssist.Elevation="Dp0" Height="53" Width="300"
                         materialDesign:ButtonAssist.CornerRadius="10" FontSize="18" Content="Очистить" Click="ClearBtn_Click" HorizontalAlignment="Left"/>
                 <TextBlock Margin="250 0 0 0" FontSize="17" FontWeight="SemiBold" Text="Уже есть учетная запись" HorizontalAlignment="Left"/>
-                <Button Margin="180 0 0 0" x:Name="backBtn" Style="{StaticResource MaterialDesignFlatButton}"
+                <Button Margin="180 5 0 0" x:Name="backBtn" Style="{StaticResource MaterialDesignFlatButton}"
                         materialDesign:ElevationAssist.Elevation="Dp0" Height="53" Width="350"
-                        materialDesign:ButtonAssist.CornerRadius="10" FontSize="18" Content="Вернуться на страницу авторизации" Click="BackBtn_Click" HorizontalAlignment="Left"/>
+                        materialDesign:ButtonAssist.CornerRadius="10" FontSize="18" Content="Вернуться на страницу авторизации" Click="BackBtn_Click" HorizontalAlignment="Left" Cursor="Hand"/>
             </StackPanel>
             <StackPanel Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Height="500"
                         Width="450">

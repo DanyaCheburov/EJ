@@ -4,6 +4,7 @@ using System.Data.Entity;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -40,18 +41,28 @@ namespace EJ.AuthorizationANDRegistration
 
         private void ClearBtn_Click(object sender, RoutedEventArgs e)
         {
-            regtxtUsername.Text = "";
+            regtxtFIO.Text = "";
+            regtxtEmail.Text = "";
             regtxtPassword.Password = "";
             regconfrimtxtPassword.Password = "";
-            regtxtUsername.Focus();
+            regtxtFIO.Focus();
         }
 
         private void RegisterBtn_Click(object sender, RoutedEventArgs e)
         {
             // получить данные пользователя
-            string email = regtxtUsername.Text.Trim();
+            string fio = regtxtFIO.Text.Trim();
+            string email = regtxtEmail.Text.Trim();
             string password = regtxtPassword.Password.Trim();
             string confirmPassword = regconfrimtxtPassword.Password.Trim();
+
+            // проверить, что ФИО введено в правильном формате
+            Regex fioRegex = new Regex("^[А-ЯЁ][а-яё]+\\s[А-ЯЁ][а-яё]+(\\s[А-ЯЁ][а-яё]+)?$");
+            if (!fioRegex.IsMatch(fio))
+            {
+                MessageBox.Show("Введите ФИО в правильном формате (например, Иванов Иван Иванович)!");
+                return;
+            }
 
             // проверить, что пароль и подтверждение пароля совпадают
             if (password != confirmPassword)
@@ -76,7 +87,7 @@ namespace EJ.AuthorizationANDRegistration
             {
                 var user = new Users
                 {
-                    Name = "1", // временно
+                    Name = fio,
                     Email = email,
                     Password = password
                 };
@@ -86,6 +97,9 @@ namespace EJ.AuthorizationANDRegistration
 
             // сообщение об успешной регистрации
             MessageBox.Show("Регистрация прошла успешно!");
+            Authorization authorization = new Authorization();
+            authorization.Show();
+            Hide();
         }
     }
 }
