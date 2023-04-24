@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 
 namespace EJ.MainMenu
 {
@@ -37,5 +38,21 @@ namespace EJ.MainMenu
         public string Day29 { get; set; }
         public string Day30 { get; set; }
         public string Day31 { get; set; }
+        public int UnexcusedAbsences
+        {
+            get
+            {
+                int count = 0;
+                for (int i = 1; i <= 31; i++)
+                {
+                    var propertyDescriptor = TypeDescriptor.GetProperties(this)[$"Day{i}"];
+                    if (propertyDescriptor?.GetValue(this)?.ToString() == "H")
+                    {
+                        count += 2;
+                    }
+                }
+                return count;
+            }
+        }
     }
 }

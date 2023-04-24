@@ -126,6 +126,12 @@ namespace EJ.MainMenu
 
                 employeeAttendanceList.Add(employeeAttendance);
 
+                foreach (var attendanceCount in employeeAttendanceList)
+                {
+                    var propertyDescriptor = TypeDescriptor.GetProperties(typeof(EmployeeAttendance))["UnexcusedAbsences"];
+                    propertyDescriptor?.SetValue(attendanceCount, attendanceCount.UnexcusedAbsences);
+                }
+
                 myDataGrid.ItemsSource = employeeAttendanceList;
             }
         }
@@ -144,9 +150,17 @@ namespace EJ.MainMenu
                 myDataGrid.Columns.Add(new DataGridTextColumn
                 {
                     Header = i.ToString(),
-                    Binding = new Binding($"Day{i}")
+                    Binding = new Binding($"Day{i}"),
+                    IsReadOnly = true
                 });
             }
+            myDataGrid.Columns.Add(new DataGridTextColumn
+            {
+                Header = "Отсутствие\nпо неуважительной\nпричине",
+                Binding = new Binding("UnexcusedAbsences"),
+                IsReadOnly = true
+        });
+
         }
 
         private void Reflesh_attedance_Click(object sender, RoutedEventArgs e)
