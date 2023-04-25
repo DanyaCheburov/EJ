@@ -30,7 +30,7 @@
 
                     <Button x:Name="UserButton" Click="UserButton_Click" Style="{StaticResource MaterialDesignFlatButton}" Foreground="{DynamicResource PrimaryHueLightForegroundBrush}"
                             materialDesign:ButtonAssist.CornerRadius="6" Width="auto" Height="35" materialDesign:RippleAssist.Feedback="White"
-                            Margin="0 0 0 15" HorizontalAlignment="Right">
+                            Margin="0 0 0 15" HorizontalAlignment="Right" Cursor="Hand">
                         <WrapPanel Width="120">
                             <materialDesign:PackIcon Kind="Account" VerticalAlignment="Center" Margin="0 0 0 0" />
                             <TextBlock>Пользователи</TextBlock>
