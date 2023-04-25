@@ -18,7 +18,6 @@
                 <DataGridTextColumn Header="ID" Binding="{Binding Id}" IsReadOnly="True"/>
                 <DataGridTextColumn Header="ФИО" Binding="{Binding Users.Name}"/>
                 <DataGridTextColumn Header="Группа" Binding="{Binding Groups.GroupName}"/>
-                <DataGridTextColumn Header="Отделение" Binding="{Binding Departments.Name}"/>
             </DataGrid.Columns>
         </DataGrid>
         <Button Content="Добавить студента" Grid.Row="1" Margin="27,34,546,34" Click="AddStudentGroup_Click" Cursor="Hand"/>

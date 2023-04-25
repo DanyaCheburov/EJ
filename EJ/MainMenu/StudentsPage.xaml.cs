@@ -50,7 +50,8 @@ namespace EJ.MainMenu
 
         private void AddStudentGroup_Click(object sender, RoutedEventArgs e)
         {
-
+            var window = new AddStudentGroup();
+            window.ShowDialog();
         }
     }
 }

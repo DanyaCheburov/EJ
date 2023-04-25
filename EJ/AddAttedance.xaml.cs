@@ -5,6 +5,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace EJ
 {
@@ -32,6 +33,12 @@ namespace EJ
                 }
                 return null;
             }
+        }
+
+        protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
+        {
+            base.OnMouseLeftButtonDown(e);
+            DragMove();
         }
 
         private void ComboGroup_SelectionChanged(object sender, SelectionChangedEventArgs e)

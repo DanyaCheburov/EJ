@@ -4,6 +4,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:EJ.MainMenu"
+      xmlns:charts="clr-namespace:System.Windows.Forms.DataVisualization.Charting;assembly=System.Windows.Forms.DataVisualization"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="ReportPage">
@@ -19,16 +20,11 @@
             <Label Content="Группа:" Margin="10"/>
             <ComboBox x:Name="ComboGroup" ItemsSource="{Binding Groups}" DisplayMemberPath="GroupName" Margin="10"/>
             <Label Content="От:" Margin="10"/>
-            <DatePicker></DatePicker>
+            <DatePicker x:Name="DatePickerFrom"></DatePicker>
             <Label Content="До:" Margin="10"/>
-            <DatePicker></DatePicker>
+            <DatePicker x:Name="DatePickerTo"></DatePicker>
             <Button x:Name="Print" Click="Print_Click" Content="Печатать" Margin="10"/>
         </StackPanel>
-        <DataGrid x:Name="myDataGrid" Grid.Row="1" AutoGenerateColumns="False">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="ФИО" Binding="{Binding Name}" IsReadOnly="True"/>
-            </DataGrid.Columns>
-        </DataGrid>
     </Grid>
 </Page>
 
