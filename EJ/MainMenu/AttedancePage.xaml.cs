@@ -58,6 +58,7 @@ namespace EJ.MainMenu
         {
             var window = new AddAttedance();
             window.ShowDialog();
+            LoadGrid();
         }
 
         private void LoadGrid()
