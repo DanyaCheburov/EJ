@@ -100,6 +100,9 @@
       <DependentUpon>AttedancePage.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainMenu\EmployeeAttendance.cs" />
+    <Compile Include="MainMenu\ReportPage.xaml.cs">
+      <DependentUpon>ReportPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Model.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -133,6 +136,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="MainMenu\AttedancePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MainMenu\ReportPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

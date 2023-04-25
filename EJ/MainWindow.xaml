@@ -67,6 +67,15 @@
 
                     <Button Style="{StaticResource MaterialDesignFlatButton}" Foreground="{DynamicResource PrimaryHueLightForegroundBrush}"
                             materialDesign:ButtonAssist.CornerRadius="6" Width="auto" Height="35" materialDesign:RippleAssist.Feedback="White"
+                            Margin="0 0 0 15" x:Name="ReportButton" Click="ReportButton_Click" Cursor="Hand">
+                        <WrapPanel Width="120">
+                            <materialDesign:PackIcon Kind="File" VerticalAlignment="Center" Margin="0 0 20 0" />
+                            <TextBlock>Отчет</TextBlock>
+                        </WrapPanel>
+                    </Button>
+
+                    <Button Style="{StaticResource MaterialDesignFlatButton}" Foreground="{DynamicResource PrimaryHueLightForegroundBrush}"
+                            materialDesign:ButtonAssist.CornerRadius="6" Width="auto" Height="35" materialDesign:RippleAssist.Feedback="White"
                             Margin="0 0 0 15">
                         <WrapPanel Width="120">
                             <materialDesign:PackIcon Kind="Settings" VerticalAlignment="Center" Margin="0 0 20 0" />

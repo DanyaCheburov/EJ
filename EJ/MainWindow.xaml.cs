@@ -50,5 +50,10 @@ namespace EJ
             base.OnMouseLeftButtonDown(e);
             DragMove();
         }
+
+        private void ReportButton_Click(object sender, RoutedEventArgs e)
+        {
+            MainContentFrame.Navigate(new Uri("MainMenu/ReportPage.xaml", UriKind.Relative));
+        }
     }
 }
