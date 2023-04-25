@@ -20,11 +20,10 @@
             <Label Content="Группа:" Margin="10"/>
             <ComboBox x:Name="ComboGroup" ItemsSource="{Binding Groups}" DisplayMemberPath="GroupName" Margin="10"/>
             <Label Content="От:" Margin="10"/>
-            <DatePicker x:Name="DatePickerFrom"></DatePicker>
+            <DatePicker></DatePicker>
             <Label Content="До:" Margin="10"/>
-            <DatePicker x:Name="DatePickerTo"></DatePicker>
+            <DatePicker></DatePicker>
             <Button x:Name="Print" Click="Print_Click" Content="Печатать" Margin="10"/>
         </StackPanel>
     </Grid>
 </Page>
-

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MaterialDesignThemes.Wpf;
+using System;
 using System.Data.SqlClient;
 using System.Windows;
 using System.Windows.Controls;
@@ -54,6 +55,11 @@ namespace EJ
         private void ReportButton_Click(object sender, RoutedEventArgs e)
         {
             MainContentFrame.Navigate(new Uri("MainMenu/ReportPage.xaml", UriKind.Relative));
+        }
+
+        private void Settings_Click(object sender, RoutedEventArgs e)
+        {
+            MainContentFrame.Navigate(new Uri("MainMenu/SettingsPage.xaml", UriKind.Relative));
         }
     }
 }

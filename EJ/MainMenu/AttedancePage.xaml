@@ -36,7 +36,6 @@
             <Label Content="Год:" Margin="10"/>
             <ComboBox x:Name="СomboYear" Margin="10" SelectionChanged="ComboYear_SelectionChanged"/>
             <Button x:Name="add_attedance" Click="Add_attedance_Click" Content="Добавить пропуск" Margin="10"/>
-            <Button x:Name="reflesh_attedance" Click="Reflesh_attedance_Click" Content="Обновить" Margin="10"/>
         </StackPanel>
         <DataGrid x:Name="myDataGrid" Grid.Row="1" AutoGenerateColumns="False">
             <DataGrid.Columns>

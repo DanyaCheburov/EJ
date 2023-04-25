@@ -174,11 +174,6 @@ namespace EJ.MainMenu
 
         }
 
-        private void Reflesh_attedance_Click(object sender, RoutedEventArgs e)
-        {
-            NavigationService.Refresh();
-        }
-
         private void ComboMonth_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             LoadGrid();
