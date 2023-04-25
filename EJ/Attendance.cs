@@ -16,9 +16,9 @@ namespace EJ
     {
         public int Id { get; set; }
         public int StudentId { get; set; }
-        public bool Attended { get; set; }
         public System.DateTime Date { get; set; }
         public int SubjectId { get; set; }
+        public bool PassType { get; set; }
     
         public virtual Students Students { get; set; }
         public virtual Subjects Subjects { get; set; }

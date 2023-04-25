@@ -7,8 +7,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Navigation;
-using System.Windows.Media.Imaging;
-using System.Xml.Linq;
 
 
 namespace EJ.MainMenu
@@ -95,9 +93,11 @@ namespace EJ.MainMenu
                             from a in aGroup.DefaultIfEmpty()
                             join sub in db.Subjects on a.SubjectId equals sub.SubjectId into subGroup
                             from sub in subGroup.DefaultIfEmpty()
+                            let passType = a != null ? a.PassType : false // добавляем переменную passType, которая будет содержать тип пропуска
                             where g.GroupName == groupName
                             orderby s.Id
-                            select new { u.Name, StudentId = s.Id, Date = (a != null ? a.Date : default(DateTime?)), HasAbsence = (a != null), SubjectName = (sub != null ? sub.Name : "") };
+                            select new { u.Name, StudentId = s.Id, Date = (a != null ? a.Date : default(DateTime?)), HasAbsence = (a != null), SubjectName = (sub != null ? sub.Name : ""), PassType = passType };
+
 
                 var rstEdata = query.ToList();
 
@@ -120,19 +120,23 @@ namespace EJ.MainMenu
                         lastEmpID = empID;
                     }
 
+                    var passType = row.HasAbsence ? (row.PassType ? "УП" : "H") : "";
                     var propertyDescriptor = TypeDescriptor.GetProperties(typeof(EmployeeAttendance))[$"Day{day}"];
-                   propertyDescriptor?.SetValue(employeeAttendance, "H");
+                    propertyDescriptor?.SetValue(employeeAttendance, passType);
                 }
 
                 employeeAttendanceList.Add(employeeAttendance);
 
                 foreach (var attendanceCount in employeeAttendanceList)
                 {
-                    var propertyDescriptor = TypeDescriptor.GetProperties(typeof(EmployeeAttendance))["UnexcusedAbsences"];
-                    propertyDescriptor?.SetValue(attendanceCount, attendanceCount.UnexcusedAbsences);
+                    var propertyDescriptorH = TypeDescriptor.GetProperties(typeof(EmployeeAttendance))["UnexcusedAbsences"];
+                    propertyDescriptorH?.SetValue(attendanceCount, attendanceCount.UnexcusedAbsences);
+                    var propertyDescriptorUP = TypeDescriptor.GetProperties(typeof(EmployeeAttendance))["UnAbsences"];
+                    propertyDescriptorUP?.SetValue(attendanceCount, attendanceCount.UnAbsences);
                 }
 
                 myDataGrid.ItemsSource = employeeAttendanceList;
+
             }
         }
 
@@ -159,7 +163,13 @@ namespace EJ.MainMenu
                 Header = "Отсутствие\nпо неуважительной\nпричине",
                 Binding = new Binding("UnexcusedAbsences"),
                 IsReadOnly = true
-        });
+            });
+            myDataGrid.Columns.Add(new DataGridTextColumn
+            {
+                Header = "Отсутствие\nпо уважительной\nпричине",
+                Binding = new Binding("UnAbsences"),
+                IsReadOnly = true
+            });
 
         }
 

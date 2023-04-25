@@ -6,7 +6,7 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:local="clr-namespace:EJ"
         mc:Ignorable="d"
-        Title="AddAttedance" Height="340" Width="430"
+        Title="AddAttedance" Height="400" Width="430"
         
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         Background="{x:Null}"
@@ -17,6 +17,7 @@
     <materialDesign:Card Background="{DynamicResource MaterialDesignPaper}" UniformCornerRadius="15" Margin="25" materialDesign:ElevationAssist.Elevation= "Dp4">
         <Grid>
             <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
@@ -41,7 +42,12 @@
             <ComboBox x:Name="ComboSubject" ItemsSource="{Binding Subjects}" DisplayMemberPath="Name" Grid.Column="1" Margin="10" Grid.Row="3" />
             <TextBlock Text="Выберите дату:" Margin="10" Grid.Row="4" />
             <DatePicker x:Name="datePicker" SelectedDate="{Binding Date}" Grid.Column="1" Margin="10" Grid.Row="4" />
-            <Button x:Name="add_attendance" Click="Add_attendance_Click" Content="Добавить" Margin="10" Grid.Row="5" Grid.ColumnSpan="2" />
+            <TextBlock Text="Выберите пропуск:" Margin="10" Grid.Row="5" />
+            <ComboBox x:Name="ComboPassType" Grid.Column="1" Margin="10" Grid.Row="5">
+                <ComboBoxItem>Отсутствие по неуважительной причине</ComboBoxItem>
+                <ComboBoxItem>Отсутствие по уважительной причине</ComboBoxItem>
+            </ComboBox>
+            <Button x:Name="add_attendance" Click="Add_attendance_Click" Content="Добавить" Margin="10" Grid.Row="6" Grid.ColumnSpan="2" />
         </Grid>
     </materialDesign:Card>
 </Window>

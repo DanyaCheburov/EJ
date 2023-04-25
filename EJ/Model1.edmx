@@ -18,9 +18,9 @@
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="StudentId" Type="int" Nullable="false" />
-          <Property Name="Attended" Type="bit" Nullable="false" />
           <Property Name="Date" Type="date" Nullable="false" />
           <Property Name="SubjectId" Type="int" Nullable="false" />
+          <Property Name="PassType" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Departments">
           <Key>
@@ -206,9 +206,9 @@
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="StudentId" Type="Int32" Nullable="false" />
-          <Property Name="Attended" Type="Boolean" Nullable="false" />
           <Property Name="Date" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="SubjectId" Type="Int32" Nullable="false" />
+          <Property Name="PassType" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Students" Relationship="Self.FK__Attendanc__Stude__571DF1D5" FromRole="Attendance" ToRole="Students" />
           <NavigationProperty Name="Subjects" Relationship="Self.FK__Attendanc__Subje__59063A47" FromRole="Attendance" ToRole="Subjects" />
         </EntityType>
@@ -405,9 +405,9 @@
               <MappingFragment StoreEntitySet="Attendance">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="StudentId" ColumnName="StudentId" />
-                <ScalarProperty Name="Attended" ColumnName="Attended" />
                 <ScalarProperty Name="Date" ColumnName="Date" />
                 <ScalarProperty Name="SubjectId" ColumnName="SubjectId" />
+                <ScalarProperty Name="PassType" ColumnName="PassType" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

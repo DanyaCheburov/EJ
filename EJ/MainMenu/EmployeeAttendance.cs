@@ -54,5 +54,21 @@ namespace EJ.MainMenu
                 return count;
             }
         }
+        public int UnAbsences
+        {
+            get
+            {
+                int count = 0;
+                for (int i = 1; i <= 31; i++)
+                {
+                    var propertyDescriptor = TypeDescriptor.GetProperties(this)[$"Day{i}"];
+                    if (propertyDescriptor?.GetValue(this)?.ToString() == "УП")
+                    {
+                        count += 2;
+                    }
+                }
+                return count;
+            }
+        }
     }
 }

@@ -3,17 +3,8 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace EJ
 {
@@ -58,24 +49,85 @@ namespace EJ
                     var entity2 = ComboSubject.SelectedItem as Subjects;
                     context.Entry(entity).State = EntityState.Detached;
 
-                    using (SqlConnection connection = new SqlConnection(@"Data Source=localhost\SQLEXPRESS;Initial Catalog=BD;Integrated Security=True"))
+                    using (SqlConnection connection = new SqlConnection(@"Data Source=localhost\SQLEXPRESS1;Initial Catalog=BD;Integrated Security=True"))
                     {
                         connection.Open();
 
-                        using (SqlCommand command = new SqlCommand("INSERT INTO Attendance (StudentId, Date, SubjectId) VALUES (@Value,  @Value1, @Value2)", connection))
+                        using (SqlCommand command = new SqlCommand("SELECT * FROM Attendance WHERE StudentId = @Value AND Date = @Value1 AND SubjectId = @Value2", connection))
                         {
-                            if (datePicker.SelectedDate != null && entity != null)
+                            command.Parameters.AddWithValue("@Value", entity.Id);
+                            command.Parameters.AddWithValue("@Value1", datePicker.SelectedDate.Value.ToString("yyyy-MM-dd"));
+                            command.Parameters.AddWithValue("@Value2", entity2.SubjectId);
+
+                            SqlDataReader reader = command.ExecuteReader();
+
+                            if (reader.Read())
                             {
-                                command.Parameters.AddWithValue("@Value", entity.Id);
-                                command.Parameters.AddWithValue("@Value1", datePicker.SelectedDate.Value.ToString("yyyy-MM-dd"));
-                                command.Parameters.AddWithValue("@Value2", entity2.SubjectId);
-                                command.ExecuteNonQuery();
-                                MessageBox.Show("Пропуск добавлен.");
+                                bool previousPassType = reader.GetBoolean(reader.GetOrdinal("PassType"));
+                                bool newPassType = false;
+
+                                if (ComboPassType.SelectedIndex == 0) // Отсутствие по неуважительной причине
+                                {
+                                    newPassType = false;
+                                }
+                                else if (ComboPassType.SelectedIndex == 1) // Отсутствие по уважительной причине
+                                {
+                                    newPassType = true;
+                                }
+
+                                if (previousPassType != newPassType) // Если тип пропуска изменился
+                                {
+                                    reader.Close();
+
+                                    using (SqlCommand updateCommand = new SqlCommand("UPDATE Attendance SET PassType = @Value3 WHERE StudentId = @Value AND Date = @Value1 AND SubjectId = @Value2", connection))
+                                    {
+                                        updateCommand.Parameters.AddWithValue("@Value", entity.Id);
+                                        updateCommand.Parameters.AddWithValue("@Value1", datePicker.SelectedDate.Value.ToString("yyyy-MM-dd"));
+                                        updateCommand.Parameters.AddWithValue("@Value2", entity2.SubjectId);
+                                        updateCommand.Parameters.AddWithValue("@Value3", newPassType);
+                                        updateCommand.ExecuteNonQuery();
+                                        MessageBox.Show("Пропуск обновлен.");
+                                    }
+                                }
+                                else
+                                {
+                                    reader.Close();
+                                    MessageBox.Show("Пропуск уже существует.");
+                                }
                             }
                             else
                             {
-                                MessageBox.Show("Please select a valid student and date from the comboboxes.");
+                                reader.Close();
+
+                                using (SqlCommand insertCommand = new SqlCommand("INSERT INTO Attendance (StudentId, Date, SubjectId, PassType) VALUES (@Value,  @Value1, @Value2, @Value3)", connection))
+                                {
+                                    if (datePicker.SelectedDate != null && entity != null)
+                                    {
+                                        bool passType = false;
+
+                                        if (ComboPassType.SelectedIndex == 0) // Отсутствие по неуважительной причине
+                                        {
+                                            passType = false;
+                                        }
+                                        else if (ComboPassType.SelectedIndex == 1) // Отсутствие по уважительной причине
+                                        {
+                                            passType = true;
+                                        }
+
+                                        insertCommand.Parameters.AddWithValue("@Value", entity.Id);
+                                        insertCommand.Parameters.AddWithValue("@Value1", datePicker.SelectedDate.Value.ToString("yyyy-MM-dd"));
+                                        insertCommand.Parameters.AddWithValue("@Value2", entity2.SubjectId);
+                                        insertCommand.Parameters.AddWithValue("@Value3", passType);
+                                        insertCommand.ExecuteNonQuery();
+                                        MessageBox.Show("Пропуск добавлен.");
+                                    }
+                                    else
+                                    {
+                                        MessageBox.Show("Please select a valid student and date from the comboboxes.");
+                                    }
+                                }
                             }
+
                             connection.Close();
                         }
                     }
@@ -87,6 +139,7 @@ namespace EJ
                 MessageBox.Show("Error saving data: " + ex.Message);
             }
         }
+
 
         private void BtnExit_Click(object sender, RoutedEventArgs e)
         {
