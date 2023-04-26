@@ -40,10 +40,9 @@
                         materialDesign:ButtonAssist.CornerRadius="10" FontSize="18" Content="Зарегистрироваться" HorizontalAlignment="Left" Click="SignupBtn_Click"/>
             </StackPanel>
 
-            <StackPanel Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Height="500"
-                        Width="450">
-                <Image RenderOptions.BitmapScalingMode="HighQuality" HorizontalAlignment="Left" Height="500"
-                           Width="450" Source="/Resources/illustration.jpg"></Image>
+            <StackPanel Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Height="581"
+                        Width="520">
+                <Image RenderOptions.BitmapScalingMode="HighQuality" Height="600" Width="550" Source="/Resources/authorization.png"/>
             </StackPanel>
         </Grid>
     </materialDesign:Card>

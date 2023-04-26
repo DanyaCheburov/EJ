@@ -30,7 +30,7 @@ namespace EJ.MainMenu
                 currentSeries.ChartType = currentType;
                 currentSeries.Points.Clear();
 
-                var _connection = (@"Data Source=localhost\SQLEXPRESS;Initial Catalog=BD;Integrated Security=True");
+                var _connection = (@"Data Source=localhost\SQLEXPRESS1;Initial Catalog=BD;Integrated Security=True");
                 // Выбираем студентов для определенной группы и отображаем их на графике
                 string query = "SELECT u.Name, COUNT(*) as Absences " +
                                "FROM Users AS u " +

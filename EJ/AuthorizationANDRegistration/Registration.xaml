@@ -12,7 +12,7 @@
         AllowsTransparency="True"
         WindowStyle="None"
         WindowStartupLocation="CenterScreen">
-    
+
     <materialDesign:Card UniformCornerRadius="15" Background="White" 
                          Margin="25" materialDesign:ElevationAssist.Elevation="Dp4">
         <Grid>
@@ -49,9 +49,8 @@
                         materialDesign:ButtonAssist.CornerRadius="10" FontSize="18" Content="Вернуться на страницу авторизации" Click="BackBtn_Click" HorizontalAlignment="Left" Cursor="Hand"/>
             </StackPanel>
             <StackPanel Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Height="500"
-                        Width="450">
-                <Image RenderOptions.BitmapScalingMode="HighQuality" HorizontalAlignment="Left" Height="500"
-                           Width="450" Source="/Resources/reg.jpg"></Image>
+                        Width="625">
+                <Image Height="500" Width="650" Source="/Resources/registration.png"/>
             </StackPanel>
         </Grid>
     </materialDesign:Card>
