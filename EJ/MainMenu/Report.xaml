@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:EJ.MainMenu"
         mc:Ignorable="d"
         Title="Report" Height="450" Width="800"
-         WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"></RowDefinition>
@@ -16,7 +16,7 @@
         <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
             <StackPanel Orientation="Horizontal">
                 <TextBlock Text="Пользователь:" Width="125" Margin="5" VerticalAlignment="Center" TextAlignment="Right"></TextBlock>
-                <ComboBox Name="ComboUser" ItemsSource="{Binding Users}" DisplayMemberPath="Name" SelectionChanged="UpdateChart" SelectedIndex="0" Width="175" Margin="5"></ComboBox>
+                <ComboBox Name="ComboGroup" ItemsSource="{Binding Groups}" DisplayMemberPath="GroupName" SelectionChanged="UpdateChart" SelectedIndex="0" Width="175" Margin="5"></ComboBox>
                 <TextBlock Text="Тип диаграммы:" Width="125" Margin="5" VerticalAlignment="Center" TextAlignment="Right"></TextBlock>
                 <ComboBox Name="ComboCharTypes" SelectionChanged="UpdateChart" SelectedIndex="0" Width="175" Margin="5"></ComboBox>
             </StackPanel>
@@ -28,6 +28,12 @@
 
                     </charts:Legend>
                 </charts:Chart.Legends>
+                <charts:Chart.Series>
+                    <charts:Series Name="Attendance" IsValueShownAsLabel="True"></charts:Series>
+                </charts:Chart.Series>
+                <charts:Chart.ChartAreas>
+                    <charts:ChartArea Name="Main"></charts:ChartArea>
+                </charts:Chart.ChartAreas>
             </charts:Chart>
         </WindowsFormsHost>
     </Grid>
