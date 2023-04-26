@@ -1,4 +1,5 @@
-﻿using MaterialDesignThemes.Wpf;
+﻿using EJ.MainMenu;
+using MaterialDesignThemes.Wpf;
 using System;
 using System.Data.SqlClient;
 using System.Windows;
@@ -54,7 +55,8 @@ namespace EJ
 
         private void ReportButton_Click(object sender, RoutedEventArgs e)
         {
-            MainContentFrame.Navigate(new Uri("MainMenu/ReportPage.xaml", UriKind.Relative));
+            var window = new Report();
+            window.ShowDialog();
         }
 
         private void Settings_Click(object sender, RoutedEventArgs e)
