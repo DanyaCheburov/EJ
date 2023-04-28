@@ -8,34 +8,35 @@
         mc:Ignorable="d"
         Title="Report" Height="450" Width="800"
         WindowStartupLocation="CenterScreen">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="auto"></RowDefinition>
-            <RowDefinition Height="*"></RowDefinition>
-        </Grid.RowDefinitions>
-        <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
-            <StackPanel Orientation="Horizontal" Width="713">
-                <TextBlock Text="Группа:" Width="125" Margin="5" VerticalAlignment="Center" TextAlignment="Right"></TextBlock>
-                <ComboBox Name="ComboGroup" ItemsSource="{Binding Groups}" DisplayMemberPath="GroupName" SelectionChanged="UpdateChart" SelectedIndex="0" Width="95" Margin="5"></ComboBox>
-                <TextBlock Text="Предмет:" Width="125" Margin="5" VerticalAlignment="Center" TextAlignment="Right"></TextBlock>
-                <ComboBox Name="ComboSubject" ItemsSource="{Binding Subjects}" DisplayMemberPath="Name"  SelectionChanged="UpdateChart"  SelectedIndex="0" Width="95" Margin="5"></ComboBox>
 
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+                <StackPanel Orientation="Horizontal" Width="713">
+                    <TextBlock Text="Группа:" Width="125" Margin="5" VerticalAlignment="Center" TextAlignment="Right"></TextBlock>
+                    <ComboBox Name="ComboGroup" ItemsSource="{Binding Groups}" DisplayMemberPath="GroupName" SelectionChanged="UpdateChart" SelectedIndex="0" Width="95" Margin="5"></ComboBox>
+                    <TextBlock Text="Предмет:" Width="125" Margin="5" VerticalAlignment="Center" TextAlignment="Right"></TextBlock>
+                    <ComboBox Name="ComboSubject" ItemsSource="{Binding Subjects}" DisplayMemberPath="Name"  SelectionChanged="UpdateChart"  SelectedIndex="0" Width="95" Margin="5"></ComboBox>
+
+                </StackPanel>
             </StackPanel>
-        </StackPanel>
-        <WindowsFormsHost Grid.Row="1" Margin="5">
-            <charts:Chart x:Name="ChartPayments">
-                <charts:Chart.Legends>
-                    <charts:Legend>
+            <WindowsFormsHost Grid.Row="1" Margin="5">
+                <charts:Chart x:Name="ChartPayments">
+                    <charts:Chart.Legends>
+                        <charts:Legend>
 
-                    </charts:Legend>
-                </charts:Chart.Legends>
-                <charts:Chart.Series>
-                    <charts:Series Name="Attendance" IsValueShownAsLabel="True"></charts:Series>
-                </charts:Chart.Series>
-                <charts:Chart.ChartAreas>
-                    <charts:ChartArea Name="Main"></charts:ChartArea>
-                </charts:Chart.ChartAreas>
-            </charts:Chart>
-        </WindowsFormsHost>
-    </Grid>
+                        </charts:Legend>
+                    </charts:Chart.Legends>
+                    <charts:Chart.Series>
+                        <charts:Series Name="Attendance" IsValueShownAsLabel="True"></charts:Series>
+                    </charts:Chart.Series>
+                    <charts:Chart.ChartAreas>
+                        <charts:ChartArea Name="Main"></charts:ChartArea>
+                    </charts:Chart.ChartAreas>
+                </charts:Chart>
+            </WindowsFormsHost>
+        </Grid>
 </Window>

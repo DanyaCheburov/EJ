@@ -191,9 +191,14 @@ namespace EJ.MainMenu
 
         private void Graphs_Click(object sender, RoutedEventArgs e)
         {
-            var report = new Report(((Groups)ComboGroup.SelectedItem).GroupName, ((Subjects)ComboSubject.SelectedItem).Name);
-            report.Show();
-            LoadGrid();
+            if (ComboGroup.SelectedItem != null)
+            {
+                var report = new Report(((Groups)ComboGroup.SelectedItem).GroupName, ((Subjects)ComboSubject.SelectedItem).Name);
+                report.Show();
+                LoadGrid();
+            }
+            else
+                MessageBox.Show("Выберите группу и предмет!");
         }
     }
 }
