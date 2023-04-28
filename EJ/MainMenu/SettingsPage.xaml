@@ -9,6 +9,5 @@
       Title="SettingsPage">
 
     <Grid>
-        <ToggleButton Cursor="Hand" ToolTip="Enable Dark Mode" Margin="41,-175,725,175" x:Name="themeToggle" IsChecked="{Binding IsDarkTheme}" Click="ThemeToggle_Click"/>
     </Grid>
 </Page>

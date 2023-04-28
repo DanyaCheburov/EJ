@@ -13,22 +13,33 @@ namespace EJ.MainMenu
     public partial class Report : Window
     {
         private BDEntities _context = new BDEntities();
-        public Report()
+        public string SelectedGroup { get; set; }
+        public string SelectedSubject { get; set; }
+        public Report(string selectedGroup, string selectedSubject)
         {
-            InitializeComponent();
 
+            InitializeComponent();
+            SelectedGroup = selectedGroup;
             ComboGroup.ItemsSource = _context.Groups.ToList();
-            ComboCharTypes.ItemsSource = Enum.GetValues(typeof(SeriesChartType));
+            ComboGroup.SelectedItem = _context.Groups.FirstOrDefault(g => g.GroupName == SelectedGroup); // установить выбранное значение ComboGroup
+            SelectedSubject = selectedSubject;
+            ComboSubject.ItemsSource = _context.Subjects.ToList();
+            ComboSubject.SelectedItem = _context.Subjects.FirstOrDefault(s => s.Name == SelectedSubject);
         }
+
 
         private void UpdateChart(object sender, SelectionChangedEventArgs e)
         {
             if (ComboGroup.SelectedItem is Groups currentGroup &&
-                ComboCharTypes.SelectedItem is SeriesChartType currentType)
+                ComboSubject.SelectedItem is Subjects currentSubject)
             {
-                Series currentSeries = ChartPayments.Series.FirstOrDefault();
-                currentSeries.ChartType = currentType;
-                currentSeries.Points.Clear();
+                ChartPayments.Series.Clear();
+                Series currentSeries = new Series
+                {
+                    Name = "Пропуски по неуважительной причине",
+                    ChartType = SeriesChartType.Column
+                };
+                ChartPayments.Series.Add(currentSeries);
 
                 var _connection = (@"Data Source=localhost\SQLEXPRESS1;Initial Catalog=BD;Integrated Security=True");
                 // Выбираем студентов для определенной группы и отображаем их на графике
@@ -37,11 +48,13 @@ namespace EJ.MainMenu
                                "JOIN Students AS s ON s.UserId=u.Id " +
                                "JOIN Groups AS g ON g.GroupId=s.GroupId " +
                                "JOIN Attendance AS a ON a.StudentId=s.Id " +
-                               "WHERE g.GroupName = @GroupName AND a.PassType = 0 " +
+                               "JOIN Subjects AS s1 ON s1.SubjectId = a.SubjectId " +
+                               "WHERE g.GroupName = @GroupName  AND s1.Name=@Name AND a.PassType = 0 " +
                                "GROUP BY u.Name";
                 SqlConnection connection = new SqlConnection(_connection);
                 SqlCommand command = new SqlCommand(query, connection);
                 command.Parameters.AddWithValue("@GroupName", currentGroup.GroupName);
+                command.Parameters.AddWithValue("@Name", currentSubject.Name);
 
                 try
                 {
@@ -62,12 +75,6 @@ namespace EJ.MainMenu
                     }
                 }
             }
-        }
-
-
-        private void Print_Click(object sender, RoutedEventArgs e)
-        {
-
         }
     }
 }

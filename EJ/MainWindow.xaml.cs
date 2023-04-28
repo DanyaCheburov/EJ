@@ -1,10 +1,10 @@
 ﻿using EJ.MainMenu;
+using MaterialDesignColors;
 using MaterialDesignThemes.Wpf;
 using System;
-using System.Data.SqlClient;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace EJ
 {
@@ -53,15 +53,61 @@ namespace EJ
             DragMove();
         }
 
-        private void ReportButton_Click(object sender, RoutedEventArgs e)
-        {
-            var window = new Report();
-            window.ShowDialog();
-        }
-
         private void Settings_Click(object sender, RoutedEventArgs e)
         {
             MainContentFrame.Navigate(new Uri("MainMenu/SettingsPage.xaml", UriKind.Relative));
+        }
+
+        public bool IsDarkTheme { get; set; }
+
+        private readonly PaletteHelper paletteHelper = new PaletteHelper();
+        private void ThemeToggle_Click(object sender, RoutedEventArgs e)
+        {
+            ITheme theme = paletteHelper.GetTheme();
+
+            if (IsDarkTheme = theme.GetBaseTheme() == BaseTheme.Dark)
+            {
+                IsDarkTheme = false;
+                theme.SetBaseTheme(Theme.Light);
+                UserButton.Foreground = Brushes.Black; // устанавливаем цвет текста на черный для светлой темы
+                AttendanceButton.Foreground = Brushes.Black;
+                StudentButton.Foreground = Brushes.Black;
+                TeacherButton.Foreground = Brushes.Black;
+                SettingsButton.Foreground = Brushes.Black;
+                HelpButton.Foreground = Brushes.Black;
+                EstimateButton.Foreground = Brushes.Black;
+            }
+            else
+            {
+                IsDarkTheme = true;
+                theme.SetBaseTheme(Theme.Dark);
+                UserButton.Foreground = Brushes.White; // устанавливаем цвет текста на белый для темной темы
+                AttendanceButton.Foreground = Brushes.White;
+                StudentButton.Foreground = Brushes.White;
+                TeacherButton.Foreground = Brushes.White;
+                SettingsButton.Foreground = Brushes.White;
+                EstimateButton.Foreground = Brushes.White;
+                HelpButton.Foreground = Brushes.White;
+            }
+            paletteHelper.SetTheme(theme);
+        }
+
+        private void BtnRestore_Click(object sender, RoutedEventArgs e)
+        {
+            if (WindowState == WindowState.Normal)
+                WindowState = WindowState.Maximized;
+            else
+                WindowState = WindowState.Normal;
+        }
+
+        private void BtnMinimize_Click(object sender, RoutedEventArgs e)
+        {
+            WindowState = WindowState.Minimized;
+        }
+
+        private void EstimateButton_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

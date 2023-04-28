@@ -32,7 +32,7 @@
             <TextBlock Text="Добавить пропуск" FontSize="15" FontWeight="Bold" Margin="10 15 0 0"></TextBlock>
             <Button Name="BtnExit" Click="BtnExit_Click" Style="{StaticResource MaterialDesignIconButton}" materialDesign:ButtonAssist.CornerRadius="6"
                                 Width="40" Height="40" DockPanel.Dock="Right" HorizontalAlignment="Right" Grid.Column="2">
-                <materialDesign:PackIcon Kind="LogoutVariant" />
+                <materialDesign:PackIcon Kind="Close" />
             </Button>
             <TextBlock Text="Выберите группу:" Margin="10" Grid.Row="1"/>
             <ComboBox x:Name="ComboGroup" ItemsSource="{Binding Groups}" DisplayMemberPath="GroupName" SelectedItem="{Binding SelectedGroup}" SelectionChanged="ComboGroup_SelectionChanged" Grid.Row="1" Grid.Column="1" Margin="10" />

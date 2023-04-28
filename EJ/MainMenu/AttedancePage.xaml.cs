@@ -4,9 +4,9 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Navigation;
+using System.Windows.Controls;
 
 
 namespace EJ.MainMenu
@@ -186,6 +186,13 @@ namespace EJ.MainMenu
 
         private void ComboSubject_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            LoadGrid();
+        }
+
+        private void Graphs_Click(object sender, RoutedEventArgs e)
+        {
+            var report = new Report(((Groups)ComboGroup.SelectedItem).GroupName, ((Subjects)ComboSubject.SelectedItem).Name);
+            report.Show();
             LoadGrid();
         }
     }

@@ -7,7 +7,7 @@
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
         xmlns:local="clr-namespace:EJ"
         mc:Ignorable="d"
-        Title="MainWindow" Height="700" Width="1240"
+        Title="MainWindow" Height="720" Width="1240"
         
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         Background="{x:Null}"
@@ -15,34 +15,53 @@
         WindowStyle="None"
         WindowStartupLocation="CenterScreen">
 
-    <materialDesign:Card Background="{DynamicResource MaterialDesignPaper}" UniformCornerRadius="15" Margin="25" materialDesign:ElevationAssist.Elevation= "Dp4">
+    <materialDesign:Card Background="{DynamicResource MaterialDesignPaper}" UniformCornerRadius="15" materialDesign:ElevationAssist.Elevation= "Dp4">
 
-        <Grid Cursor="">
+        <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="195"/>
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <StackPanel Margin="15">
-                    <WrapPanel Margin="0 10 5 60" HorizontalAlignment="Center" Cursor="">
-                        <Image RenderOptions.BitmapScalingMode="HighQuality" Height="60" Width="60" Margin="40 0 0 0" Source="/Resources/logo.png" />
-                    <TextBlock Text="Electronic Journal" FontSize="17" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 15 0 0"/>
-                    </WrapPanel>
 
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="58*" />
+                    <RowDefinition Height="237*" />
+                    <RowDefinition Height="80" />
+                </Grid.RowDefinitions>
+
+                <StackPanel Grid.Row="0">
+                    <WrapPanel Margin="0 10 5 60" HorizontalAlignment="Center" >
+                        <Image RenderOptions.BitmapScalingMode="HighQuality" Height="60" Width="60" Margin="40 0 0 0" Source="/Resources/logo.png" />
+                        <TextBlock Text="Electronic Journal" FontSize="17" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 15 0 0"/>
+                    </WrapPanel>
+                </StackPanel>
+
+                <StackPanel Grid.Row="1" Cursor="">
                     <Button x:Name="UserButton" Click="UserButton_Click" Style="{StaticResource MaterialDesignFlatButton}" Foreground="{DynamicResource PrimaryHueLightForegroundBrush}"
                             materialDesign:ButtonAssist.CornerRadius="6" Width="auto" Height="35" materialDesign:RippleAssist.Feedback="White"
-                            Margin="0 0 0 15" HorizontalAlignment="Right" Cursor="Hand">
+                            Margin="0 0 0 15" HorizontalAlignment="Center" Cursor="Hand">
                         <WrapPanel Width="120">
-                            <materialDesign:PackIcon Kind="Account" VerticalAlignment="Center" Margin="0 0 0 0" />
+                            <materialDesign:PackIcon Kind="Account" VerticalAlignment="Center"/>
                             <TextBlock>Пользователи</TextBlock>
                         </WrapPanel>
                     </Button>
 
-                    <Button x:Name="Attendance" Click="AttendanceButton_Click" Style="{StaticResource MaterialDesignFlatButton}" Foreground="{DynamicResource PrimaryHueLightForegroundBrush}"
+                    <Button x:Name="AttendanceButton" Click="AttendanceButton_Click" Style="{StaticResource MaterialDesignFlatButton}" Foreground="{DynamicResource PrimaryHueLightForegroundBrush}"
                             materialDesign:ButtonAssist.CornerRadius="6" Width="auto" Height="35" materialDesign:RippleAssist.Feedback="White"
-                            Margin="0 0 0 15">
+                            Margin="0 0 0 15" Cursor="Hand">
                         <WrapPanel Width="120">
-                            <materialDesign:PackIcon Kind="Lecture" VerticalAlignment="Center" Margin="0 0 0 0" />
+                            <materialDesign:PackIcon Kind="Lecture" VerticalAlignment="Center"/>
                             <TextBlock>Посещаемость</TextBlock>
+                        </WrapPanel>
+                    </Button>
+
+                    <Button x:Name="EstimateButton" Click="EstimateButton_Click" Style="{StaticResource MaterialDesignFlatButton}" Foreground="{DynamicResource PrimaryHueLightForegroundBrush}"
+                            materialDesign:ButtonAssist.CornerRadius="6" Width="auto" Height="35" materialDesign:RippleAssist.Feedback="White"
+                            Margin="0 0 0 15" Cursor="Hand">
+                        <WrapPanel Width="120">
+                            <materialDesign:PackIcon Kind="Application" VerticalAlignment="Center" Margin="0 0 25 0"/>
+                            <TextBlock>Оценки</TextBlock>
                         </WrapPanel>
                     </Button>
 
@@ -59,61 +78,72 @@
                             materialDesign:ButtonAssist.CornerRadius="6" Width="auto" Height="35" materialDesign:RippleAssist.Feedback="White"
                             Margin="0 0 0 15" x:Name="TeacherButton" Click="TeacherButton_Click">
                         <WrapPanel Width="120">
-                            <materialDesign:PackIcon Kind="AccountMultiple" VerticalAlignment="Center" Margin="0 0 0 0" />
+                            <materialDesign:PackIcon Kind="AccountMultiple" VerticalAlignment="Center"/>
                             <TextBlock>Преподаватели</TextBlock>
                         </WrapPanel>
                     </Button>
 
                     <Button Style="{StaticResource MaterialDesignFlatButton}" Foreground="{DynamicResource PrimaryHueLightForegroundBrush}"
                             materialDesign:ButtonAssist.CornerRadius="6" Width="auto" Height="35" materialDesign:RippleAssist.Feedback="White"
-                            Margin="0 0 0 15" x:Name="ReportButton" Click="ReportButton_Click" Cursor="Hand">
-                        <WrapPanel Width="120">
-                            <materialDesign:PackIcon Kind="File" VerticalAlignment="Center" Margin="0 0 20 0" />
-                            <TextBlock>Отчет</TextBlock>
-                        </WrapPanel>
-                    </Button>
-
-                    <Button Style="{StaticResource MaterialDesignFlatButton}" Foreground="{DynamicResource PrimaryHueLightForegroundBrush}"
-                            materialDesign:ButtonAssist.CornerRadius="6" Width="auto" Height="35" materialDesign:RippleAssist.Feedback="White"
-                            Margin="0 0 0 15" Click="Settings_Click">
+                            Margin="0 0 0 15" x:Name="SettingsButton" Click="Settings_Click">
                         <WrapPanel Width="120">
                             <materialDesign:PackIcon Kind="Settings" VerticalAlignment="Center" Margin="0 0 20 0" />
                             <TextBlock>Settings</TextBlock>
                         </WrapPanel>
                     </Button>
 
-                    <Button Style="{StaticResource MaterialDesignFlatButton}" Foreground="{DynamicResource PrimaryHueLightForegroundBrush}"
+                    <Button x:Name="HelpButton" Style="{StaticResource MaterialDesignFlatButton}" Foreground="{DynamicResource PrimaryHueLightForegroundBrush}"
                             materialDesign:ButtonAssist.CornerRadius="6" Width="auto" Height="35" materialDesign:RippleAssist.Feedback="White"
                             Margin="0 0 0 15">
                         <WrapPanel Width="120">
-                            <materialDesign:PackIcon Kind="Help" VerticalAlignment="Center" Margin="0 0 20 0" />
+                            <materialDesign:PackIcon Kind="Help" Margin="0 0 30 0" />
                             <TextBlock>Help</TextBlock>
                         </WrapPanel>
                     </Button>
                 </StackPanel>
 
-                <StackPanel Margin="30 12 0 0" Grid.Column="1">
-                <DockPanel Margin="0 12 5 0">
-                    <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="15" FontWeight="Bold" Text="Testing"/>
+                <Border Grid.Row="2" CornerRadius="18" Width="110" Height="35" Background="{DynamicResource TertiaryBackgroundColor}" HorizontalAlignment="Right" Margin="0 0 20 0">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <materialDesign:PackIcon Kind="WbSunny" Height="25" Width="25" Foreground="Yellow" VerticalAlignment="Center" />
+                        <ToggleButton Cursor="Hand" ToolTip="Enable Dark Mode" 
+                                      Margin="10 0 10 0" 
+                                      x:Name="themeToggle" 
+                                      IsChecked="{Binding IsDarkTheme}" 
+                                      Click="ThemeToggle_Click"/>
+                        <materialDesign:PackIcon Kind="MoonAndStars" Height="25" Width="25" Foreground="#5B8DEF" VerticalAlignment="Center" />
+                    </StackPanel>
+                </Border>
+            </Grid>
 
-                    <Button Name="BtnExit" Click="BtnExit_Click" Style="{StaticResource MaterialDesignIconButton}" materialDesign:ButtonAssist.CornerRadius="6"
+            <Grid Grid.Column="1" Cursor="">
+                <StackPanel Margin="30 12 0 0">
+                    <DockPanel Margin="0 12 5 0">
+                        <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="15" FontWeight="Bold" Text="Testing"/>
+
+                        <Button Name="BtnExit" Click="BtnExit_Click" Style="{StaticResource MaterialDesignIconButton}" materialDesign:ButtonAssist.CornerRadius="4"
+                                Width="40" Height="40" DockPanel.Dock="Right" HorizontalAlignment="Right" Margin="0 0 20 0">
+                            <materialDesign:PackIcon Kind="WindowClose" />
+                        </Button>
+
+                        <Button Name="btnRestore" Click="BtnRestore_Click" Style="{StaticResource MaterialDesignIconButton}" materialDesign:ButtonAssist.CornerRadius="4"
                                 Width="40" Height="40" DockPanel.Dock="Right" HorizontalAlignment="Right">
-                        <materialDesign:PackIcon Kind="LogoutVariant" />
-                    </Button>
+                            <materialDesign:PackIcon Kind="CropSquare" />
+                        </Button>
+                        <Button Name="btnMinimize" Click="BtnMinimize_Click" Style="{StaticResource MaterialDesignIconButton}" materialDesign:ButtonAssist.CornerRadius="4"
+                                Width="40" Height="40" DockPanel.Dock="Right" HorizontalAlignment="Right">
+                            <materialDesign:PackIcon Kind="WindowMinimize" />
+                        </Button>
 
-                    <TextBlock Text="{Binding Source={x:Static sys:DateTime.Now}, StringFormat='{}{0:dd MMM yyyy, dddd}'}" Foreground="SlateGray" FontSize="12" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Right"
+                        <TextBlock Text="{Binding Source={x:Static sys:DateTime.Now}, StringFormat='{}{0:dd MMM yyyy, dddd}'}" Foreground="SlateGray" FontSize="12" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Right"
                                DockPanel.Dock="Right" Margin="0 0 20 0"/>
-                </DockPanel>
+                    </DockPanel>
 
 
-                <Grid Cursor="">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-
-                    <Frame x:Name="MainContentFrame" Margin="0,35,10,0" Grid.Column="0" Height="520" NavigationUIVisibility="Hidden"/>
-                </Grid>
-            </StackPanel>
+                    <Grid>
+                        <Frame x:Name="MainContentFrame" Margin="0,35,15,0" Height="590" NavigationUIVisibility="Hidden"/>
+                    </Grid>
+                </StackPanel>
+            </Grid>
         </Grid>
     </materialDesign:Card>
 </Window>

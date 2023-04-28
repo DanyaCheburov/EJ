@@ -14,11 +14,12 @@
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
         <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Text="Пользователь:" Width="125" Margin="5" VerticalAlignment="Center" TextAlignment="Right"></TextBlock>
-                <ComboBox Name="ComboGroup" ItemsSource="{Binding Groups}" DisplayMemberPath="GroupName" SelectionChanged="UpdateChart" SelectedIndex="0" Width="175" Margin="5"></ComboBox>
-                <TextBlock Text="Тип диаграммы:" Width="125" Margin="5" VerticalAlignment="Center" TextAlignment="Right"></TextBlock>
-                <ComboBox Name="ComboCharTypes" SelectionChanged="UpdateChart" SelectedIndex="0" Width="175" Margin="5"></ComboBox>
+            <StackPanel Orientation="Horizontal" Width="713">
+                <TextBlock Text="Группа:" Width="125" Margin="5" VerticalAlignment="Center" TextAlignment="Right"></TextBlock>
+                <ComboBox Name="ComboGroup" ItemsSource="{Binding Groups}" DisplayMemberPath="GroupName" SelectionChanged="UpdateChart" SelectedIndex="0" Width="95" Margin="5"></ComboBox>
+                <TextBlock Text="Предмет:" Width="125" Margin="5" VerticalAlignment="Center" TextAlignment="Right"></TextBlock>
+                <ComboBox Name="ComboSubject" ItemsSource="{Binding Subjects}" DisplayMemberPath="Name"  SelectionChanged="UpdateChart"  SelectedIndex="0" Width="95" Margin="5"></ComboBox>
+
             </StackPanel>
         </StackPanel>
         <WindowsFormsHost Grid.Row="1" Margin="5">
