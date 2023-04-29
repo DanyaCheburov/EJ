@@ -16,6 +16,18 @@ namespace EJ
         public MainWindow()
         {
             InitializeComponent();
+            StateChanged += Window_StateChanged;
+        }
+        private void Window_StateChanged(object sender, EventArgs e)
+        {
+            if (WindowState == WindowState.Maximized)
+            {
+                myBorder.Height = Double.NaN;
+            }
+            else
+            {
+                myBorder.Height = 610;
+            }
         }
 
         private void UserButton_Click(object sender, RoutedEventArgs e)
