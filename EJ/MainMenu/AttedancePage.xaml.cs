@@ -7,7 +7,11 @@ using System.Windows;
 using System.Windows.Data;
 using System.Windows.Navigation;
 using System.Windows.Controls;
-
+using System.Xml.Linq;
+using DocumentFormat.OpenXml.Packaging;
+using DocumentFormat.OpenXml;
+using DocumentFormat.OpenXml.Wordprocessing;
+using System.IO;
 
 namespace EJ.MainMenu
 {
@@ -191,7 +195,7 @@ namespace EJ.MainMenu
 
         private void Graphs_Click(object sender, RoutedEventArgs e)
         {
-            if (ComboGroup.SelectedItem != null)
+            if (ComboGroup.SelectedItem != null || ComboSubject.SelectedItem!=null)
             {
                 var report = new Report(((Groups)ComboGroup.SelectedItem).GroupName, ((Subjects)ComboSubject.SelectedItem).Name);
                 report.Show();
@@ -199,6 +203,107 @@ namespace EJ.MainMenu
             }
             else
                 MessageBox.Show("Выберите группу и предмет!");
+        }
+
+        private void ExportToWord_Click(object sender, RoutedEventArgs e)
+        {
+            if (ComboGroup.SelectedItem != null || ComboSubject.SelectedItem != null)
+            {
+                try
+                {
+                    using (var db = new BDEntities())
+                    {
+                        string groupName = ((Groups)ComboGroup.SelectedItem).GroupName;
+                        var queryInStudents = from s in db.Students
+                                              join g in db.Groups on s.GroupId equals g.GroupId
+                                              join u in db.Users on s.UserId equals u.Id
+                                              select new { u.Name, g.GroupName, s.Id };
+                        var students = queryInStudents.Where(s => s.GroupName == groupName).ToList();
+                        var subject = ComboSubject.SelectedItem as Subjects;
+                        var queryInAttendence = from a in db.Attendance
+                                                join s in db.Students on a.StudentId equals s.Id
+                                                join g in db.Groups on s.GroupId equals g.GroupId
+                                                select new { AttendanceId = a.Id, g.GroupName, s.Id, a.SubjectId, a.Date, a.PassType };
+                        var attendance = queryInAttendence.Where(s => s.GroupName == groupName && s.SubjectId == subject.SubjectId).ToList();
+
+                        //Создаем документ Word
+                        string fileName = $"{subject.Name} - {groupName} - {ComboMonth.SelectedItem} {СomboYear.SelectedItem}.docx".Replace('/', '-');
+                        string invalidChars = new string(Path.GetInvalidFileNameChars()) + new string(Path.GetInvalidPathChars());
+                        string cleanedFileName = new string(fileName.Where(x => !invalidChars.Contains(x)).ToArray());
+                        string path = Path.Combine(@"C:\TestAttendenceReport", cleanedFileName);
+                        using (WordprocessingDocument wordDoc = WordprocessingDocument.Create(path, WordprocessingDocumentType.Document))
+                        {
+                            //Создаем главный раздел документа
+                            MainDocumentPart mainPart = wordDoc.AddMainDocumentPart();
+
+                            //Добавляем стили в документ
+                            StyleDefinitionsPart styleDefinitionsPart = mainPart.AddNewPart<StyleDefinitionsPart>();
+                            styleDefinitionsPart.Styles = new Styles();
+                            styleDefinitionsPart.Styles.Save();
+
+                            //Создаем документ и добавляем заголовок
+                            Document doc = new Document();
+                            Body body = new Body();
+                            Paragraph paraTitle = new Paragraph(new Run(new Text(fileName)));
+                            paraTitle.ParagraphProperties = new ParagraphProperties(
+                                new Justification() { Val = JustificationValues.Center });
+                            body.Append(paraTitle);
+
+                            //Добавляем таблицу
+                            Table table = new Table();
+                            TableProperties tblProp = new TableProperties();
+                            TableWidth tblWidth = new TableWidth() { Width = "5000", Type = TableWidthUnitValues.Pct };
+                            tblProp.Append(tblWidth);
+                            table.AppendChild(tblProp);
+
+                            //Добавляем строки и ячейки
+                            TableRow tr = new TableRow();
+                            TableCell th = new TableCell(new Paragraph(new Run(new Text("ФИО"))));
+                            tr.Append(th);
+
+                            foreach (var date in attendance.Select(x => x.Date).Distinct().OrderBy(x => x))
+                            {
+                                TableCell cell = new TableCell(new Paragraph(new Run(new Text(date.ToShortDateString()))));
+                                tr.Append(cell);
+                            }
+
+                            table.Append(tr);
+
+                            foreach (var student in students)
+                            {
+                                TableRow trStudent = new TableRow();
+                                TableCell tdName = new TableCell(new Paragraph(new Run(new Text(student.Name))));
+                                trStudent.Append(tdName);
+
+                                foreach (var date in attendance.Select(x => x.Date).Distinct().OrderBy(x => x))
+                                {
+                                    var att = attendance.FirstOrDefault(x => x.Date == date && x.Id == student.Id);
+                                    string attString = att != null ? att.PassType.ToString() : "";
+                                    TableCell tdAttendance = new TableCell(new Paragraph(new Run(new Text(attString))));
+                                    trStudent.Append(tdAttendance);
+                                }
+
+                                table.Append(trStudent);
+                            }
+                            body.Append(table);
+                            doc.Append(body);
+                            mainPart.Document = doc;
+                            mainPart.Document.Save();
+                            wordDoc.Close();
+
+                            MessageBox.Show("Файл успешно сохранен.");
+
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Ошибка при экспорте в Word: {ex.Message}");
+                }
+            }
+            else
+                MessageBox.Show("Выберите группу и предмет!");
+           
         }
     }
 }
