@@ -1,8 +1,10 @@
-﻿using MaterialDesignThemes.Wpf;
+﻿using EJ.AuthorizationANDRegistration;
+using MaterialDesignThemes.Wpf;
 using System;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Navigation;
 
 namespace EJ
 {
@@ -125,7 +127,6 @@ namespace EJ
 
         private void MyChip_Click(object sender, RoutedEventArgs e)
         {
-            //MainContentFrame.Navigate(new Uri("MainMenu/Profile.xaml", UriKind.Relative));
             myPopup.IsPopupOpen = true;
         }
         private void Profile_Click(object sender, RoutedEventArgs e)
@@ -136,6 +137,16 @@ namespace EJ
         private void SettingProfile_Click(object sender, RoutedEventArgs e)
         {
             MainContentFrame.Navigate(new Uri("MainMenu/SettingProfile.xaml", UriKind.Relative));
+        }
+
+        private void LeaveProfile_Click(object sender, RoutedEventArgs e)
+        {
+            // Закрыть текущее окно MainWindow
+            this.Hide();
+
+            // Создать и открыть новое окно Authorization
+            Authorization authWindow = new Authorization();
+            authWindow.Show();
         }
     }
 }

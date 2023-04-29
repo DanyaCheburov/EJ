@@ -146,6 +146,7 @@
                         <StackPanel>
                             <Button Content="Мой профиль" Click="Profile_Click"/>
                             <Button Content="Настройки профиля" Click="SettingProfile_Click" Margin="5"/>
+                            <Button Content="Выйти из аккаунта" Click="LeaveProfile_Click" Margin="5"/>
                         </StackPanel>
                     </materialDesign:PopupBox>
                 </StackPanel>
