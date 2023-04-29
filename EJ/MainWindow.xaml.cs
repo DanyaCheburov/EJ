@@ -142,7 +142,7 @@ namespace EJ
         private void LeaveProfile_Click(object sender, RoutedEventArgs e)
         {
             // Закрыть текущее окно MainWindow
-            this.Hide();
+            this.Close();
 
             // Создать и открыть новое окно Authorization
             Authorization authWindow = new Authorization();
