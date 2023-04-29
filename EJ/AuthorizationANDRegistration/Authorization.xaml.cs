@@ -35,7 +35,7 @@ namespace EJ.AuthorizationANDRegistration
 
             if (currentUser != null)
             {
-                MainWindow mainWindow = new MainWindow();
+                MainWindow mainWindow = new MainWindow(currentUser.Name);
                 mainWindow.Show();
                 Hide();
             }

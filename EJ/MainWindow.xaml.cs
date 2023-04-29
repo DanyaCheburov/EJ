@@ -1,6 +1,4 @@
-﻿using EJ.MainMenu;
-using MaterialDesignColors;
-using MaterialDesignThemes.Wpf;
+﻿using MaterialDesignThemes.Wpf;
 using System;
 using System.Windows;
 using System.Windows.Input;
@@ -13,9 +11,12 @@ namespace EJ
     /// </summary>
     public partial class MainWindow : Window
     {
-        public MainWindow()
+        private readonly string _username;
+        public MainWindow(string username)
         {
             InitializeComponent();
+            _username = username;
+            myChip.Content = _username;
             StateChanged += Window_StateChanged;
         }
         private void Window_StateChanged(object sender, EventArgs e)
@@ -120,6 +121,21 @@ namespace EJ
         private void EstimateButton_Click(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void MyChip_Click(object sender, RoutedEventArgs e)
+        {
+            //MainContentFrame.Navigate(new Uri("MainMenu/Profile.xaml", UriKind.Relative));
+            myPopup.IsPopupOpen = true;
+        }
+        private void Profile_Click(object sender, RoutedEventArgs e)
+        {
+            MainContentFrame.Navigate(new Uri("MainMenu/Profile.xaml", UriKind.Relative));
+        }
+
+        private void SettingProfile_Click(object sender, RoutedEventArgs e)
+        {
+            MainContentFrame.Navigate(new Uri("MainMenu/SettingProfile.xaml", UriKind.Relative));
         }
     }
 }

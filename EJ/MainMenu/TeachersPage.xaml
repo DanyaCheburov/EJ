@@ -21,7 +21,9 @@
                 <DataGridTextColumn Header="Должность" Binding="{Binding Position}"/>
             </DataGrid.Columns>
         </DataGrid>
-        <Button Content="Добавить преподавателя" Grid.Row="1" Margin="27,34,546,34" Click="AddTeacherGroup_Click" Cursor="Hand"/>
-        <Button Grid.Row="1" Margin="524,34,26,34" Content="Сохранить изменения" Click="SaveChangesButton_Click"/>
+        <DockPanel Grid.Row="1">
+            <Button Content="Добавить преподавателя" Width="250" DockPanel.Dock="Left" Click="AddTeacherGroup_Click" Cursor="Hand" Margin="15"/>
+            <Button Width="250" DockPanel.Dock="Right" Content="Сохранить изменения" Click="SaveChangesButton_Click" Cursor="Hand" Margin="15"/>
+        </DockPanel>
     </Grid>
 </Page>

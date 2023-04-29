@@ -111,8 +111,14 @@
       <DependentUpon>AttedancePage.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainMenu\EmployeeAttendance.cs" />
+    <Compile Include="MainMenu\Profile.xaml.cs">
+      <DependentUpon>Profile.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MainMenu\Report.xaml.cs">
       <DependentUpon>Report.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MainMenu\SettingProfile.xaml.cs">
+      <DependentUpon>SettingProfile.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainMenu\SettingsPage.xaml.cs">
       <DependentUpon>SettingsPage.xaml</DependentUpon>
@@ -161,7 +167,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="MainMenu\Profile.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainMenu\Report.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MainMenu\SettingProfile.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
