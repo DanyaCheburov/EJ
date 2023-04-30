@@ -16,6 +16,7 @@ namespace EJ.MainMenu
         private BDEntities _context = new BDEntities();
         public string SelectedGroup { get; set; }
         public string SelectedSubject { get; set; }
+        
         public Report(string selectedGroup, string selectedSubject)
         {
 
@@ -26,6 +27,8 @@ namespace EJ.MainMenu
             SelectedSubject = selectedSubject;
             ComboSubject.ItemsSource = _context.Subjects.ToList();
             ComboSubject.SelectedItem = _context.Subjects.FirstOrDefault(s => s.Name == SelectedSubject);
+            
+
         }
 
 
@@ -95,6 +98,8 @@ namespace EJ.MainMenu
                         var dataPoint = new DataPoint();
                         dataPoint.SetValueY(height); // используйте переменную height для установки значения Y
                         dataPoint.AxisLabel = studentName;
+                        double percentAbsent = (double)absences / (double)numberOfLessons; // вычисляем процент пропущенных занятий
+                        dataPoint.Label = $"{percentAbsent:P0}"; // устанавливаем метку, содержащую процентное соотношение пропущенных занятий к общему количеству занятий
                         currentSeries.Points.Add(dataPoint);
                     }
                     reader.Close();
