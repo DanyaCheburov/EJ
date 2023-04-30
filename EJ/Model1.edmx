@@ -36,6 +36,14 @@
           <Property Name="GroupId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="GroupName" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
+        <EntityType Name="Lessons_by_subject">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Subject_Id" Type="int" Nullable="false" />
+          <Property Name="Nubmer_of_lessons" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="Students">
           <Key>
             <PropertyRef Name="Id" />
@@ -140,6 +148,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Lessons_by_subject_Subjects">
+          <End Role="Subjects" Type="Self.Subjects" Multiplicity="1" />
+          <End Role="Lessons_by_subject" Type="Self.Lessons_by_subject" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Subjects">
+              <PropertyRef Name="SubjectId" />
+            </Principal>
+            <Dependent Role="Lessons_by_subject">
+              <PropertyRef Name="Subject_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Students_Groups">
           <End Role="Groups" Type="Self.Groups" Multiplicity="1" />
           <End Role="Students" Type="Self.Students" Multiplicity="*" />
@@ -157,6 +177,7 @@
           <EntitySet Name="Attendance" EntityType="Self.Attendance" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Departments" EntityType="Self.Departments" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Groups" EntityType="Self.Groups" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Lessons_by_subject" EntityType="Self.Lessons_by_subject" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Students" EntityType="Self.Students" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Subjects" EntityType="Self.Subjects" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
@@ -181,6 +202,10 @@
           <AssociationSet Name="FK__Teachers__UserId__5CD6CB2B" Association="Self.FK__Teachers__UserId__5CD6CB2B">
             <End Role="Users" EntitySet="Users" />
             <End Role="Teachers" EntitySet="Teachers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Lessons_by_subject_Subjects" Association="Self.FK_Lessons_by_subject_Subjects">
+            <End Role="Subjects" EntitySet="Subjects" />
+            <End Role="Lessons_by_subject" EntitySet="Lessons_by_subject" />
           </AssociationSet>
           <AssociationSet Name="FK_Students_Groups" Association="Self.FK_Students_Groups">
             <End Role="Groups" EntitySet="Groups" />
@@ -227,6 +252,15 @@
           <Property Name="GroupName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="Students" Relationship="Self.FK_Students_Groups" FromRole="Groups" ToRole="Students" />
         </EntityType>
+        <EntityType Name="Lessons_by_subject">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Subject_Id" Type="Int32" Nullable="false" />
+          <Property Name="Nubmer_of_lessons" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Subjects" Relationship="Self.FK_Lessons_by_subject_Subjects" FromRole="Lessons_by_subject" ToRole="Subjects" />
+        </EntityType>
         <EntityType Name="Students">
           <Key>
             <PropertyRef Name="Id" />
@@ -246,6 +280,7 @@
           <Property Name="SubjectId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="Attendance" Relationship="Self.FK__Attendanc__Subje__59063A47" FromRole="Subjects" ToRole="Attendance" />
+          <NavigationProperty Name="Lessons_by_subject" Relationship="Self.FK_Lessons_by_subject_Subjects" FromRole="Subjects" ToRole="Lessons_by_subject" />
         </EntityType>
         <EntityType Name="sysdiagrams">
           <Key>
@@ -327,6 +362,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Lessons_by_subject_Subjects">
+          <End Role="Subjects" Type="Self.Subjects" Multiplicity="1" />
+          <End Role="Lessons_by_subject" Type="Self.Lessons_by_subject" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Subjects">
+              <PropertyRef Name="SubjectId" />
+            </Principal>
+            <Dependent Role="Lessons_by_subject">
+              <PropertyRef Name="Subject_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK__Students__UserId__59063A47">
           <End Role="Users" Type="Self.Users" Multiplicity="1" />
           <End Role="Students" Type="Self.Students" Multiplicity="*" />
@@ -356,6 +403,7 @@
           <EntitySet Name="Attendance" EntityType="Self.Attendance" />
           <EntitySet Name="Departments" EntityType="Self.Departments" />
           <EntitySet Name="Groups" EntityType="Self.Groups" />
+          <EntitySet Name="Lessons_by_subject" EntityType="Self.Lessons_by_subject" />
           <EntitySet Name="Students" EntityType="Self.Students" />
           <EntitySet Name="Subjects" EntityType="Self.Subjects" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
@@ -376,6 +424,10 @@
           <AssociationSet Name="FK_Students_Groups" Association="Self.FK_Students_Groups">
             <End Role="Groups" EntitySet="Groups" />
             <End Role="Students" EntitySet="Students" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Lessons_by_subject_Subjects" Association="Self.FK_Lessons_by_subject_Subjects">
+            <End Role="Subjects" EntitySet="Subjects" />
+            <End Role="Lessons_by_subject" EntitySet="Lessons_by_subject" />
           </AssociationSet>
           <AssociationSet Name="FK__Students__UserId__59063A47" Association="Self.FK__Students__UserId__59063A47">
             <End Role="Users" EntitySet="Users" />
@@ -424,6 +476,15 @@
               <MappingFragment StoreEntitySet="Groups">
                 <ScalarProperty Name="GroupId" ColumnName="GroupId" />
                 <ScalarProperty Name="GroupName" ColumnName="GroupName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Lessons_by_subject">
+            <EntityTypeMapping TypeName="BDModel.Lessons_by_subject">
+              <MappingFragment StoreEntitySet="Lessons_by_subject">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Subject_Id" ColumnName="Subject_Id" />
+                <ScalarProperty Name="Nubmer_of_lessons" ColumnName="Nubmer_of_lessons" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
