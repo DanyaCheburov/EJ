@@ -18,10 +18,26 @@
                 <StackPanel Orientation="Horizontal" Width="713">
                     <TextBlock Text="Группа:" Width="125" Margin="5" VerticalAlignment="Center" TextAlignment="Right"></TextBlock>
                     <ComboBox Name="ComboGroup" ItemsSource="{Binding Groups}" DisplayMemberPath="GroupName" SelectionChanged="UpdateChart" SelectedIndex="0" Width="95" Margin="5"></ComboBox>
-                    <TextBlock Text="Предмет:" Width="125" Margin="5" VerticalAlignment="Center" TextAlignment="Right"></TextBlock>
+                    <TextBlock Text="Предмет:" Width="79" Margin="5" VerticalAlignment="Center" TextAlignment="Right"></TextBlock>
                     <ComboBox Name="ComboSubject" ItemsSource="{Binding Subjects}" DisplayMemberPath="Name"  SelectionChanged="UpdateChart"  SelectedIndex="0" Width="95" Margin="5"></ComboBox>
-
-                </StackPanel>
+                    <TextBlock Text="Месяц:" Width="60" Margin="5" VerticalAlignment="Center" TextAlignment="Right"></TextBlock>
+                    <ComboBox Name="ComboMonth" ItemsSource="{Binding Months}" SelectionChanged="UpdateChart" SelectedIndex="0" Width="60" Margin="5">
+                        <ComboBoxItem>Январь</ComboBoxItem>
+                        <ComboBoxItem>Февраль</ComboBoxItem>
+                        <ComboBoxItem>Март</ComboBoxItem>
+                        <ComboBoxItem>Апрель</ComboBoxItem>
+                        <ComboBoxItem>Май</ComboBoxItem>
+                        <ComboBoxItem>Июнь</ComboBoxItem>
+                        <ComboBoxItem>Июль</ComboBoxItem>
+                        <ComboBoxItem>Август</ComboBoxItem>
+                        <ComboBoxItem>Сентябрь</ComboBoxItem>
+                        <ComboBoxItem>Октябрь</ComboBoxItem>
+                        <ComboBoxItem>Ноябрь</ComboBoxItem>
+                        <ComboBoxItem>Декабрь</ComboBoxItem>
+                    </ComboBox>
+                    <TextBlock Text="Год:" Width="37" Margin="5" VerticalAlignment="Center" TextAlignment="Right"></TextBlock>
+                    <ComboBox Name="ComboYear" ItemsSource="{Binding Years}" SelectionChanged="UpdateChart" SelectedIndex="0" Width="60" Margin="5"></ComboBox>
+            </StackPanel>
             </StackPanel>
             <WindowsFormsHost Grid.Row="1" Margin="5">
                 <charts:Chart x:Name="ChartPayments">
