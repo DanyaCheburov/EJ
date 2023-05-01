@@ -68,11 +68,6 @@ namespace EJ
             DragMove();
         }
 
-        private void Settings_Click(object sender, RoutedEventArgs e)
-        {
-            MainContentFrame.Navigate(new Uri("MainMenu/SettingsPage.xaml", UriKind.Relative));
-        }
-
         public bool IsDarkTheme { get; set; }
 
         private readonly PaletteHelper paletteHelper = new PaletteHelper();
@@ -88,9 +83,9 @@ namespace EJ
                 AttendanceButton.Foreground = Brushes.Black;
                 StudentButton.Foreground = Brushes.Black;
                 TeacherButton.Foreground = Brushes.Black;
-                SettingsButton.Foreground = Brushes.Black;
                 HelpButton.Foreground = Brushes.Black;
                 EstimateButton.Foreground = Brushes.Black;
+                themeToggle.ToolTip = "Включить темную тему";
             }
             else
             {
@@ -100,9 +95,9 @@ namespace EJ
                 AttendanceButton.Foreground = Brushes.White;
                 StudentButton.Foreground = Brushes.White;
                 TeacherButton.Foreground = Brushes.White;
-                SettingsButton.Foreground = Brushes.White;
                 EstimateButton.Foreground = Brushes.White;
                 HelpButton.Foreground = Brushes.White;
+                themeToggle.ToolTip = "Включить светлую тему";
             }
             paletteHelper.SetTheme(theme);
         }
@@ -118,11 +113,6 @@ namespace EJ
         private void BtnMinimize_Click(object sender, RoutedEventArgs e)
         {
             WindowState = WindowState.Minimized;
-        }
-
-        private void EstimateButton_Click(object sender, RoutedEventArgs e)
-        {
-
         }
 
         private void MyChip_Click(object sender, RoutedEventArgs e)
@@ -147,6 +137,11 @@ namespace EJ
             // Создать и открыть новое окно Authorization
             Authorization authWindow = new Authorization();
             authWindow.Show();
+        }
+
+        private void EstimateButton_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

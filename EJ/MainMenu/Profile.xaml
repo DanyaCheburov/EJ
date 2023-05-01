@@ -3,9 +3,10 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
       xmlns:local="clr-namespace:EJ.MainMenu"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
+      d:DesignHeight="450" d:DesignWidth="1000"
       Title="Profile">
 
     <Grid>
@@ -14,32 +15,42 @@
             <ColumnDefinition Width="3*"/>
         </Grid.ColumnDefinitions>
 
-        <StackPanel Grid.Column="0" Margin="30">
-            <Border BorderBrush="Black" BorderThickness="1" Width="150" Height="150">
-                <Image Source="https://via.placeholder.com/150" Width="150" Height="150" />
-            </Border>
-            <Button Content="Изменить фото" Margin="10,20" Width="100"/>
-        </StackPanel>
+        <materialDesign:Card Height="400" Width="300" Background="{DynamicResource MaterialDesignPaper}" UniformCornerRadius="15" materialDesign:ElevationAssist.Elevation= "Dp4" Margin="10,0,90,50">
+            <StackPanel Grid.Column="0" Margin="30">
+                <Grid>
+                    <Ellipse Width="150" Height="150">
+                        <Ellipse.Fill>
+                            <ImageBrush RenderOptions.BitmapScalingMode="HighQuality" x:Name="imageBrush" ImageSource="/Resources/illustration.jpg"/>
+                        </Ellipse.Fill>
+                    </Ellipse>
+                </Grid>
+                <TextBlock Text="Неретин М. А" FontWeight="Bold" FontSize="20" HorizontalAlignment="Center" Margin="10"></TextBlock>
+                <Grid HorizontalAlignment="Center">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="40" />
+                        <RowDefinition Height="40" />
+                        <RowDefinition Height="40" />
+                        <RowDefinition Height="40" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="130" />
+                        <ColumnDefinition Width="100" />
+                    </Grid.ColumnDefinitions>
 
-        <StackPanel Grid.Column="1" Margin="30">
-            <TextBlock Text="Персональная информация" FontSize="24" Margin="0,0,0,20"/>
-            <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
-                <TextBlock Text="Имя: " FontSize="18"/>
-                <TextBox Text="{Binding Users.Name}" Width="200" FontSize="18" Margin="5,0,0,0"/>
+                    <TextBlock Text="Дата рождения"></TextBlock>
+                    <TextBlock Grid.Row="0" Grid.Column="1" FontWeight="Bold" Text="29 Декабря 2002" HorizontalAlignment="Right"></TextBlock>
+                    <TextBlock Grid.Row="1" Text="Почта"></TextBlock>
+                    <TextBlock x:Name="EmailTextBlock" FontWeight="Bold" Grid.Row="1" Grid.Column="1" Text="Test@mail.ru" HorizontalAlignment="Right"></TextBlock>
+                    <TextBlock Grid.Row="2" Text="Телефон"></TextBlock>
+                    <TextBlock Grid.Row="2" FontWeight="Bold" Grid.Column="1" Text="+79991111244" HorizontalAlignment="Right"></TextBlock>
+                    <TextBlock Grid.Row="3" Text="Адресс"></TextBlock>
+                    <TextBlock Grid.Row="3" FontWeight="Bold" Grid.Column="1" Text="г.Кострома, Тест" HorizontalAlignment="Right"></TextBlock>
+                </Grid>
             </StackPanel>
-            <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
-                <TextBlock Text="Фамилия: " FontSize="18"/>
-                <TextBox Text="{Binding Users.Name}" Width="200" FontSize="18" Margin="5,0,0,0"/>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
-                <TextBlock Text="E-mail: " FontSize="18"/>
-                <TextBox Text="{Binding Users.Email}" Width="200" FontSize="18" Margin="5,0,0,0"/>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
-                <TextBlock Text="Телефон: " FontSize="18"/>
-                <TextBox Text="{Binding Users.Phone}" Width="200" FontSize="18" Margin="5,0,0,0"/>
-            </StackPanel>
-            <Button Content="Сохранить" Width="150" Margin="0,20,0,0"/>
-        </StackPanel>
+        </materialDesign:Card>
+
+        <materialDesign:Card Height="400" Width="640" Margin="332,0,68,50" Background="{DynamicResource MaterialDesignPaper}" UniformCornerRadius="15" materialDesign:ElevationAssist.Elevation= "Dp4" Grid.ColumnSpan="2">
+            <TextBlock Text="Персональная информация" FontSize="24" HorizontalAlignment="Center" Margin="25"/>
+        </materialDesign:Card>
     </Grid>
 </Page>

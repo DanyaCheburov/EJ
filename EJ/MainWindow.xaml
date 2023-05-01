@@ -25,7 +25,7 @@
 
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="38*" />
+                    <RowDefinition Height="58*" />
                     <RowDefinition Height="237*" />
                     <RowDefinition Height="80" />
                 </Grid.RowDefinitions>
@@ -40,7 +40,7 @@
                     </WrapPanel>
                 </StackPanel>
 
-                <StackPanel Grid.Row="1" Cursor="">
+                <StackPanel Grid.Row="1">
                     <Button x:Name="UserButton" Click="UserButton_Click" Style="{StaticResource MaterialDesignFlatButton}" Foreground="{DynamicResource PrimaryHueLightForegroundBrush}"
                             materialDesign:ButtonAssist.CornerRadius="6" Width="auto" Height="35" materialDesign:RippleAssist.Feedback="White"
                             Margin="0 0 0 15" HorizontalAlignment="Center" Cursor="Hand">
@@ -86,15 +86,6 @@
                         </WrapPanel>
                     </Button>
 
-                    <Button Style="{StaticResource MaterialDesignFlatButton}" Foreground="{DynamicResource PrimaryHueLightForegroundBrush}"
-                            materialDesign:ButtonAssist.CornerRadius="6" Width="auto" Height="35" materialDesign:RippleAssist.Feedback="White"
-                            Margin="0 0 0 15" x:Name="SettingsButton" Click="Settings_Click">
-                        <WrapPanel Width="120">
-                            <materialDesign:PackIcon Kind="Settings" VerticalAlignment="Center" Margin="0 0 20 0" Foreground="DodgerBlue"/>
-                            <TextBlock>Settings</TextBlock>
-                        </WrapPanel>
-                    </Button>
-
                     <Button x:Name="HelpButton" Style="{StaticResource MaterialDesignFlatButton}" Foreground="{DynamicResource PrimaryHueLightForegroundBrush}"
                             materialDesign:ButtonAssist.CornerRadius="6" Width="auto" Height="35" materialDesign:RippleAssist.Feedback="White"
                             Margin="0 0 0 15">
@@ -105,17 +96,7 @@
                     </Button>
                 </StackPanel>
 
-                <Border Grid.Row="2" CornerRadius="18" Width="110" Height="35" Background="{DynamicResource TertiaryBackgroundColor}" HorizontalAlignment="Right" Margin="0 0 20 0">
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                        <materialDesign:PackIcon Kind="WbSunny" Height="25" Width="25" Foreground="Yellow" VerticalAlignment="Center" />
-                        <ToggleButton Cursor="Hand" ToolTip="Enable Dark Mode" 
-                                      Margin="10 0 10 0" 
-                                      x:Name="themeToggle" 
-                                      IsChecked="{Binding IsDarkTheme}" 
-                                      Click="ThemeToggle_Click"/>
-                        <materialDesign:PackIcon Kind="MoonAndStars" Height="25" Width="25" Foreground="#5B8DEF" VerticalAlignment="Center" />
-                    </StackPanel>
-                </Border>
+
             </Grid>
 
             <Grid Grid.Column="1">
@@ -134,24 +115,25 @@
 
                     <TextBlock Text="{Binding Source={x:Static sys:DateTime.Now}, StringFormat='{}{0:dd MMM yyyy, dddd}'}" Foreground="SlateGray" FontSize="14" FontWeight="Bold" VerticalAlignment="Center" Margin="10"/>
                 </StackPanel>
-                <TextBlock Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="15" FontWeight="Bold" Text="Testing"/>
 
-                <StackPanel Grid.Row="1" HorizontalAlignment="Right" Margin="15">
-                    <materialDesign:Chip x:Name="myChip" Content="" Click="MyChip_Click" Cursor="Hand">
+                <StackPanel Grid.Row="1" HorizontalAlignment="Right">
+                    <materialDesign:Chip x:Name="myChip" Content="" Click="MyChip_Click" Cursor="Hand" Margin="15">
                         <materialDesign:Chip.Icon>
-                            <Image Source="Resources/illustration.jpg" Stretch="UniformToFill" />
+                            <Image RenderOptions.BitmapScalingMode="HighQuality" Source="Resources/illustration.jpg" Stretch="UniformToFill" />
                         </materialDesign:Chip.Icon>
                     </materialDesign:Chip>
-                    <materialDesign:PopupBox x:Name="myPopup" StaysOpen="False">
-                        <StackPanel>
+                    <materialDesign:PopupBox x:Name="myPopup" StaysOpen="True" Margin="15 -50 0 0">
+                        <StackPanel Cursor="">
                             <Button Content="Мой профиль" Click="Profile_Click"/>
                             <Button Content="Настройки профиля" Click="SettingProfile_Click" Margin="5"/>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
+                                <TextBlock Text="Тема"  VerticalAlignment="Center"/>
+                                <ToggleButton Cursor="Hand" Margin="12 0 8 0" ToolTip="Включить темную тему" x:Name="themeToggle" IsChecked="{Binding IsDarkTheme}" Click="ThemeToggle_Click"></ToggleButton>
+                            </StackPanel>
                             <Button Content="Выйти из аккаунта" Click="LeaveProfile_Click" Margin="5"/>
                         </StackPanel>
                     </materialDesign:PopupBox>
                 </StackPanel>
-
-
 
                 <Border x:Name="myBorder" Grid.Row="2">
                     <Frame x:Name="MainContentFrame" Margin="0 0 0 25" NavigationUIVisibility="Hidden"/>
