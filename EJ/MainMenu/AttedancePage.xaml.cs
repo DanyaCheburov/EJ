@@ -21,7 +21,6 @@ namespace EJ.MainMenu
     public partial class AttedancePage : Page
     {
         public ObservableCollection<Students> Students { get; set; }
-
         public AttedancePage()
         {
             InitializeComponent();
@@ -197,7 +196,7 @@ namespace EJ.MainMenu
         {
             if (ComboGroup.SelectedItem != null || ComboSubject.SelectedItem!=null)
             {
-                var report = new Report(((Groups)ComboGroup.SelectedItem).GroupName, ((Subjects)ComboSubject.SelectedItem).Name);
+                var report = new Report(((Groups)ComboGroup.SelectedItem).GroupName, ((Subjects)ComboSubject.SelectedItem).Name, (int)СomboYear.SelectedItem, (int)ComboMonth.SelectedIndex);
                 report.Show();
                 LoadGrid();
             }
