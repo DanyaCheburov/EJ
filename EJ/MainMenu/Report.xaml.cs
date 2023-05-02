@@ -4,6 +4,7 @@ using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -16,26 +17,32 @@ namespace EJ.MainMenu
         private BDEntities _context = new BDEntities();
         public string SelectedGroup { get; set; }
         public string SelectedSubject { get; set; }
-        
-        public Report(string selectedGroup, string selectedSubject)
+        public int SelectedYear { get; set; }
+        public int SelectedMonth { get; set; }
+        public Report(string selectedGroup, string selectedSubject, int selectedYear, int selectedMonth)
         {
-
             InitializeComponent();
+            SelectedYear = selectedYear;
             SelectedGroup = selectedGroup;
             ComboGroup.ItemsSource = _context.Groups.ToList();
             ComboGroup.SelectedItem = _context.Groups.FirstOrDefault(g => g.GroupName == SelectedGroup); // установить выбранное значение ComboGroup
             SelectedSubject = selectedSubject;
             ComboSubject.ItemsSource = _context.Subjects.ToList();
-            ComboSubject.SelectedItem = _context.Subjects.FirstOrDefault(s => s.Name == SelectedSubject);
+            ComboSubject.SelectedItem = _context.Subjects.FirstOrDefault(s => s.Name == SelectedSubject);                
             
+            ComboYear.ItemsSource = Enumerable.Range(2019, DateTime.Now.Year - 2018); // используем метод Enumerable.Range для заполнения ComboBox годами с 2019 до текущего года
+            ComboYear.SelectedItem = selectedYear;
 
+            ComboMonth.ItemsSource = CultureInfo.CurrentCulture.DateTimeFormat.MonthNames.Take(12).ToList();
+            ComboMonth.SelectedItem = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(selectedMonth+1);
         }
 
 
         private void UpdateChart(object sender, SelectionChangedEventArgs e)
         {
             if (ComboGroup.SelectedItem is Groups currentGroup &&
-                 ComboSubject.SelectedItem is Subjects currentSubject)
+                 ComboSubject.SelectedItem is Subjects currentSubject &&
+                 ComboMonth.SelectedItem is string selectedMonthName)
             {
                 ChartPayments.Series.Clear();
                 Series currentSeries = new Series
@@ -51,7 +58,7 @@ namespace EJ.MainMenu
 
                 ChartPayments.Series.Add(currentSeries);
 
-                var _connection = (@"Data Source=localhost\SQLEXPRESS;Initial Catalog=BD;Integrated Security=True");
+                var _connection = (@"Data Source=YOGAPC\SQLEXPRESS;Initial Catalog=BD;Integrated Security=True");
                 string lessonsQuery = "SELECT COUNT(*) as Lessons FROM Lessons_by_subject WHERE Subject_Id = @SubjectId";
                 SqlConnection lessonsConnection = new SqlConnection(_connection);
                 SqlCommand lessonsCommand = new SqlCommand(lessonsQuery, lessonsConnection);
@@ -63,6 +70,8 @@ namespace EJ.MainMenu
                 currentSeries["PointHeight"] = $"{numberOfLessons / 100.0:P0}";
                 currentSeries["HeightPercent"] = "100";
 
+                int selectedMonth = Array.IndexOf(CultureInfo.CurrentCulture.DateTimeFormat.MonthNames, selectedMonthName);
+
                 // Выбираем студентов для определенной группы и отображаем их на графике
                 string query = "SELECT u.Name, COUNT(*) as Absences, l.Nubmer_of_lessons AS Lessons " +
                                "FROM Users AS u " +
@@ -71,13 +80,15 @@ namespace EJ.MainMenu
                                "JOIN Attendance AS a ON a.StudentId=s.Id " +
                                "JOIN Subjects AS s1 ON s1.SubjectId = a.SubjectId " +
                                "JOIN Lessons_by_subject AS l ON s1.SubjectId = l.Subject_Id " +
-                               "WHERE g.GroupName = @GroupName  AND s1.Name=@Name AND a.PassType = 0 " +
+                               "WHERE g.GroupName = @GroupName  AND s1.Name=@Name AND a.PassType = 0 AND MONTH(a.Date) = @Month AND YEAR(a.Date) = @Year " +
                                "GROUP BY u.Name, l.Nubmer_of_lessons " +
                                "HAVING COUNT(a.PassType) > 0";
                 SqlConnection connection = new SqlConnection(_connection);
                 SqlCommand command = new SqlCommand(query, connection);
                 command.Parameters.AddWithValue("@GroupName", currentGroup.GroupName);
                 command.Parameters.AddWithValue("@Name", currentSubject.Name);
+                command.Parameters.AddWithValue("@Month", selectedMonth + 1);
+                command.Parameters.AddWithValue("@Year", SelectedYear);
 
                 try
                 {
