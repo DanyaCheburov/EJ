@@ -121,12 +121,7 @@ namespace EJ
         }
         private void Profile_Click(object sender, RoutedEventArgs e)
         {
-            MainContentFrame.Navigate(new Uri("MainMenu/Profile.xaml", UriKind.Relative));
-        }
-
-        private void SettingProfile_Click(object sender, RoutedEventArgs e)
-        {
-            MainContentFrame.Navigate(new Uri("MainMenu/SettingProfile.xaml", UriKind.Relative));
+            MainContentFrame.Navigate(new Uri("Profile/AccountProfile.xaml", UriKind.Relative));
         }
 
         private void LeaveProfile_Click(object sender, RoutedEventArgs e)

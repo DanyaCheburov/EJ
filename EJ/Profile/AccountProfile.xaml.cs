@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace EJ.MainMenu
+namespace EJ.Profile
 {
     /// <summary>
-    /// Логика взаимодействия для Profile.xaml
+    /// Логика взаимодействия для AccountProfile.xaml
     /// </summary>
-    public partial class Profile : Page
+    public partial class AccountProfile : Page
     {
-        public Profile()
+        public AccountProfile()
         {
             InitializeComponent();
             string userEmail = Application.Current.Properties["Email"] as string;
@@ -47,6 +47,11 @@ namespace EJ.MainMenu
                 NameTextBlock.Text = userName;
             }
 
+        }
+
+        private void ProfileUpdate_Click(object sender, RoutedEventArgs e)
+        {
+            MainContentFrameProfile.Navigate(new Uri("Profile/ProfileUpdate.xaml", UriKind.Relative));
         }
     }
 }

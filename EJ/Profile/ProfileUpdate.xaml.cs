@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace EJ.MainMenu
+namespace EJ.Profile
 {
     /// <summary>
-    /// Логика взаимодействия для SettingProfile.xaml
+    /// Логика взаимодействия для ProfileUpdate.xaml
     /// </summary>
-    public partial class SettingProfile : Page
+    public partial class ProfileUpdate : Page
     {
-        public SettingProfile()
+        public ProfileUpdate()
         {
             InitializeComponent();
         }

@@ -125,7 +125,6 @@
                     <materialDesign:PopupBox x:Name="myPopup" StaysOpen="True" Margin="15 -50 0 0">
                         <StackPanel Cursor="">
                             <Button Content="Мой профиль" Click="Profile_Click"/>
-                            <Button Content="Настройки профиля" Click="SettingProfile_Click" Margin="5"/>
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
                                 <TextBlock Text="Тема"  VerticalAlignment="Center"/>
                                 <ToggleButton Cursor="Hand" Margin="12 0 8 0" ToolTip="Включить темную тему" x:Name="themeToggle" IsChecked="{Binding IsDarkTheme}" Click="ThemeToggle_Click"></ToggleButton>
