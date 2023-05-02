@@ -23,6 +23,30 @@ namespace EJ.MainMenu
         public Profile()
         {
             InitializeComponent();
+            string userEmail = Application.Current.Properties["Email"] as string;
+            EmailTextBlock.Text = userEmail;
+            string userName = Application.Current.Properties["Name"] as string;
+            string[] nameParts = userName.Split(' ');
+            if (nameParts.Length >= 3)
+            {
+                string shortName = nameParts[0] + " " + nameParts[1][0] + "." + nameParts[2][0] + ".";
+                NameTextBlock.Text = shortName;
+            }
+            else if (nameParts.Length >= 2)
+            {
+                string shortName = nameParts[0] + " " + nameParts[1][0] + ".";
+                NameTextBlock.Text = shortName;
+            }
+            else if (nameParts.Length >= 1)
+            {
+                string shortName = nameParts[0];
+                NameTextBlock.Text = shortName;
+            }
+            else
+            {
+                NameTextBlock.Text = userName;
+            }
+
         }
     }
 }

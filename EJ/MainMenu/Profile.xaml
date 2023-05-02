@@ -9,48 +9,58 @@
       d:DesignHeight="450" d:DesignWidth="1000"
       Title="Profile">
 
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="2*"/>
-            <ColumnDefinition Width="3*"/>
-        </Grid.ColumnDefinitions>
+    <Viewbox Stretch="Uniform">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="3*"/>
+            </Grid.ColumnDefinitions>
 
-        <materialDesign:Card Height="400" Width="300" Background="{DynamicResource MaterialDesignPaper}" UniformCornerRadius="15" materialDesign:ElevationAssist.Elevation= "Dp4" Margin="10,0,90,50">
-            <StackPanel Grid.Column="0" Margin="30">
-                <Grid>
-                    <Ellipse Width="150" Height="150">
-                        <Ellipse.Fill>
-                            <ImageBrush RenderOptions.BitmapScalingMode="HighQuality" x:Name="imageBrush" ImageSource="/Resources/illustration.jpg"/>
-                        </Ellipse.Fill>
-                    </Ellipse>
-                </Grid>
-                <TextBlock Text="Неретин М. А" FontWeight="Bold" FontSize="20" HorizontalAlignment="Center" Margin="10"></TextBlock>
-                <Grid HorizontalAlignment="Center">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="40" />
-                        <RowDefinition Height="40" />
-                        <RowDefinition Height="40" />
-                        <RowDefinition Height="40" />
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="130" />
-                        <ColumnDefinition Width="100" />
-                    </Grid.ColumnDefinitions>
+            <materialDesign:Card Height="400" Width="350" Background="{DynamicResource MaterialDesignPaper}" UniformCornerRadius="15" materialDesign:ElevationAssist.Elevation= "Dp4" Margin="-61,0,481,50">
+                <StackPanel Grid.Column="0" Margin="30">
+                    <Grid>
+                        <Ellipse Width="150" Height="150">
+                            <Ellipse.Fill>
+                                <ImageBrush RenderOptions.BitmapScalingMode="HighQuality" x:Name="imageBrush" ImageSource="/Resources/illustration.jpg"/>
+                            </Ellipse.Fill>
+                        </Ellipse>
+                    </Grid>
+                    <TextBlock x:Name="NameTextBlock" FontWeight="Bold" FontSize="20" HorizontalAlignment="Center" Margin="10">
+                        <TextBlock.Text>
+                            <MultiBinding StringFormat="{}{0} {1}. {2}.">
+                                <Binding Path="LastName"/>
+                                <Binding Path="FirstName"/>
+                                <Binding Path="Patronymic"/>
+                            </MultiBinding>
+                        </TextBlock.Text>
+                    </TextBlock>
+                    <Grid HorizontalAlignment="Center">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="40" />
+                            <RowDefinition Height="40" />
+                            <RowDefinition Height="40" />
+                            <RowDefinition Height="40" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition Width="200" />
+                        </Grid.ColumnDefinitions>
 
-                    <TextBlock Text="Дата рождения"></TextBlock>
-                    <TextBlock Grid.Row="0" Grid.Column="1" FontWeight="Bold" Text="29 Декабря 2002" HorizontalAlignment="Right"></TextBlock>
-                    <TextBlock Grid.Row="1" Text="Почта"></TextBlock>
-                    <TextBlock x:Name="EmailTextBlock" FontWeight="Bold" Grid.Row="1" Grid.Column="1" Text="Test@mail.ru" HorizontalAlignment="Right"></TextBlock>
-                    <TextBlock Grid.Row="2" Text="Телефон"></TextBlock>
-                    <TextBlock Grid.Row="2" FontWeight="Bold" Grid.Column="1" Text="+79991111244" HorizontalAlignment="Right"></TextBlock>
-                    <TextBlock Grid.Row="3" Text="Адресс"></TextBlock>
-                    <TextBlock Grid.Row="3" FontWeight="Bold" Grid.Column="1" Text="г.Кострома, Тест" HorizontalAlignment="Right"></TextBlock>
-                </Grid>
-            </StackPanel>
-        </materialDesign:Card>
+                        <TextBlock Text="Дата рождения"></TextBlock>
+                        <TextBlock Grid.Row="0" Grid.Column="1" FontWeight="Bold" Text="29 Декабря 2002" HorizontalAlignment="Right"></TextBlock>
+                        <TextBlock Grid.Row="1" Text="Почта"></TextBlock>
+                        <TextBlock x:Name="EmailTextBlock" FontWeight="Bold" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Right" TextWrapping="Wrap"></TextBlock>
+                        <TextBlock Grid.Row="2" Text="Телефон"></TextBlock>
+                        <TextBlock Grid.Row="2" FontWeight="Bold" Grid.Column="1" Text="+79991111244" HorizontalAlignment="Right"></TextBlock>
+                        <TextBlock Grid.Row="3" Text="Адресс"></TextBlock>
+                        <TextBlock Grid.Row="3" FontWeight="Bold" Grid.Column="1" Text="г.Кострома, Тест" HorizontalAlignment="Right"></TextBlock>
+                    </Grid>
+                </StackPanel>
+            </materialDesign:Card>
 
-        <materialDesign:Card Height="400" Width="640" Margin="332,0,68,50" Background="{DynamicResource MaterialDesignPaper}" UniformCornerRadius="15" materialDesign:ElevationAssist.Elevation= "Dp4" Grid.ColumnSpan="2">
-            <TextBlock Text="Персональная информация" FontSize="24" HorizontalAlignment="Center" Margin="25"/>
-        </materialDesign:Card>
-    </Grid>
+            <materialDesign:Card Height="400" Width="700" Margin="390,0,10,50" Background="{DynamicResource MaterialDesignPaper}" UniformCornerRadius="15" materialDesign:ElevationAssist.Elevation= "Dp4" Grid.ColumnSpan="2">
+                <TextBlock Text="Персональная информация" FontSize="24" HorizontalAlignment="Center" Margin="25"/>
+            </materialDesign:Card>
+        </Grid>
+    </Viewbox>
 </Page>

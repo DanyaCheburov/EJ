@@ -207,6 +207,11 @@ namespace EJ.MainMenu
 
         private void ExportToWord_Click(object sender, RoutedEventArgs e)
         {
+            string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
+            string folderName = "Посещаемость-Отчет";
+            string folderPath = Path.Combine(desktopPath, folderName);
+            Directory.CreateDirectory(folderPath);
+
             if (ComboGroup.SelectedItem != null || ComboSubject.SelectedItem != null)
             {
                 try
@@ -230,7 +235,7 @@ namespace EJ.MainMenu
                         string fileName = $"{subject.Name} - {groupName} - {ComboMonth.SelectedItem} {СomboYear.SelectedItem}.docx".Replace('/', '-');
                         string invalidChars = new string(Path.GetInvalidFileNameChars()) + new string(Path.GetInvalidPathChars());
                         string cleanedFileName = new string(fileName.Where(x => !invalidChars.Contains(x)).ToArray());
-                        string path = Path.Combine(@"C:\TestAttendenceReport", cleanedFileName);
+                        string path = Path.Combine(folderPath, cleanedFileName);
                         using (WordprocessingDocument wordDoc = WordprocessingDocument.Create(path, WordprocessingDocumentType.Document))
                         {
                             //Создаем главный раздел документа
@@ -254,6 +259,18 @@ namespace EJ.MainMenu
                             TableProperties tblProp = new TableProperties();
                             TableWidth tblWidth = new TableWidth() { Width = "5000", Type = TableWidthUnitValues.Pct };
                             tblProp.Append(tblWidth);
+
+                            //Добавляем границы
+                            TableBorders borders = new TableBorders();
+                            borders.TopBorder = new TopBorder() { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 4 };
+                            borders.BottomBorder = new BottomBorder() { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 4 };
+                            borders.LeftBorder = new LeftBorder() { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 4 };
+                            borders.RightBorder = new RightBorder() { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 4 };
+                            borders.InsideHorizontalBorder = new InsideHorizontalBorder() { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 4 };
+                            borders.InsideVerticalBorder = new InsideVerticalBorder() { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 4 };
+
+                            tblProp.Append(borders);
+
                             table.AppendChild(tblProp);
 
                             //Добавляем строки и ячейки
