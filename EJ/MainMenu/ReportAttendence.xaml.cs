@@ -58,7 +58,7 @@ namespace EJ.MainMenu
 
                 ChartPayments.Series.Add(currentSeries);
 
-                var _connection = (@"Data Source=localhost\SQLEXPRESS;Initial Catalog=BD;Integrated Security=True");
+                var _connection = (@"Data Source=YOGAPC\SQLEXPRESS;Initial Catalog=BD;Integrated Security=True");
                 string lessonsQuery = "SELECT COUNT(*) as Lessons FROM Lessons_by_subject WHERE Subject_Id = @SubjectId";
                 SqlConnection lessonsConnection = new SqlConnection(_connection);
                 SqlCommand lessonsCommand = new SqlCommand(lessonsQuery, lessonsConnection);

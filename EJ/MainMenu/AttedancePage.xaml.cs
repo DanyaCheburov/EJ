@@ -13,6 +13,7 @@ using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Wordprocessing;
 using System.IO;
 
+
 namespace EJ.MainMenu
 {
     /// <summary>
@@ -206,6 +207,7 @@ namespace EJ.MainMenu
 
         private void ExportToWord_Click(object sender, RoutedEventArgs e)
         {
+            int selectedMonth = ComboMonth.SelectedIndex + 1;
             string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
             string folderName = "Посещаемость-Отчет";
             string folderPath = Path.Combine(desktopPath, folderName);
@@ -228,7 +230,7 @@ namespace EJ.MainMenu
                                                 join s in db.Students on a.StudentId equals s.Id
                                                 join g in db.Groups on s.GroupId equals g.GroupId
                                                 select new { AttendanceId = a.Id, g.GroupName, s.Id, a.SubjectId, a.Date, a.PassType };
-                        var attendance = queryInAttendence.Where(s => s.GroupName == groupName && s.SubjectId == subject.SubjectId).ToList();
+                        var attendance = queryInAttendence.Where(s => s.GroupName == groupName && s.SubjectId == subject.SubjectId && s.Date.Month == selectedMonth).ToList();
 
                         //Создаем документ Word
                         string fileName = $"{subject.Name} - {groupName} - {ComboMonth.SelectedItem} {СomboYear.SelectedItem}.docx".Replace('/', '-');
@@ -237,6 +239,7 @@ namespace EJ.MainMenu
                         string path = Path.Combine(folderPath, cleanedFileName);
                         using (WordprocessingDocument wordDoc = WordprocessingDocument.Create(path, WordprocessingDocumentType.Document))
                         {
+                            
                             //Создаем главный раздел документа
                             MainDocumentPart mainPart = wordDoc.AddMainDocumentPart();
 
@@ -246,9 +249,10 @@ namespace EJ.MainMenu
                             styleDefinitionsPart.Styles.Save();
 
                             //Создаем документ и добавляем заголовок
-                            Document doc = new Document();
+                            Document doc = new Document(); 
                             Body body = new Body();
-                            Paragraph paraTitle = new Paragraph(new Run(new Text(fileName)));
+                            mainPart.Document.Append(body);
+                            Paragraph paraTitle = new Paragraph(new Run(new Text(cleanedFileName.Replace(".docx", ""))));
                             paraTitle.ParagraphProperties = new ParagraphProperties(
                                 new Justification() { Val = JustificationValues.Center });
                             body.Append(paraTitle);
@@ -259,7 +263,7 @@ namespace EJ.MainMenu
                             TableWidth tblWidth = new TableWidth() { Width = "5000", Type = TableWidthUnitValues.Pct };
                             tblProp.Append(tblWidth);
 
-                            //Добавляем границы
+                            //Add borders
                             TableBorders borders = new TableBorders();
                             borders.TopBorder = new TopBorder() { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 4 };
                             borders.BottomBorder = new BottomBorder() { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 4 };
@@ -267,19 +271,19 @@ namespace EJ.MainMenu
                             borders.RightBorder = new RightBorder() { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 4 };
                             borders.InsideHorizontalBorder = new InsideHorizontalBorder() { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 4 };
                             borders.InsideVerticalBorder = new InsideVerticalBorder() { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 4 };
-
                             tblProp.Append(borders);
 
                             table.AppendChild(tblProp);
 
-                            //Добавляем строки и ячейки
+                            //Add rows and cells
                             TableRow tr = new TableRow();
                             TableCell th = new TableCell(new Paragraph(new Run(new Text("ФИО"))));
                             tr.Append(th);
 
-                            foreach (var date in attendance.Select(x => x.Date).Distinct().OrderBy(x => x))
+                            //Create table cells for all days in the selected month
+                            for (int day = 1; day <= DateTime.DaysInMonth(DateTime.Now.Year, selectedMonth); day++)
                             {
-                                TableCell cell = new TableCell(new Paragraph(new Run(new Text(date.ToShortDateString()))));
+                                TableCell cell = new TableCell(new Paragraph(new Run(new Text(day.ToString()))));
                                 tr.Append(cell);
                             }
 
@@ -291,10 +295,11 @@ namespace EJ.MainMenu
                                 TableCell tdName = new TableCell(new Paragraph(new Run(new Text(student.Name))));
                                 trStudent.Append(tdName);
 
-                                foreach (var date in attendance.Select(x => x.Date).Distinct().OrderBy(x => x))
+                                //Create table cells for all days in the selected month
+                                for (int day = 1; day <= DateTime.DaysInMonth(DateTime.Now.Year, selectedMonth); day++)
                                 {
-                                    var att = attendance.FirstOrDefault(x => x.Date == date && x.Id == student.Id);
-                                    string attString = att != null ? att.PassType.ToString() : "";
+                                    var att = attendance.FirstOrDefault(x => x.Date.Day == day && x.Id == student.Id);
+                                    string attString = att != null ? (att.PassType ? "②" : "2") : "";
                                     TableCell tdAttendance = new TableCell(new Paragraph(new Run(new Text(attString))));
                                     trStudent.Append(tdAttendance);
                                 }
@@ -319,7 +324,7 @@ namespace EJ.MainMenu
             }
             else
                 MessageBox.Show("Выберите группу и предмет!");
-           
+
         }
     }
 }
