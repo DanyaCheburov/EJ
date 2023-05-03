@@ -4,24 +4,27 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="a79e24687c004a15aa9904ead68275b4" Name="Diagram1">
-        <EntityTypeShape EntityType="BDModel.Administrators" Width="1.5" PointX="3" PointY="2.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="BDModel.Attendance" Width="1.5" PointX="8.25" PointY="3.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="BDModel.Departments" Width="1.5" PointX="5.75" PointY="7.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="BDModel.Groups" Width="1.5" PointX="3.75" PointY="5.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="BDModel.Lessons_by_subject" Width="1.5" PointX="8.25" PointY="1" IsExpanded="true" />
-        <EntityTypeShape EntityType="BDModel.Students" Width="1.5" PointX="6" PointY="3.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="BDModel.Subjects" Width="1.5" PointX="6" PointY="1" IsExpanded="true" />
-        <EntityTypeShape EntityType="BDModel.sysdiagrams" Width="1.5" PointX="7.75" PointY="7.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="BDModel.Teachers" Width="1.5" PointX="3" PointY="8.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="BDModel.Users" Width="1.5" PointX="0.75" PointY="3.75" IsExpanded="true" />
-        <AssociationConnector Association="BDModel.FK__Administr__UserI__5812160E" ManuallyRouted="false" />
+      <Diagram DiagramId="e76ffc0a118c49b1ab44591cbc224404" Name="Diagram1">
+        <EntityTypeShape EntityType="BDModel.Administrators" Width="1.5" PointX="3" PointY="4.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="BDModel.Attendance" Width="1.5" PointX="8.25" PointY="5.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="BDModel.Departments" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BDModel.Groups" Width="1.5" PointX="3.75" PointY="6.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="BDModel.Journal" Width="1.5" PointX="11.25" PointY="5.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="BDModel.Lessons_by_subject" Width="1.5" PointX="8.25" PointY="1.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BDModel.Students" Width="1.5" PointX="6" PointY="5.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="BDModel.Subjects" Width="1.5" PointX="6" PointY="1.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="BDModel.sysdiagrams" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BDModel.Teachers" Width="1.5" PointX="3" PointY="10.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="BDModel.Users" Width="1.5" PointX="0.75" PointY="5.5" IsExpanded="true" />
+        <AssociationConnector Association="BDModel.FK__Administr__UserI__59FA5E80" ManuallyRouted="false" />
         <AssociationConnector Association="BDModel.FK__Attendanc__Stude__571DF1D5" ManuallyRouted="false" />
         <AssociationConnector Association="BDModel.FK__Attendanc__Subje__59063A47" ManuallyRouted="false" />
         <AssociationConnector Association="BDModel.FK_Students_Groups" ManuallyRouted="false" />
+        <AssociationConnector Association="BDModel.FK_Journal_Students" ManuallyRouted="false" />
+        <AssociationConnector Association="BDModel.FK_Journal_Subjects" ManuallyRouted="false" />
         <AssociationConnector Association="BDModel.FK_Lessons_by_subject_Subjects" ManuallyRouted="false" />
         <AssociationConnector Association="BDModel.FK__Students__UserId__59063A47" ManuallyRouted="false" />
-        <AssociationConnector Association="BDModel.FK__Teachers__UserId__5CD6CB2B" ManuallyRouted="false" />
+        <AssociationConnector Association="BDModel.FK__Teachers__UserId__5FB337D6" ManuallyRouted="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

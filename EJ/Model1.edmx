@@ -36,6 +36,16 @@
           <Property Name="GroupId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="GroupName" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
+        <EntityType Name="Journal">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="StudentId" Type="int" Nullable="false" />
+          <Property Name="SubjectId" Type="int" Nullable="false" />
+          <Property Name="Date" Type="date" Nullable="false" />
+          <Property Name="Estimate" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="Lessons_by_subject">
           <Key>
             <PropertyRef Name="Id" />
@@ -88,7 +98,7 @@
           <Property Name="Email" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Password" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
-        <Association Name="FK__Administr__UserI__5812160E">
+        <Association Name="FK__Administr__UserI__59FA5E80">
           <End Role="Users" Type="Self.Users" Multiplicity="1" />
           <End Role="Administrators" Type="Self.Administrators" Multiplicity="*" />
           <ReferentialConstraint>
@@ -136,7 +146,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Teachers__UserId__5CD6CB2B">
+        <Association Name="FK__Teachers__UserId__5FB337D6">
           <End Role="Users" Type="Self.Users" Multiplicity="1" />
           <End Role="Teachers" Type="Self.Teachers" Multiplicity="*" />
           <ReferentialConstraint>
@@ -145,6 +155,30 @@
             </Principal>
             <Dependent Role="Teachers">
               <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Journal_Students">
+          <End Role="Students" Type="Self.Students" Multiplicity="1" />
+          <End Role="Journal" Type="Self.Journal" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Students">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Journal">
+              <PropertyRef Name="StudentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Journal_Subjects">
+          <End Role="Subjects" Type="Self.Subjects" Multiplicity="1" />
+          <End Role="Journal" Type="Self.Journal" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Subjects">
+              <PropertyRef Name="SubjectId" />
+            </Principal>
+            <Dependent Role="Journal">
+              <PropertyRef Name="SubjectId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -177,13 +211,14 @@
           <EntitySet Name="Attendance" EntityType="Self.Attendance" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Departments" EntityType="Self.Departments" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Groups" EntityType="Self.Groups" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Journal" EntityType="Self.Journal" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Lessons_by_subject" EntityType="Self.Lessons_by_subject" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Students" EntityType="Self.Students" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Subjects" EntityType="Self.Subjects" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Teachers" EntityType="Self.Teachers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK__Administr__UserI__5812160E" Association="Self.FK__Administr__UserI__5812160E">
+          <AssociationSet Name="FK__Administr__UserI__59FA5E80" Association="Self.FK__Administr__UserI__59FA5E80">
             <End Role="Users" EntitySet="Users" />
             <End Role="Administrators" EntitySet="Administrators" />
           </AssociationSet>
@@ -199,9 +234,17 @@
             <End Role="Users" EntitySet="Users" />
             <End Role="Students" EntitySet="Students" />
           </AssociationSet>
-          <AssociationSet Name="FK__Teachers__UserId__5CD6CB2B" Association="Self.FK__Teachers__UserId__5CD6CB2B">
+          <AssociationSet Name="FK__Teachers__UserId__5FB337D6" Association="Self.FK__Teachers__UserId__5FB337D6">
             <End Role="Users" EntitySet="Users" />
             <End Role="Teachers" EntitySet="Teachers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Journal_Students" Association="Self.FK_Journal_Students">
+            <End Role="Students" EntitySet="Students" />
+            <End Role="Journal" EntitySet="Journal" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Journal_Subjects" Association="Self.FK_Journal_Subjects">
+            <End Role="Subjects" EntitySet="Subjects" />
+            <End Role="Journal" EntitySet="Journal" />
           </AssociationSet>
           <AssociationSet Name="FK_Lessons_by_subject_Subjects" Association="Self.FK_Lessons_by_subject_Subjects">
             <End Role="Subjects" EntitySet="Subjects" />
@@ -223,7 +266,7 @@
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="UserId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Users" Relationship="Self.FK__Administr__UserI__5812160E" FromRole="Administrators" ToRole="Users" />
+          <NavigationProperty Name="Users" Relationship="Self.FK__Administr__UserI__59FA5E80" FromRole="Administrators" ToRole="Users" />
         </EntityType>
         <EntityType Name="Attendance">
           <Key>
@@ -252,6 +295,18 @@
           <Property Name="GroupName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="Students" Relationship="Self.FK_Students_Groups" FromRole="Groups" ToRole="Students" />
         </EntityType>
+        <EntityType Name="Journal">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="StudentId" Type="Int32" Nullable="false" />
+          <Property Name="SubjectId" Type="Int32" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Estimate" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Students" Relationship="Self.FK_Journal_Students" FromRole="Journal" ToRole="Students" />
+          <NavigationProperty Name="Subjects" Relationship="Self.FK_Journal_Subjects" FromRole="Journal" ToRole="Subjects" />
+        </EntityType>
         <EntityType Name="Lessons_by_subject">
           <Key>
             <PropertyRef Name="Id" />
@@ -271,6 +326,7 @@
           <Property Name="Faculty" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="Attendance" Relationship="Self.FK__Attendanc__Stude__571DF1D5" FromRole="Students" ToRole="Attendance" />
           <NavigationProperty Name="Groups" Relationship="Self.FK_Students_Groups" FromRole="Students" ToRole="Groups" />
+          <NavigationProperty Name="Journal" Relationship="Self.FK_Journal_Students" FromRole="Students" ToRole="Journal" />
           <NavigationProperty Name="Users" Relationship="Self.FK__Students__UserId__59063A47" FromRole="Students" ToRole="Users" />
         </EntityType>
         <EntityType Name="Subjects">
@@ -280,6 +336,7 @@
           <Property Name="SubjectId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="Attendance" Relationship="Self.FK__Attendanc__Subje__59063A47" FromRole="Subjects" ToRole="Attendance" />
+          <NavigationProperty Name="Journal" Relationship="Self.FK_Journal_Subjects" FromRole="Subjects" ToRole="Journal" />
           <NavigationProperty Name="Lessons_by_subject" Relationship="Self.FK_Lessons_by_subject_Subjects" FromRole="Subjects" ToRole="Lessons_by_subject" />
         </EntityType>
         <EntityType Name="sysdiagrams">
@@ -300,7 +357,7 @@
           <Property Name="UserId" Type="Int32" Nullable="false" />
           <Property Name="Department" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Position" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="Users" Relationship="Self.FK__Teachers__UserId__5CD6CB2B" FromRole="Teachers" ToRole="Users" />
+          <NavigationProperty Name="Users" Relationship="Self.FK__Teachers__UserId__5FB337D6" FromRole="Teachers" ToRole="Users" />
         </EntityType>
         <EntityType Name="Users">
           <Key>
@@ -310,11 +367,11 @@
           <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="Administrators" Relationship="Self.FK__Administr__UserI__5812160E" FromRole="Users" ToRole="Administrators" />
+          <NavigationProperty Name="Administrators" Relationship="Self.FK__Administr__UserI__59FA5E80" FromRole="Users" ToRole="Administrators" />
           <NavigationProperty Name="Students" Relationship="Self.FK__Students__UserId__59063A47" FromRole="Users" ToRole="Students" />
-          <NavigationProperty Name="Teachers" Relationship="Self.FK__Teachers__UserId__5CD6CB2B" FromRole="Users" ToRole="Teachers" />
+          <NavigationProperty Name="Teachers" Relationship="Self.FK__Teachers__UserId__5FB337D6" FromRole="Users" ToRole="Teachers" />
         </EntityType>
-        <Association Name="FK__Administr__UserI__5812160E">
+        <Association Name="FK__Administr__UserI__59FA5E80">
           <End Role="Users" Type="Self.Users" Multiplicity="1" />
           <End Role="Administrators" Type="Self.Administrators" Multiplicity="*" />
           <ReferentialConstraint>
@@ -362,6 +419,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Journal_Students">
+          <End Role="Students" Type="Self.Students" Multiplicity="1" />
+          <End Role="Journal" Type="Self.Journal" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Students">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Journal">
+              <PropertyRef Name="StudentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Journal_Subjects">
+          <End Role="Subjects" Type="Self.Subjects" Multiplicity="1" />
+          <End Role="Journal" Type="Self.Journal" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Subjects">
+              <PropertyRef Name="SubjectId" />
+            </Principal>
+            <Dependent Role="Journal">
+              <PropertyRef Name="SubjectId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Lessons_by_subject_Subjects">
           <End Role="Subjects" Type="Self.Subjects" Multiplicity="1" />
           <End Role="Lessons_by_subject" Type="Self.Lessons_by_subject" Multiplicity="*" />
@@ -386,7 +467,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Teachers__UserId__5CD6CB2B">
+        <Association Name="FK__Teachers__UserId__5FB337D6">
           <End Role="Users" Type="Self.Users" Multiplicity="1" />
           <End Role="Teachers" Type="Self.Teachers" Multiplicity="*" />
           <ReferentialConstraint>
@@ -403,13 +484,14 @@
           <EntitySet Name="Attendance" EntityType="Self.Attendance" />
           <EntitySet Name="Departments" EntityType="Self.Departments" />
           <EntitySet Name="Groups" EntityType="Self.Groups" />
+          <EntitySet Name="Journal" EntityType="Self.Journal" />
           <EntitySet Name="Lessons_by_subject" EntityType="Self.Lessons_by_subject" />
           <EntitySet Name="Students" EntityType="Self.Students" />
           <EntitySet Name="Subjects" EntityType="Self.Subjects" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
           <EntitySet Name="Teachers" EntityType="Self.Teachers" />
           <EntitySet Name="Users" EntityType="Self.Users" />
-          <AssociationSet Name="FK__Administr__UserI__5812160E" Association="Self.FK__Administr__UserI__5812160E">
+          <AssociationSet Name="FK__Administr__UserI__59FA5E80" Association="Self.FK__Administr__UserI__59FA5E80">
             <End Role="Users" EntitySet="Users" />
             <End Role="Administrators" EntitySet="Administrators" />
           </AssociationSet>
@@ -425,6 +507,14 @@
             <End Role="Groups" EntitySet="Groups" />
             <End Role="Students" EntitySet="Students" />
           </AssociationSet>
+          <AssociationSet Name="FK_Journal_Students" Association="Self.FK_Journal_Students">
+            <End Role="Students" EntitySet="Students" />
+            <End Role="Journal" EntitySet="Journal" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Journal_Subjects" Association="Self.FK_Journal_Subjects">
+            <End Role="Subjects" EntitySet="Subjects" />
+            <End Role="Journal" EntitySet="Journal" />
+          </AssociationSet>
           <AssociationSet Name="FK_Lessons_by_subject_Subjects" Association="Self.FK_Lessons_by_subject_Subjects">
             <End Role="Subjects" EntitySet="Subjects" />
             <End Role="Lessons_by_subject" EntitySet="Lessons_by_subject" />
@@ -433,7 +523,7 @@
             <End Role="Users" EntitySet="Users" />
             <End Role="Students" EntitySet="Students" />
           </AssociationSet>
-          <AssociationSet Name="FK__Teachers__UserId__5CD6CB2B" Association="Self.FK__Teachers__UserId__5CD6CB2B">
+          <AssociationSet Name="FK__Teachers__UserId__5FB337D6" Association="Self.FK__Teachers__UserId__5FB337D6">
             <End Role="Users" EntitySet="Users" />
             <End Role="Teachers" EntitySet="Teachers" />
           </AssociationSet>
@@ -476,6 +566,17 @@
               <MappingFragment StoreEntitySet="Groups">
                 <ScalarProperty Name="GroupId" ColumnName="GroupId" />
                 <ScalarProperty Name="GroupName" ColumnName="GroupName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Journal">
+            <EntityTypeMapping TypeName="BDModel.Journal">
+              <MappingFragment StoreEntitySet="Journal">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="StudentId" ColumnName="StudentId" />
+                <ScalarProperty Name="SubjectId" ColumnName="SubjectId" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Estimate" ColumnName="Estimate" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

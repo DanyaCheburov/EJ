@@ -112,6 +112,9 @@
     <Compile Include="Groups.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Journal.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Lessons_by_subject.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -119,16 +122,30 @@
       <DependentUpon>AttedancePage.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainMenu\EmployeeAttendance.cs" />
-    <Compile Include="Profile\AccountProfile.xaml.cs">
-      <DependentUpon>AccountProfile.xaml</DependentUpon>
+    <Compile Include="MainMenu\EmployeeJournal.cs" />
+    <Compile Include="MainMenu\JournalPage.xaml.cs">
+      <DependentUpon>JournalPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MainMenu\Report.xaml.cs">
-      <DependentUpon>Report.xaml</DependentUpon>
+    <Compile Include="Model1.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Model1.Context.tt</DependentUpon>
     </Compile>
     <Compile Include="Model1.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Model1.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Profile\AccountProfile.xaml.cs">
+      <DependentUpon>AccountProfile.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MainMenu\Report.xaml.cs">
+      <DependentUpon>Report.xaml</DependentUpon>
     </Compile>
     <Compile Include="Profile\ProfileUpdate.xaml.cs">
       <DependentUpon>ProfileUpdate.xaml</DependentUpon>
@@ -169,6 +186,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="MainMenu\AttedancePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MainMenu\JournalPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -227,16 +248,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Model1.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Model1.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model1.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Model1.edmx</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

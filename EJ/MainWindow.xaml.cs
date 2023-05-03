@@ -136,7 +136,7 @@ namespace EJ
 
         private void EstimateButton_Click(object sender, RoutedEventArgs e)
         {
-
+            MainContentFrame.Navigate(new Uri("MainMenu/JournalPage.xaml", UriKind.Relative));
         }
     }
 }

@@ -40,6 +40,7 @@ namespace EJ
         public virtual DbSet<Attendance> Attendance { get; set; }
         public virtual DbSet<Departments> Departments { get; set; }
         public virtual DbSet<Groups> Groups { get; set; }
+        public virtual DbSet<Journal> Journal { get; set; }
         public virtual DbSet<Lessons_by_subject> Lessons_by_subject { get; set; }
         public virtual DbSet<Students> Students { get; set; }
         public virtual DbSet<Subjects> Subjects { get; set; }

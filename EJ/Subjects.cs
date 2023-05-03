@@ -18,6 +18,7 @@ namespace EJ
         public Subjects()
         {
             this.Attendance = new HashSet<Attendance>();
+            this.Journal = new HashSet<Journal>();
             this.Lessons_by_subject = new HashSet<Lessons_by_subject>();
         }
     
@@ -26,6 +27,8 @@ namespace EJ
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Attendance> Attendance { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Journal> Journal { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Lessons_by_subject> Lessons_by_subject { get; set; }
     }
