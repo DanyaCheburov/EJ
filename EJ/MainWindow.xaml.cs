@@ -1,4 +1,5 @@
 ﻿using EJ.AuthorizationANDRegistration;
+using EJ.Profile;
 using MaterialDesignThemes.Wpf;
 using System;
 using System.Windows;
@@ -67,7 +68,6 @@ namespace EJ
             base.OnMouseLeftButtonDown(e);
             DragMove();
         }
-
         public bool IsDarkTheme { get; set; }
 
         private readonly PaletteHelper paletteHelper = new PaletteHelper();

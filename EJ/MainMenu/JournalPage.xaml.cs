@@ -6,7 +6,6 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Navigation;
 
 namespace EJ.MainMenu
 {
@@ -53,13 +52,6 @@ namespace EJ.MainMenu
             ComboMonth.SelectedIndex = currentMonthIndex;
         }
 
-        //private void Add_score_Click(object sender, RoutedEventArgs e)
-        //{
-        //    var window = new AddAttedance();
-        //    window.ShowDialog();
-        //    LoadGrid();
-        //}
-
         private void LoadGrid()
         {
             string groupName = null;
@@ -105,23 +97,23 @@ namespace EJ.MainMenu
 
                 foreach (var row in rstEdata)
                 {
+
                     var empID = row.StudentId;
                     var day = row.Date?.Day.ToString() ?? "";
 
-                        if (empID != lastEmpID)
+                    if (empID != lastEmpID)
+                    {
+                        if (lastEmpID != -1)
                         {
-                            if (lastEmpID != -1)
-                            {
-                                employeeJournalList.Add(employeeJournal);
-                            }
-                            employeeJournal = new EmployeeJournal { Name = row.Name }; // заменяем StudentId на Name
-                            lastEmpID = empID;
+                            employeeJournalList.Add(employeeJournal);
                         }
+                        employeeJournal = new EmployeeJournal { Name = row.Name }; // заменяем StudentId на Name
+                        lastEmpID = empID;
+                    }
+                    var score = row.Score.ToString() ?? "";
+                    var propertyDescriptor = TypeDescriptor.GetProperties(typeof(EmployeeJournal))[$"Day{day}"];
+                    propertyDescriptor?.SetValue(employeeJournal, score);
 
-                        var score = row.Score.ToString() ?? "";
-                        //employeeJournal.GetType().GetProperty($"Day{day}").SetValue(employeeJournal, score);
-                        var propertyDescriptor = TypeDescriptor.GetProperties(typeof(EmployeeJournal))[$"Day{day}"];
-                        propertyDescriptor?.SetValue(employeeJournal, score);
                 }
 
                 employeeJournalList.Add(employeeJournal);
@@ -164,6 +156,13 @@ namespace EJ.MainMenu
 
         private void ComboSubject_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            LoadGrid();
+        }
+
+        private void Add_estimate_Click(object sender, RoutedEventArgs e)
+        {
+            var window = new AddEstimate();
+            window.ShowDialog();
             LoadGrid();
         }
     }

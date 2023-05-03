@@ -88,6 +88,9 @@
     <Compile Include="AddAttedance.xaml.cs">
       <DependentUpon>AddAttedance.xaml</DependentUpon>
     </Compile>
+    <Compile Include="AddEstimate.xaml.cs">
+      <DependentUpon>AddEstimate.xaml</DependentUpon>
+    </Compile>
     <Compile Include="AddStudentGroup.xaml.cs">
       <DependentUpon>AddStudentGroup.xaml</DependentUpon>
     </Compile>
@@ -166,6 +169,10 @@
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Page Include="AddAttedance.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="AddEstimate.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

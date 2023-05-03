@@ -3,18 +3,25 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
 
 namespace EJ
 {
     /// <summary>
-    /// Логика взаимодействия для AddAttedance.xaml
+    /// Логика взаимодействия для AddEstimate.xaml
     /// </summary>
-    public partial class AddAttedance : Window
+    public partial class AddEstimate : Window
     {
-        public AddAttedance()
+        public AddEstimate()
         {
             InitializeComponent();
             ComboGroup.ItemsSource = BDEntities.GetContext().Groups.Local;
@@ -45,8 +52,12 @@ namespace EJ
         {
             ComboStudent.ItemsSource = Students;
         }
+        private void BtnExit_Click(object sender, RoutedEventArgs e)
+        {
+            this.Hide();
+        }
 
-        private void Add_attendance_Click(object sender, RoutedEventArgs e)
+        private void add_estimate_Click(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -55,78 +66,59 @@ namespace EJ
                     var entity = ComboStudent.SelectedItem as Students;
                     var entity2 = ComboSubject.SelectedItem as Subjects;
                     context.Entry(entity).State = EntityState.Detached;
-
                     using (SqlConnection connection = new SqlConnection(@"Data Source=localhost\SQLEXPRESS;Initial Catalog=BD;Integrated Security=True"))
                     {
                         connection.Open();
 
-                        using (SqlCommand command = new SqlCommand("SELECT * FROM Attendance WHERE StudentId = @Value AND Date = @Value1 AND SubjectId = @Value2", connection))
+                        using (SqlCommand command = new SqlCommand("SELECT * FROM Journal WHERE StudentId = @Value AND SubjectId = @Value1 AND Date = @Value2", connection))
                         {
                             command.Parameters.AddWithValue("@Value", entity.Id);
-                            command.Parameters.AddWithValue("@Value1", datePicker.SelectedDate.Value.ToString("yyyy-MM-dd"));
-                            command.Parameters.AddWithValue("@Value2", entity2.SubjectId);
+                            command.Parameters.AddWithValue("@Value1", entity2.SubjectId);
+                            command.Parameters.AddWithValue("@Value2", datePicker.SelectedDate.Value.ToString("yyyy-MM-dd"));
 
                             SqlDataReader reader = command.ExecuteReader();
 
                             if (reader.Read())
                             {
-                                bool previousPassType = reader.GetBoolean(reader.GetOrdinal("PassType"));
-                                bool newPassType = false;
+                                int previousEstimate = reader.GetInt32(reader.GetOrdinal("Estimate"));
+                                int newEstimate = Convert.ToInt32(((ComboBoxItem)ComboEstimate.SelectedItem).Content);
 
-                                if (ComboPassType.SelectedIndex == 0) // Отсутствие по неуважительной причине
-                                {
-                                    newPassType = false;
-                                }
-                                else if (ComboPassType.SelectedIndex == 1) // Отсутствие по уважительной причине
-                                {
-                                    newPassType = true;
-                                }
-
-                                if (previousPassType != newPassType) // Если тип пропуска изменился
+                                if (previousEstimate != newEstimate) // Если оценка изменилась
                                 {
                                     reader.Close();
 
-                                    using (SqlCommand updateCommand = new SqlCommand("UPDATE Attendance SET PassType = @Value3 WHERE StudentId = @Value AND Date = @Value1 AND SubjectId = @Value2", connection))
+                                    using (SqlCommand updateCommand = new SqlCommand("UPDATE Journal SET Estimate = @Value3 WHERE StudentId = @Value AND SubjectId = @Value1 AND Date = @Value2", connection))
                                     {
                                         updateCommand.Parameters.AddWithValue("@Value", entity.Id);
-                                        updateCommand.Parameters.AddWithValue("@Value1", datePicker.SelectedDate.Value.ToString("yyyy-MM-dd"));
-                                        updateCommand.Parameters.AddWithValue("@Value2", entity2.SubjectId);
-                                        updateCommand.Parameters.AddWithValue("@Value3", newPassType);
+                                        updateCommand.Parameters.AddWithValue("@Value1", entity2.SubjectId);
+                                        updateCommand.Parameters.AddWithValue("@Value2", datePicker.SelectedDate.Value.ToString("yyyy-MM-dd"));
+                                        updateCommand.Parameters.AddWithValue("@Value3", newEstimate);
                                         updateCommand.ExecuteNonQuery();
-                                        MessageBox.Show("Пропуск обновлен.");
+                                        MessageBox.Show("Оценка обновлена.");
                                     }
                                 }
                                 else
                                 {
                                     reader.Close();
-                                    MessageBox.Show("Пропуск уже существует.");
+                                    MessageBox.Show("Оценка уже существует.");
                                 }
                             }
                             else
                             {
                                 reader.Close();
 
-                                using (SqlCommand insertCommand = new SqlCommand("INSERT INTO Attendance (StudentId, Date, SubjectId, PassType) VALUES (@Value,  @Value1, @Value2, @Value3)", connection))
+                                using (SqlCommand insertCommand = new SqlCommand("INSERT INTO Journal (StudentId, SubjectId, Date, Estimate) VALUES (@Value,  @Value1, @Value2, @Value3)", connection))
                                 {
                                     if (datePicker.SelectedDate != null && entity != null)
                                     {
-                                        bool passType = false;
-
-                                        if (ComboPassType.SelectedIndex == 0) // Отсутствие по неуважительной причине
-                                        {
-                                            passType = false;
-                                        }
-                                        else if (ComboPassType.SelectedIndex == 1) // Отсутствие по уважительной причине
-                                        {
-                                            passType = true;
-                                        }
+                                        int estimate = Convert.ToInt32(((ComboBoxItem)ComboEstimate.SelectedItem).Content);
 
                                         insertCommand.Parameters.AddWithValue("@Value", entity.Id);
-                                        insertCommand.Parameters.AddWithValue("@Value1", datePicker.SelectedDate.Value.ToString("yyyy-MM-dd"));
-                                        insertCommand.Parameters.AddWithValue("@Value2", entity2.SubjectId);
-                                        insertCommand.Parameters.AddWithValue("@Value3", passType);
+                                        insertCommand.Parameters.AddWithValue("@Value1", entity2.SubjectId);
+                                        insertCommand.Parameters.AddWithValue("@Value2", datePicker.SelectedDate.Value.ToString("yyyy-MM-dd"));
+                                        insertCommand.Parameters.AddWithValue("@Value3", estimate);
                                         insertCommand.ExecuteNonQuery();
-                                        MessageBox.Show("Пропуск добавлен.");
+                                        MessageBox.Show("Оценка добавлена.");
                                     }
                                     else
                                     {
@@ -140,17 +132,10 @@ namespace EJ
                     }
                 }
             }
-
             catch (Exception ex)
             {
                 MessageBox.Show("Ошибка сохранения данных: " + ex.Message);
             }
-        }
-
-
-        private void BtnExit_Click(object sender, RoutedEventArgs e)
-        {
-            this.Hide();
         }
     }
 }
