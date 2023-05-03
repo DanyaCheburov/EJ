@@ -239,7 +239,6 @@ namespace EJ.MainMenu
                         string path = Path.Combine(folderPath, cleanedFileName);
                         using (WordprocessingDocument wordDoc = WordprocessingDocument.Create(path, WordprocessingDocumentType.Document))
                         {
-                            
                             //Создаем главный раздел документа
                             MainDocumentPart mainPart = wordDoc.AddMainDocumentPart();
 
@@ -249,9 +248,8 @@ namespace EJ.MainMenu
                             styleDefinitionsPart.Styles.Save();
 
                             //Создаем документ и добавляем заголовок
-                            Document doc = new Document(); 
+                            Document doc = new Document();
                             Body body = new Body();
-                            mainPart.Document.Append(body);
                             Paragraph paraTitle = new Paragraph(new Run(new Text(cleanedFileName.Replace(".docx", ""))));
                             paraTitle.ParagraphProperties = new ParagraphProperties(
                                 new Justification() { Val = JustificationValues.Center });
