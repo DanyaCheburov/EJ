@@ -19,7 +19,7 @@
                     <TextBlock Text="Группа:" Width="125" Margin="5" VerticalAlignment="Center" TextAlignment="Right"></TextBlock>
                     <ComboBox Name="ComboGroup" ItemsSource="{Binding Groups}" DisplayMemberPath="GroupName" SelectionChanged="UpdateChart" SelectedIndex="0" Width="95" Margin="5"></ComboBox>
                     <TextBlock Text="Предмет:" Width="79" Margin="5" VerticalAlignment="Center" TextAlignment="Right"></TextBlock>
-                    <ComboBox Name="ComboSubject" ItemsSource="{Binding Subjects}" DisplayMemberPath="Name"  SelectionChanged="UpdateChart"  SelectedIndex="0" Width="95" Margin="5"></ComboBox>
+                    <ComboBox Name="ComboSubject" ItemsSource="{Binding Subjects}" DisplayMemberPath="SubjectName"  SelectionChanged="UpdateChart"  SelectedIndex="0" Width="95" Margin="5"></ComboBox>
                     <TextBlock Text="Месяц:" Width="60" Margin="5" VerticalAlignment="Center" TextAlignment="Right"></TextBlock>
                     <ComboBox Name="ComboMonth" ItemsSource="{Binding Months}" SelectionChanged="UpdateChart" SelectedIndex="0" Width="60" Margin="5">
                         

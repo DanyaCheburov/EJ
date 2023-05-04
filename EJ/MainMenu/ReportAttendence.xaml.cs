@@ -28,7 +28,7 @@ namespace EJ.MainMenu
             ComboGroup.SelectedItem = _context.Groups.FirstOrDefault(g => g.GroupName == SelectedGroup); // установить выбранное значение ComboGroup
             SelectedSubject = selectedSubject;
             ComboSubject.ItemsSource = _context.Subjects.ToList();
-            ComboSubject.SelectedItem = _context.Subjects.FirstOrDefault(s => s.Name == SelectedSubject);                
+            ComboSubject.SelectedItem = _context.Subjects.FirstOrDefault(s => s.SubjectName == SelectedSubject);                
             
             ComboYear.ItemsSource = Enumerable.Range(2019, DateTime.Now.Year - 2018); // используем метод Enumerable.Range для заполнения ComboBox годами с 2019 до текущего года
             ComboYear.SelectedItem = selectedYear;
@@ -58,7 +58,7 @@ namespace EJ.MainMenu
 
                 ChartPayments.Series.Add(currentSeries);
 
-                var _connection = (@"Data Source=YOGAPC\SQLEXPRESS;Initial Catalog=BD;Integrated Security=True");
+                var _connection = (@"Data Source=localhost\SQLEXPRESS;Initial Catalog=BD;Integrated Security=True");
                 string lessonsQuery = "SELECT COUNT(*) as Lessons FROM Lessons_by_subject WHERE Subject_Id = @SubjectId";
                 SqlConnection lessonsConnection = new SqlConnection(_connection);
                 SqlCommand lessonsCommand = new SqlCommand(lessonsQuery, lessonsConnection);
@@ -73,20 +73,20 @@ namespace EJ.MainMenu
                 int selectedMonth = Array.IndexOf(CultureInfo.CurrentCulture.DateTimeFormat.MonthNames, selectedMonthName);
 
                 // Выбираем студентов для определенной группы и отображаем их на графике
-                string query = "SELECT u.Name, COUNT(*) as Absences, l.Nubmer_of_lessons AS Lessons " +
+                string query = "SELECT u.UserName, COUNT(*) as Absences, l.Nubmer_of_lessons AS Lessons " +
                                "FROM Users AS u " +
-                               "JOIN Students AS s ON s.UserId=u.Id " +
+                               "JOIN Students AS s ON s.UserId=u.UserId " +
                                "JOIN Groups AS g ON g.GroupId=s.GroupId " +
-                               "JOIN Attendance AS a ON a.StudentId=s.Id " +
+                               "JOIN Attendance AS a ON a.StudentId=s.StudentId " +
                                "JOIN Subjects AS s1 ON s1.SubjectId = a.SubjectId " +
                                "JOIN Lessons_by_subject AS l ON s1.SubjectId = l.Subject_Id " +
-                               "WHERE g.GroupName = @GroupName  AND s1.Name=@Name AND a.PassType = 0 AND MONTH(a.Date) = @Month AND YEAR(a.Date) = @Year " +
-                               "GROUP BY u.Name, l.Nubmer_of_lessons " +
+                               "WHERE g.GroupName = @GroupName  AND s1.SubjectName=@Name AND a.PassType = 0 AND MONTH(a.Date) = @Month AND YEAR(a.Date) = @Year " +
+                               "GROUP BY u.UserName, l.Nubmer_of_lessons " +
                                "HAVING COUNT(a.PassType) > 0";
                 SqlConnection connection = new SqlConnection(_connection);
                 SqlCommand command = new SqlCommand(query, connection);
                 command.Parameters.AddWithValue("@GroupName", currentGroup.GroupName);
-                command.Parameters.AddWithValue("@Name", currentSubject.Name);
+                command.Parameters.AddWithValue("@Name", currentSubject.SubjectName);
                 command.Parameters.AddWithValue("@Month", selectedMonth + 1);
                 command.Parameters.AddWithValue("@Year", SelectedYear);
 

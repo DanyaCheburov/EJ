@@ -31,7 +31,7 @@
                 <materialDesign:PackIcon Kind="LogoutVariant" />
             </Button>
             <TextBlock Text="Выберите пользователя:" Margin="10" Grid.Row="1" />
-            <ComboBox x:Name="ComboUsers" ItemsSource="{Binding Users}" DisplayMemberPath="Name" IsEditable="True" Grid.Column="1" Margin="10" Grid.Row="1" />
+            <ComboBox x:Name="ComboUsers" ItemsSource="{Binding Users}" DisplayMemberPath="UserName" IsEditable="True" Grid.Column="1" Margin="10" Grid.Row="1" />
             <Button x:Name="add_teacher" Click="Add_Teacher_Click" Content="Добавить" Margin="50" Grid.Row="2" Grid.ColumnSpan="2" />
         </Grid>
     </materialDesign:Card>

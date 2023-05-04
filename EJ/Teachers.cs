@@ -14,7 +14,7 @@ namespace EJ
     
     public partial class Teachers
     {
-        public int Id { get; set; }
+        public int TeacherId { get; set; }
         public int UserId { get; set; }
         public string Department { get; set; }
         public string Position { get; set; }

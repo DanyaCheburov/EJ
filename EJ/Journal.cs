@@ -14,7 +14,7 @@ namespace EJ
     
     public partial class Journal
     {
-        public int Id { get; set; }
+        public int JournalId { get; set; }
         public int StudentId { get; set; }
         public int SubjectId { get; set; }
         public System.DateTime Date { get; set; }

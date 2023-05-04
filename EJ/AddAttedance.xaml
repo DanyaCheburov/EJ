@@ -37,9 +37,9 @@
             <TextBlock Text="Выберите группу:" Margin="10" Grid.Row="1"/>
             <ComboBox x:Name="ComboGroup" ItemsSource="{Binding Groups}" DisplayMemberPath="GroupName" SelectedItem="{Binding SelectedGroup}" SelectionChanged="ComboGroup_SelectionChanged" Grid.Row="1" Grid.Column="1" Margin="10" />
             <TextBlock Text="Выберите студента:" Margin="10" Grid.Row="2" />
-            <ComboBox x:Name="ComboStudent" ItemsSource="{Binding Students}" DisplayMemberPath="Users.Name" Grid.Column="1" Margin="10" Grid.Row="2" />
+            <ComboBox x:Name="ComboStudent" ItemsSource="{Binding Students}" DisplayMemberPath="Users.UserName" Grid.Column="1" Margin="10" Grid.Row="2" />
             <TextBlock Text="Выберите предмет:" Margin="10" Grid.Row="3" />
-            <ComboBox x:Name="ComboSubject" ItemsSource="{Binding Subjects}" DisplayMemberPath="Name" Grid.Column="1" Margin="10" Grid.Row="3" />
+            <ComboBox x:Name="ComboSubject" ItemsSource="{Binding Subjects}" DisplayMemberPath="SubjectName" Grid.Column="1" Margin="10" Grid.Row="3" />
             <TextBlock Text="Выберите дату:" Margin="10" Grid.Row="4" />
             <DatePicker x:Name="datePicker" SelectedDate="{Binding Date}" Grid.Column="1" Margin="10" Grid.Row="4" />
             <TextBlock Text="Выберите пропуск:" Margin="10" Grid.Row="5" />

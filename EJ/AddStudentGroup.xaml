@@ -34,7 +34,7 @@
             <TextBlock Text="Выберите группу:" Margin="10" Grid.Row="1"/>
             <ComboBox x:Name="ComboGroup" ItemsSource="{Binding Groups}" DisplayMemberPath="GroupName" Grid.Row="1" Grid.Column="1" Margin="10" />
             <TextBlock Text="Выберите пользователя:" Margin="10" Grid.Row="2" />
-            <ComboBox x:Name="ComboUsers" ItemsSource="{Binding Users}" DisplayMemberPath="Name" IsEditable="True" Grid.Column="1" Margin="10" Grid.Row="2" />
+            <ComboBox x:Name="ComboUsers" ItemsSource="{Binding Users}" DisplayMemberPath="UserName" IsEditable="True" Grid.Column="1" Margin="10" Grid.Row="2" />
             <Button x:Name="add_student" Click="Add_student_Click" Content="Добавить" Margin="50" Grid.Row="3" Grid.ColumnSpan="2" />
         </Grid>
     </materialDesign:Card>

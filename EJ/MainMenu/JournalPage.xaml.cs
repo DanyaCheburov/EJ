@@ -79,15 +79,15 @@ namespace EJ.MainMenu
             {
                 var query = from s in db.Students
                             join g in db.Groups on s.GroupId equals g.GroupId
-                            join u in db.Users on s.UserId equals u.Id
+                            join u in db.Users on s.UserId equals u.UserId
                             join j in db.Journal.Where(j => j.Date >= startDate && j.Date <= endDate && j.SubjectId == subjectId)
-                                on s.Id equals j.StudentId into aGroup
+                                on s.StudentId equals j.StudentId into aGroup
                             from a in aGroup.DefaultIfEmpty()
                             join sub in db.Subjects on a.SubjectId equals sub.SubjectId into subGroup
                             from sub in subGroup.DefaultIfEmpty()
                             where g.GroupName == groupName
-                            orderby s.Id
-                            select new { u.Name, StudentId = s.Id, Date = (a != null ? a.Date : default(DateTime?)), HasAbsence = (a != null), SubjectName = (sub != null ? sub.Name : ""), Score = (a != null ? a.Estimate : default(int)) };
+                            orderby s.StudentId
+                            select new { u.UserName, StudentId = s.StudentId, Date = (a != null ? a.Date : default(DateTime?)), HasAbsence = (a != null), SubjectName = (sub != null ? sub.SubjectName : ""), Score = (a != null ? a.Estimate : default(int)) };
 
                 var rstEdata = query.ToList();
 
@@ -107,7 +107,7 @@ namespace EJ.MainMenu
                         {
                             employeeJournalList.Add(employeeJournal);
                         }
-                        employeeJournal = new EmployeeJournal { Name = row.Name }; // заменяем StudentId на Name
+                        employeeJournal = new EmployeeJournal { Name = row.UserName }; // заменяем StudentId на Name
                         lastEmpID = empID;
                     }
                     var score = row.Score.ToString() ?? "";

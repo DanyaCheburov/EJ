@@ -7,16 +7,16 @@
       <Schema Namespace="Хранилище BDModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Administrators">
           <Key>
-            <PropertyRef Name="Id" />
+            <PropertyRef Name="AdministratorId" />
           </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AdministratorId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UserId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Attendance">
           <Key>
-            <PropertyRef Name="Id" />
+            <PropertyRef Name="AttendanceId" />
           </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AttendanceId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="StudentId" Type="int" Nullable="false" />
           <Property Name="Date" Type="date" Nullable="false" />
           <Property Name="SubjectId" Type="int" Nullable="false" />
@@ -24,10 +24,10 @@
         </EntityType>
         <EntityType Name="Departments">
           <Key>
-            <PropertyRef Name="Id" />
+            <PropertyRef Name="DepartmentId" />
           </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="DepartmentId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DepartmentName" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="Groups">
           <Key>
@@ -38,9 +38,9 @@
         </EntityType>
         <EntityType Name="Journal">
           <Key>
-            <PropertyRef Name="Id" />
+            <PropertyRef Name="JournalId" />
           </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="JournalId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="StudentId" Type="int" Nullable="false" />
           <Property Name="SubjectId" Type="int" Nullable="false" />
           <Property Name="Date" Type="date" Nullable="false" />
@@ -56,19 +56,18 @@
         </EntityType>
         <EntityType Name="Students">
           <Key>
-            <PropertyRef Name="Id" />
+            <PropertyRef Name="StudentId" />
           </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="StudentId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UserId" Type="int" Nullable="false" />
           <Property Name="GroupId" Type="int" Nullable="false" />
-          <Property Name="Faculty" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="Subjects">
           <Key>
             <PropertyRef Name="SubjectId" />
           </Key>
           <Property Name="SubjectId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="SubjectName" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="sysdiagrams">
           <Key>
@@ -82,40 +81,28 @@
         </EntityType>
         <EntityType Name="Teachers">
           <Key>
-            <PropertyRef Name="Id" />
+            <PropertyRef Name="TeacherId" />
           </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TeacherId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UserId" Type="int" Nullable="false" />
           <Property Name="Department" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Position" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="Users">
           <Key>
-            <PropertyRef Name="Id" />
+            <PropertyRef Name="UserId" />
           </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="UserId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Email" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Password" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
-        <Association Name="FK__Administr__UserI__59FA5E80">
-          <End Role="Users" Type="Self.Users" Multiplicity="1" />
-          <End Role="Administrators" Type="Self.Administrators" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Users">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Administrators">
-              <PropertyRef Name="UserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK__Attendanc__Stude__571DF1D5">
           <End Role="Students" Type="Self.Students" Multiplicity="1" />
           <End Role="Attendance" Type="Self.Attendance" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Students">
-              <PropertyRef Name="Id" />
+              <PropertyRef Name="StudentId" />
             </Principal>
             <Dependent Role="Attendance">
               <PropertyRef Name="StudentId" />
@@ -139,7 +126,7 @@
           <End Role="Students" Type="Self.Students" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Users">
-              <PropertyRef Name="Id" />
+              <PropertyRef Name="UserId" />
             </Principal>
             <Dependent Role="Students">
               <PropertyRef Name="UserId" />
@@ -151,7 +138,7 @@
           <End Role="Teachers" Type="Self.Teachers" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Users">
-              <PropertyRef Name="Id" />
+              <PropertyRef Name="UserId" />
             </Principal>
             <Dependent Role="Teachers">
               <PropertyRef Name="UserId" />
@@ -163,7 +150,7 @@
           <End Role="Journal" Type="Self.Journal" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Students">
-              <PropertyRef Name="Id" />
+              <PropertyRef Name="StudentId" />
             </Principal>
             <Dependent Role="Journal">
               <PropertyRef Name="StudentId" />
@@ -218,10 +205,6 @@
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Teachers" EntityType="Self.Teachers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK__Administr__UserI__59FA5E80" Association="Self.FK__Administr__UserI__59FA5E80">
-            <End Role="Users" EntitySet="Users" />
-            <End Role="Administrators" EntitySet="Administrators" />
-          </AssociationSet>
           <AssociationSet Name="FK__Attendanc__Stude__571DF1D5" Association="Self.FK__Attendanc__Stude__571DF1D5">
             <End Role="Students" EntitySet="Students" />
             <End Role="Attendance" EntitySet="Attendance" />
@@ -262,17 +245,16 @@
       <Schema Namespace="BDModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityType Name="Administrators">
           <Key>
-            <PropertyRef Name="Id" />
+            <PropertyRef Name="AdministratorId" />
           </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AdministratorId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="UserId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Users" Relationship="Self.FK__Administr__UserI__59FA5E80" FromRole="Administrators" ToRole="Users" />
         </EntityType>
         <EntityType Name="Attendance">
           <Key>
-            <PropertyRef Name="Id" />
+            <PropertyRef Name="AttendanceId" />
           </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AttendanceId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="StudentId" Type="Int32" Nullable="false" />
           <Property Name="Date" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="SubjectId" Type="Int32" Nullable="false" />
@@ -282,10 +264,10 @@
         </EntityType>
         <EntityType Name="Departments">
           <Key>
-            <PropertyRef Name="Id" />
+            <PropertyRef Name="DepartmentId" />
           </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="DepartmentId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DepartmentName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
         </EntityType>
         <EntityType Name="Groups">
           <Key>
@@ -297,9 +279,9 @@
         </EntityType>
         <EntityType Name="Journal">
           <Key>
-            <PropertyRef Name="Id" />
+            <PropertyRef Name="JournalId" />
           </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="JournalId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="StudentId" Type="Int32" Nullable="false" />
           <Property Name="SubjectId" Type="Int32" Nullable="false" />
           <Property Name="Date" Type="DateTime" Nullable="false" Precision="0" />
@@ -318,12 +300,11 @@
         </EntityType>
         <EntityType Name="Students">
           <Key>
-            <PropertyRef Name="Id" />
+            <PropertyRef Name="StudentId" />
           </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="StudentId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="UserId" Type="Int32" Nullable="false" />
           <Property Name="GroupId" Type="Int32" Nullable="false" />
-          <Property Name="Faculty" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="Attendance" Relationship="Self.FK__Attendanc__Stude__571DF1D5" FromRole="Students" ToRole="Attendance" />
           <NavigationProperty Name="Groups" Relationship="Self.FK_Students_Groups" FromRole="Students" ToRole="Groups" />
           <NavigationProperty Name="Journal" Relationship="Self.FK_Journal_Students" FromRole="Students" ToRole="Journal" />
@@ -334,7 +315,7 @@
             <PropertyRef Name="SubjectId" />
           </Key>
           <Property Name="SubjectId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="SubjectName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="Attendance" Relationship="Self.FK__Attendanc__Subje__59063A47" FromRole="Subjects" ToRole="Attendance" />
           <NavigationProperty Name="Journal" Relationship="Self.FK_Journal_Subjects" FromRole="Subjects" ToRole="Journal" />
           <NavigationProperty Name="Lessons_by_subject" Relationship="Self.FK_Lessons_by_subject_Subjects" FromRole="Subjects" ToRole="Lessons_by_subject" />
@@ -351,9 +332,9 @@
         </EntityType>
         <EntityType Name="Teachers">
           <Key>
-            <PropertyRef Name="Id" />
+            <PropertyRef Name="TeacherId" />
           </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TeacherId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="UserId" Type="Int32" Nullable="false" />
           <Property Name="Department" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Position" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
@@ -361,34 +342,21 @@
         </EntityType>
         <EntityType Name="Users">
           <Key>
-            <PropertyRef Name="Id" />
+            <PropertyRef Name="UserId" />
           </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="UserId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="Administrators" Relationship="Self.FK__Administr__UserI__59FA5E80" FromRole="Users" ToRole="Administrators" />
           <NavigationProperty Name="Students" Relationship="Self.FK__Students__UserId__59063A47" FromRole="Users" ToRole="Students" />
           <NavigationProperty Name="Teachers" Relationship="Self.FK__Teachers__UserId__5FB337D6" FromRole="Users" ToRole="Teachers" />
         </EntityType>
-        <Association Name="FK__Administr__UserI__59FA5E80">
-          <End Role="Users" Type="Self.Users" Multiplicity="1" />
-          <End Role="Administrators" Type="Self.Administrators" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Users">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Administrators">
-              <PropertyRef Name="UserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK__Attendanc__Stude__571DF1D5">
           <End Role="Students" Type="Self.Students" Multiplicity="1" />
           <End Role="Attendance" Type="Self.Attendance" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Students">
-              <PropertyRef Name="Id" />
+              <PropertyRef Name="StudentId" />
             </Principal>
             <Dependent Role="Attendance">
               <PropertyRef Name="StudentId" />
@@ -424,7 +392,7 @@
           <End Role="Journal" Type="Self.Journal" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Students">
-              <PropertyRef Name="Id" />
+              <PropertyRef Name="StudentId" />
             </Principal>
             <Dependent Role="Journal">
               <PropertyRef Name="StudentId" />
@@ -460,7 +428,7 @@
           <End Role="Students" Type="Self.Students" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Users">
-              <PropertyRef Name="Id" />
+              <PropertyRef Name="UserId" />
             </Principal>
             <Dependent Role="Students">
               <PropertyRef Name="UserId" />
@@ -472,7 +440,7 @@
           <End Role="Teachers" Type="Self.Teachers" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Users">
-              <PropertyRef Name="Id" />
+              <PropertyRef Name="UserId" />
             </Principal>
             <Dependent Role="Teachers">
               <PropertyRef Name="UserId" />
@@ -491,10 +459,6 @@
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
           <EntitySet Name="Teachers" EntityType="Self.Teachers" />
           <EntitySet Name="Users" EntityType="Self.Users" />
-          <AssociationSet Name="FK__Administr__UserI__59FA5E80" Association="Self.FK__Administr__UserI__59FA5E80">
-            <End Role="Users" EntitySet="Users" />
-            <End Role="Administrators" EntitySet="Administrators" />
-          </AssociationSet>
           <AssociationSet Name="FK__Attendanc__Stude__571DF1D5" Association="Self.FK__Attendanc__Stude__571DF1D5">
             <End Role="Students" EntitySet="Students" />
             <End Role="Attendance" EntitySet="Attendance" />
@@ -537,7 +501,7 @@
           <EntitySetMapping Name="Administrators">
             <EntityTypeMapping TypeName="BDModel.Administrators">
               <MappingFragment StoreEntitySet="Administrators">
-                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="AdministratorId" ColumnName="AdministratorId" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -545,7 +509,7 @@
           <EntitySetMapping Name="Attendance">
             <EntityTypeMapping TypeName="BDModel.Attendance">
               <MappingFragment StoreEntitySet="Attendance">
-                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="AttendanceId" ColumnName="AttendanceId" />
                 <ScalarProperty Name="StudentId" ColumnName="StudentId" />
                 <ScalarProperty Name="Date" ColumnName="Date" />
                 <ScalarProperty Name="SubjectId" ColumnName="SubjectId" />
@@ -556,8 +520,8 @@
           <EntitySetMapping Name="Departments">
             <EntityTypeMapping TypeName="BDModel.Departments">
               <MappingFragment StoreEntitySet="Departments">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="DepartmentId" ColumnName="DepartmentId" />
+                <ScalarProperty Name="DepartmentName" ColumnName="DepartmentName" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -572,7 +536,7 @@
           <EntitySetMapping Name="Journal">
             <EntityTypeMapping TypeName="BDModel.Journal">
               <MappingFragment StoreEntitySet="Journal">
-                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="JournalId" ColumnName="JournalId" />
                 <ScalarProperty Name="StudentId" ColumnName="StudentId" />
                 <ScalarProperty Name="SubjectId" ColumnName="SubjectId" />
                 <ScalarProperty Name="Date" ColumnName="Date" />
@@ -592,10 +556,9 @@
           <EntitySetMapping Name="Students">
             <EntityTypeMapping TypeName="BDModel.Students">
               <MappingFragment StoreEntitySet="Students">
-                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="StudentId" ColumnName="StudentId" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="GroupId" ColumnName="GroupId" />
-                <ScalarProperty Name="Faculty" ColumnName="Faculty" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -603,7 +566,7 @@
             <EntityTypeMapping TypeName="BDModel.Subjects">
               <MappingFragment StoreEntitySet="Subjects">
                 <ScalarProperty Name="SubjectId" ColumnName="SubjectId" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="SubjectName" ColumnName="SubjectName" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -621,7 +584,7 @@
           <EntitySetMapping Name="Teachers">
             <EntityTypeMapping TypeName="BDModel.Teachers">
               <MappingFragment StoreEntitySet="Teachers">
-                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="TeacherId" ColumnName="TeacherId" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="Department" ColumnName="Department" />
                 <ScalarProperty Name="Position" ColumnName="Position" />
@@ -631,8 +594,8 @@
           <EntitySetMapping Name="Users">
             <EntityTypeMapping TypeName="BDModel.Users">
               <MappingFragment StoreEntitySet="Users">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
                 <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="Password" ColumnName="Password" />
               </MappingFragment>

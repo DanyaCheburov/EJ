@@ -14,7 +14,7 @@ namespace EJ
     
     public partial class Attendance
     {
-        public int Id { get; set; }
+        public int AttendanceId { get; set; }
         public int StudentId { get; set; }
         public System.DateTime Date { get; set; }
         public int SubjectId { get; set; }

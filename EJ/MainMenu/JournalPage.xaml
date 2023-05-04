@@ -15,7 +15,7 @@
         </Grid.RowDefinitions>
         <StackPanel Grid.Row="0" Orientation="Horizontal">
             <Label Content="Предмет:" Margin="10"/>
-            <ComboBox x:Name="ComboSubject" ItemsSource="{Binding Subjects}" DisplayMemberPath="Name" SelectedItem="{Binding SelectedSubject}" SelectionChanged="ComboSubject_SelectionChanged" Margin="10"/>
+            <ComboBox x:Name="ComboSubject" ItemsSource="{Binding Subjects}" DisplayMemberPath="SubjectName" SelectedItem="{Binding SelectedSubject}" SelectionChanged="ComboSubject_SelectionChanged" Margin="10"/>
             <Label Content="Группа:" Margin="10"/>
             <ComboBox x:Name="ComboGroup" ItemsSource="{Binding Groups}" DisplayMemberPath="GroupName" SelectionChanged="ComboGroup_SelectionChanged" Margin="10"/>
             <Label Content="Месяц:" Margin="10"/>

@@ -72,7 +72,7 @@ namespace EJ
 
                         using (SqlCommand command = new SqlCommand("SELECT * FROM Journal WHERE StudentId = @Value AND SubjectId = @Value1 AND Date = @Value2", connection))
                         {
-                            command.Parameters.AddWithValue("@Value", entity.Id);
+                            command.Parameters.AddWithValue("@Value", entity.StudentId);
                             command.Parameters.AddWithValue("@Value1", entity2.SubjectId);
                             command.Parameters.AddWithValue("@Value2", datePicker.SelectedDate.Value.ToString("yyyy-MM-dd"));
 
@@ -89,7 +89,7 @@ namespace EJ
 
                                     using (SqlCommand updateCommand = new SqlCommand("UPDATE Journal SET Estimate = @Value3 WHERE StudentId = @Value AND SubjectId = @Value1 AND Date = @Value2", connection))
                                     {
-                                        updateCommand.Parameters.AddWithValue("@Value", entity.Id);
+                                        updateCommand.Parameters.AddWithValue("@Value", entity.StudentId);
                                         updateCommand.Parameters.AddWithValue("@Value1", entity2.SubjectId);
                                         updateCommand.Parameters.AddWithValue("@Value2", datePicker.SelectedDate.Value.ToString("yyyy-MM-dd"));
                                         updateCommand.Parameters.AddWithValue("@Value3", newEstimate);
@@ -113,7 +113,7 @@ namespace EJ
                                     {
                                         int estimate = Convert.ToInt32(((ComboBoxItem)ComboEstimate.SelectedItem).Content);
 
-                                        insertCommand.Parameters.AddWithValue("@Value", entity.Id);
+                                        insertCommand.Parameters.AddWithValue("@Value", entity.StudentId);
                                         insertCommand.Parameters.AddWithValue("@Value1", entity2.SubjectId);
                                         insertCommand.Parameters.AddWithValue("@Value2", datePicker.SelectedDate.Value.ToString("yyyy-MM-dd"));
                                         insertCommand.Parameters.AddWithValue("@Value3", estimate);

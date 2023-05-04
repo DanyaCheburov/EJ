@@ -37,8 +37,8 @@ namespace EJ.AuthorizationANDRegistration
             if (currentUser != null)
             {
                 Application.Current.Properties["Email"] = currentUser.Email;
-                Application.Current.Properties["Name"] = currentUser.Name;
-                MainWindow mainWindow = new MainWindow(currentUser.Name);
+                Application.Current.Properties["Name"] = currentUser.UserName;
+                MainWindow mainWindow = new MainWindow(currentUser.UserName);
                 mainWindow.Show();
                 Hide();
             }

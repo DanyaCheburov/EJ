@@ -14,9 +14,7 @@ namespace EJ
     
     public partial class Administrators
     {
-        public int Id { get; set; }
+        public int AdministratorId { get; set; }
         public int UserId { get; set; }
-    
-        public virtual Users Users { get; set; }
     }
 }

@@ -56,13 +56,13 @@ namespace EJ
                     var entity2 = ComboSubject.SelectedItem as Subjects;
                     context.Entry(entity).State = EntityState.Detached;
 
-                    using (SqlConnection connection = new SqlConnection(@"Data Source=YOGAPC\SQLEXPRESS;Initial Catalog=BD;Integrated Security=True"))
+                    using (SqlConnection connection = new SqlConnection(@"Data Source=localhost\SQLEXPRESS;Initial Catalog=BD;Integrated Security=True"))
                     {
                         connection.Open();
 
                         using (SqlCommand command = new SqlCommand("SELECT * FROM Attendance WHERE StudentId = @Value AND Date = @Value1 AND SubjectId = @Value2", connection))
                         {
-                            command.Parameters.AddWithValue("@Value", entity.Id);
+                            command.Parameters.AddWithValue("@Value", entity.StudentId);
                             command.Parameters.AddWithValue("@Value1", datePicker.SelectedDate.Value.ToString("yyyy-MM-dd"));
                             command.Parameters.AddWithValue("@Value2", entity2.SubjectId);
 
@@ -88,7 +88,7 @@ namespace EJ
 
                                     using (SqlCommand updateCommand = new SqlCommand("UPDATE Attendance SET PassType = @Value3 WHERE StudentId = @Value AND Date = @Value1 AND SubjectId = @Value2", connection))
                                     {
-                                        updateCommand.Parameters.AddWithValue("@Value", entity.Id);
+                                        updateCommand.Parameters.AddWithValue("@Value", entity.StudentId);
                                         updateCommand.Parameters.AddWithValue("@Value1", datePicker.SelectedDate.Value.ToString("yyyy-MM-dd"));
                                         updateCommand.Parameters.AddWithValue("@Value2", entity2.SubjectId);
                                         updateCommand.Parameters.AddWithValue("@Value3", newPassType);
@@ -121,7 +121,7 @@ namespace EJ
                                             passType = true;
                                         }
 
-                                        insertCommand.Parameters.AddWithValue("@Value", entity.Id);
+                                        insertCommand.Parameters.AddWithValue("@Value", entity.StudentId);
                                         insertCommand.Parameters.AddWithValue("@Value1", datePicker.SelectedDate.Value.ToString("yyyy-MM-dd"));
                                         insertCommand.Parameters.AddWithValue("@Value2", entity2.SubjectId);
                                         insertCommand.Parameters.AddWithValue("@Value3", passType);

@@ -87,7 +87,7 @@ namespace EJ.AuthorizationANDRegistration
             {
                 var user = new Users
                 {
-                    Name = fio,
+                    UserName = fio,
                     Email = email,
                     Password = password
                 };

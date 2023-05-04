@@ -1,17 +1,15 @@
-﻿using System;
+﻿using DocumentFormat.OpenXml;
+using DocumentFormat.OpenXml.Packaging;
+using DocumentFormat.OpenXml.Wordprocessing;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Windows;
-using System.Windows.Data;
-using System.Windows.Navigation;
 using System.Windows.Controls;
-using System.Xml.Linq;
-using DocumentFormat.OpenXml.Packaging;
-using DocumentFormat.OpenXml;
-using DocumentFormat.OpenXml.Wordprocessing;
-using System.IO;
+using System.Windows.Data;
 
 
 namespace EJ.MainMenu
@@ -92,16 +90,16 @@ namespace EJ.MainMenu
             {
                 var query = from s in db.Students
                             join g in db.Groups on s.GroupId equals g.GroupId
-                            join u in db.Users on s.UserId equals u.Id
+                            join u in db.Users on s.UserId equals u.UserId
                             join a in db.Attendance.Where(a => a.Date >= startDate && a.Date <= endDate && a.SubjectId == subjectId)
-                                on s.Id equals a.StudentId into aGroup
+                                on s.StudentId equals a.StudentId into aGroup
                             from a in aGroup.DefaultIfEmpty()
                             join sub in db.Subjects on a.SubjectId equals sub.SubjectId into subGroup
                             from sub in subGroup.DefaultIfEmpty()
                             let passType = a != null ? a.PassType : false // добавляем переменную passType, которая будет содержать тип пропуска
                             where g.GroupName == groupName
-                            orderby s.Id
-                            select new { u.Name, StudentId = s.Id, Date = (a != null ? a.Date : default(DateTime?)), HasAbsence = (a != null), SubjectName = (sub != null ? sub.Name : ""), PassType = passType };
+                            orderby s.StudentId
+                            select new { u.UserName, StudentId = s.StudentId, Date = (a != null ? a.Date : default(DateTime?)), HasAbsence = (a != null), SubjectName = (sub != null ? sub.SubjectName : ""), PassType = passType };
 
 
                 var rstEdata = query.ToList();
@@ -121,7 +119,7 @@ namespace EJ.MainMenu
                         {
                             employeeAttendanceList.Add(employeeAttendance);
                         }
-                        employeeAttendance = new EmployeeAttendance { Name = row.Name }; // заменяем StudentId на Name
+                        employeeAttendance = new EmployeeAttendance { Name = row.UserName }; // заменяем StudentId на Name
                         lastEmpID = empID;
                     }
 
@@ -195,9 +193,9 @@ namespace EJ.MainMenu
 
         private void Graphs_Click(object sender, RoutedEventArgs e)
         {
-            if (ComboGroup.SelectedItem != null || ComboSubject.SelectedItem!=null)
+            if (ComboGroup.SelectedItem != null || ComboSubject.SelectedItem != null)
             {
-                var report = new Report(((Groups)ComboGroup.SelectedItem).GroupName, ((Subjects)ComboSubject.SelectedItem).Name, (int)СomboYear.SelectedItem, (int)ComboMonth.SelectedIndex);
+                var report = new Report(((Groups)ComboGroup.SelectedItem).GroupName, ((Subjects)ComboSubject.SelectedItem).SubjectName, (int)СomboYear.SelectedItem, (int)ComboMonth.SelectedIndex);
                 report.Show();
                 LoadGrid();
             }
@@ -222,18 +220,18 @@ namespace EJ.MainMenu
                         string groupName = ((Groups)ComboGroup.SelectedItem).GroupName;
                         var queryInStudents = from s in db.Students
                                               join g in db.Groups on s.GroupId equals g.GroupId
-                                              join u in db.Users on s.UserId equals u.Id
-                                              select new { u.Name, g.GroupName, s.Id };
+                                              join u in db.Users on s.UserId equals u.UserId
+                                              select new { u.UserName, g.GroupName, s.StudentId };
                         var students = queryInStudents.Where(s => s.GroupName == groupName).ToList();
                         var subject = ComboSubject.SelectedItem as Subjects;
                         var queryInAttendence = from a in db.Attendance
-                                                join s in db.Students on a.StudentId equals s.Id
+                                                join s in db.Students on a.StudentId equals s.StudentId
                                                 join g in db.Groups on s.GroupId equals g.GroupId
-                                                select new { AttendanceId = a.Id, g.GroupName, s.Id, a.SubjectId, a.Date, a.PassType };
+                                                select new { AttendanceId = a.AttendanceId, g.GroupName, s.StudentId, a.SubjectId, a.Date, a.PassType };
                         var attendance = queryInAttendence.Where(s => s.GroupName == groupName && s.SubjectId == subject.SubjectId && s.Date.Month == selectedMonth).ToList();
 
                         //Создаем документ Word
-                        string fileName = $"{subject.Name} - {groupName} - {ComboMonth.SelectedItem} {СomboYear.SelectedItem}.docx".Replace('/', '-');
+                        string fileName = $"{subject.SubjectName} - {groupName} - {ComboMonth.SelectedItem} {СomboYear.SelectedItem}.docx".Replace('/', '-');
                         string invalidChars = new string(Path.GetInvalidFileNameChars()) + new string(Path.GetInvalidPathChars());
                         string cleanedFileName = new string(fileName.Where(x => !invalidChars.Contains(x)).ToArray());
                         string path = Path.Combine(folderPath, cleanedFileName);
@@ -250,6 +248,17 @@ namespace EJ.MainMenu
                             //Создаем документ и добавляем заголовок
                             Document doc = new Document();
                             Body body = new Body();
+                            Paragraph orientation = new Paragraph(new ParagraphProperties(new SectionProperties(new PageSize() { Width = (UInt32Value)15840U, Height = (UInt32Value)12240U, Orient = PageOrientationValues.Landscape },
+                            new PageMargin()
+                            {
+                                Top = 720,
+                                Right = 1440,
+                                Bottom = 360,
+                                Left = 1440,
+                                Header = (UInt32Value)450U,
+                                Footer = (UInt32Value)720U,
+                                Gutter = (UInt32Value)0U
+                            })));
                             Paragraph paraTitle = new Paragraph(new Run(new Text(cleanedFileName.Replace(".docx", ""))));
                             paraTitle.ParagraphProperties = new ParagraphProperties(
                                 new Justification() { Val = JustificationValues.Center });
@@ -290,13 +299,13 @@ namespace EJ.MainMenu
                             foreach (var student in students)
                             {
                                 TableRow trStudent = new TableRow();
-                                TableCell tdName = new TableCell(new Paragraph(new Run(new Text(student.Name))));
+                                TableCell tdName = new TableCell(new Paragraph(new Run(new Text(student.UserName))));
                                 trStudent.Append(tdName);
 
                                 //Create table cells for all days in the selected month
                                 for (int day = 1; day <= DateTime.DaysInMonth(DateTime.Now.Year, selectedMonth); day++)
                                 {
-                                    var att = attendance.FirstOrDefault(x => x.Date.Day == day && x.Id == student.Id);
+                                    var att = attendance.FirstOrDefault(x => x.Date.Day == day && x.StudentId == student.StudentId);
                                     string attString = att != null ? (att.PassType ? "②" : "2") : "";
                                     TableCell tdAttendance = new TableCell(new Paragraph(new Run(new Text(attString))));
                                     trStudent.Append(tdAttendance);
@@ -305,8 +314,10 @@ namespace EJ.MainMenu
                                 table.Append(trStudent);
                             }
                             body.Append(table);
+                            body.Append(orientation);
                             doc.Append(body);
                             mainPart.Document = doc;
+
                             mainPart.Document.Save();
                             wordDoc.Close();
 

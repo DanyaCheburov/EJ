@@ -21,10 +21,9 @@ namespace EJ
             this.Journal = new HashSet<Journal>();
         }
     
-        public int Id { get; set; }
+        public int StudentId { get; set; }
         public int UserId { get; set; }
         public int GroupId { get; set; }
-        public string Faculty { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Attendance> Attendance { get; set; }
