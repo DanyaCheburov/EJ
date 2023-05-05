@@ -319,7 +319,7 @@ namespace EJ.MainMenu
                             mainPart.Document = doc;
 
                             mainPart.Document.Save();
-                            wordDoc.Close();
+                            wordDoc.Dispose();
 
                             MessageBox.Show("Файл успешно сохранен.");
 
