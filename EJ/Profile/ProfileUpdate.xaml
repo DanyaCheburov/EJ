@@ -3,11 +3,24 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
       xmlns:local="clr-namespace:EJ.Profile"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
+      d:DesignHeight="550" d:DesignWidth="660"
       Title="ProfileUpdate">
-
     <Grid>
+        <TextBlock Margin="47,10,0,0"  HorizontalAlignment="Left" FontSize="17" FontWeight="SemiBold" Text="ФИО" Foreground="Gray" Height="33" VerticalAlignment="Top"></TextBlock>
+
+        <TextBox Margin="35,48,0,379" Width="282" FontSize="18" HorizontalAlignment="Left" 
+                         materialDesign:HintAssist.Hint="ФИО" BorderThickness="2" 
+                         BorderBrush="{DynamicResource MaterialDesignDivider}" Style="{StaticResource MaterialDesignOutlinedTextBox}"/>
+        <TextBlock Margin="47,171,0,0"  HorizontalAlignment="Left" FontSize="17" FontWeight="SemiBold" Text="Телефон" Foreground="Gray" Height="33" VerticalAlignment="Top"></TextBlock>
+        <TextBox Margin="35,209,0,218" Width="282" FontSize="18" HorizontalAlignment="Left" 
+                         materialDesign:HintAssist.Hint="Телефон" BorderThickness="2" 
+                         BorderBrush="{DynamicResource MaterialDesignDivider}" Style="{StaticResource MaterialDesignOutlinedTextBox}"/>
+        <TextBlock Margin="47,340,0,0"  HorizontalAlignment="Left" FontSize="17" FontWeight="SemiBold" Text="Адрес" Foreground="Gray" Height="33" VerticalAlignment="Top"></TextBlock>
+        <TextBox Margin="35,378,0,49" Width="282" FontSize="18" HorizontalAlignment="Left" 
+                         materialDesign:HintAssist.Hint="Адрес" BorderThickness="2" 
+                         BorderBrush="{DynamicResource MaterialDesignDivider}" Style="{StaticResource MaterialDesignOutlinedTextBox}"/>
     </Grid>
 </Page>

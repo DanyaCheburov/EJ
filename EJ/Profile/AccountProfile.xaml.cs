@@ -25,6 +25,12 @@ namespace EJ.Profile
             InitializeComponent();
             string userEmail = Application.Current.Properties["Email"] as string;
             EmailTextBlock.Text = userEmail;
+            DateTime dateOfBirth = (DateTime)Application.Current.Properties["DateOfBirth"];
+            DateOfBirthTextBlock.Text = dateOfBirth.ToString("dd.MM.yyyy");
+            string phone = Application.Current.Properties["Phone"] as string;
+            PhoneTextBlock.Text = phone;
+            string addres = Application.Current.Properties["Addres"] as string;
+            AddresTextBlock.Text = addres;
             string userName = Application.Current.Properties["Name"] as string;
             string[] nameParts = userName.Split(' ');
             if (nameParts.Length >= 3)

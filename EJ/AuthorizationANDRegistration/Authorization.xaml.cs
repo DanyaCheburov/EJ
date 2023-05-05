@@ -38,6 +38,9 @@ namespace EJ.AuthorizationANDRegistration
             {
                 Application.Current.Properties["Email"] = currentUser.Email;
                 Application.Current.Properties["Name"] = currentUser.UserName;
+                Application.Current.Properties["DateOfBirth"] = currentUser.DateOfBirth;
+                Application.Current.Properties["Phone"] = currentUser.Phone;
+                Application.Current.Properties["Addres"] = currentUser.Address;
                 MainWindow mainWindow = new MainWindow(currentUser.UserName);
                 mainWindow.Show();
                 Hide();

@@ -47,18 +47,18 @@
                         </Grid.ColumnDefinitions>
 
                         <TextBlock Text="Дата рождения"></TextBlock>
-                        <TextBlock Grid.Row="0" Grid.Column="1" FontWeight="Bold" Text="29 Декабря 2002" HorizontalAlignment="Right"></TextBlock>
+                        <TextBlock x:Name="DateOfBirthTextBlock" Grid.Row="0" Grid.Column="1" FontWeight="Bold" HorizontalAlignment="Right"></TextBlock>
                         <TextBlock Grid.Row="1" Text="Почта"></TextBlock>
                         <TextBlock x:Name="EmailTextBlock" FontWeight="Bold" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Right" TextWrapping="Wrap"></TextBlock>
                         <TextBlock Grid.Row="2" Text="Телефон"></TextBlock>
-                        <TextBlock Grid.Row="2" FontWeight="Bold" Grid.Column="1" Text="+79991111244" HorizontalAlignment="Right"></TextBlock>
+                        <TextBlock x:Name="PhoneTextBlock" Grid.Row="2" FontWeight="Bold" Grid.Column="1" HorizontalAlignment="Right"></TextBlock>
                         <TextBlock Grid.Row="3" Text="Адресс"></TextBlock>
-                        <TextBlock Grid.Row="3" FontWeight="Bold" Grid.Column="1" Text="г.Кострома, Тест" HorizontalAlignment="Right"></TextBlock>
+                        <TextBlock x:Name="AddresTextBlock" Grid.Row="3" FontWeight="Bold" Grid.Column="1" HorizontalAlignment="Right" TextWrapping="Wrap"></TextBlock>
                     </Grid>
                 </StackPanel>
             </materialDesign:Card>
 
-            <materialDesign:Card Height="400" Width="700" Margin="390,0,10,50" Background="{DynamicResource MaterialDesignPaper}" UniformCornerRadius="15" materialDesign:ElevationAssist.Elevation= "Dp4" Grid.ColumnSpan="2">
+            <materialDesign:Card Height="600" Width="700" Margin="390,0,10,50" Background="{DynamicResource MaterialDesignPaper}" UniformCornerRadius="15" materialDesign:ElevationAssist.Elevation= "Dp4" Grid.ColumnSpan="2">
                 <Grid HorizontalAlignment="Center">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="50" />
@@ -83,7 +83,7 @@
                             materialDesign:ButtonAssist.CornerRadius="6" Width="auto" Height="35" materialDesign:RippleAssist.Feedback="White"
                             Margin="0 0 0 15" HorizontalAlignment="Center" Cursor="Hand" Content="Настройки аккаунта" />
                     <Border Grid.Row="1" Grid.ColumnSpan="4">
-                        <Frame x:Name="MainContentFrameProfile" Margin="0 0 0 25" NavigationUIVisibility="Hidden"/>
+                        <Frame x:Name="MainContentFrameProfile" Height="500" Width="660" NavigationUIVisibility="Hidden"/>
                     </Border>
                 </Grid>
             </materialDesign:Card>
