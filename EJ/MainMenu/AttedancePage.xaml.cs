@@ -248,17 +248,13 @@ namespace EJ.MainMenu
                             //Создаем документ и добавляем заголовок
                             Document doc = new Document();
                             Body body = new Body();
-                            Paragraph orientation = new Paragraph(new ParagraphProperties(new SectionProperties(new PageSize() { Width = (UInt32Value)15840U, Height = (UInt32Value)12240U, Orient = PageOrientationValues.Landscape },
-                            new PageMargin()
-                            {
-                                Top = 720,
-                                Right = 1440,
-                                Bottom = 360,
-                                Left = 1440,
-                                Header = (UInt32Value)450U,
-                                Footer = (UInt32Value)720U,
-                                Gutter = (UInt32Value)0U
-                            })));
+                            Paragraph orientation = new Paragraph(new ParagraphProperties(new SectionProperties(new PageSize() 
+                            { 
+                                Width = (UInt32Value)15840U, 
+                                Height = (UInt32Value)12240U, 
+                                Orient = PageOrientationValues.Landscape 
+                            },
+                            new PageMargin())));
                             Paragraph paraTitle = new Paragraph(new Run(new Text(cleanedFileName.Replace(".docx", ""))));
                             paraTitle.ParagraphProperties = new ParagraphProperties(
                                 new Justification() { Val = JustificationValues.Center });
@@ -269,7 +265,7 @@ namespace EJ.MainMenu
                             TableProperties tblProp = new TableProperties();
                             TableWidth tblWidth = new TableWidth() { Width = "5000", Type = TableWidthUnitValues.Pct };
                             tblProp.Append(tblWidth);
-
+                            
                             //Add borders
                             TableBorders borders = new TableBorders();
                             borders.TopBorder = new TopBorder() { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 4 };
@@ -293,8 +289,14 @@ namespace EJ.MainMenu
                                 TableCell cell = new TableCell(new Paragraph(new Run(new Text(day.ToString()))));
                                 tr.Append(cell);
                             }
-
+                            TableCell thValid = new TableCell(new Paragraph(new Run(new Text("По уважительной причиной"))));
+                            TableCell thInvalid = new TableCell(new Paragraph(new Run(new Text("Без уважительной причины"))));
+                            tr.Append(thValid);
+                            tr.Append(thInvalid);
                             table.Append(tr);
+                            
+
+                            
 
                             foreach (var student in students)
                             {
@@ -305,9 +307,26 @@ namespace EJ.MainMenu
                                 //Create table cells for all days in the selected month
                                 for (int day = 1; day <= DateTime.DaysInMonth(DateTime.Now.Year, selectedMonth); day++)
                                 {
+                                    int validPassCount = 0;
+                                    int invalidPassCount = 0;
                                     var att = attendance.FirstOrDefault(x => x.Date.Day == day && x.StudentId == student.StudentId);
                                     string attString = att != null ? (att.PassType ? "②" : "2") : "";
                                     TableCell tdAttendance = new TableCell(new Paragraph(new Run(new Text(attString))));
+                                    if (att != null)
+                                    {
+                                        if (att.PassType == true)
+                                        {
+                                            validPassCount++;
+                                        }
+                                        else
+                                        {
+                                            invalidPassCount++;
+                                        }
+                                    }
+                                    TableCell tdValidPassCount = new TableCell(new Paragraph(new Run(new Text(validPassCount.ToString()))));
+                                    TableCell tdInvalidPassCount = new TableCell(new Paragraph(new Run(new Text(invalidPassCount.ToString()))));
+                                    trStudent.Append(tdValidPassCount);
+                                    trStudent.Append(tdInvalidPassCount);
                                     trStudent.Append(tdAttendance);
                                 }
 
@@ -315,9 +334,10 @@ namespace EJ.MainMenu
                             }
                             body.Append(table);
                             body.Append(orientation);
+                            
                             doc.Append(body);
                             mainPart.Document = doc;
-
+                            
                             mainPart.Document.Save();
                             wordDoc.Dispose();
 
