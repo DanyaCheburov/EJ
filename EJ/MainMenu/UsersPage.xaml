@@ -21,6 +21,6 @@
                 <DataGridTextColumn Header="Password" Binding="{Binding Password, UpdateSourceTrigger=PropertyChanged}"/>
             </DataGrid.Columns>
         </DataGrid>
-        <Button Grid.Row="1" Content="Изменить" Click="UpdateButton_Click" Cursor="Hand"/>
+        <Button Grid.Row="1" Content="Изменить" Width="350"  Click="UpdateButton_Click" Cursor="Hand"/>
     </Grid>
 </Page>

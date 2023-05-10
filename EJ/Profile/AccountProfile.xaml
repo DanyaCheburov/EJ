@@ -7,17 +7,22 @@
       xmlns:local="clr-namespace:EJ.Profile"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="1000"
-      Title="AccountProfile">
+      Title="AccountProfile"
+      TextElement.Foreground="{DynamicResource MaterialDesignBody}">
 
     <Viewbox Stretch="Uniform">
-        <Grid>
+        <Grid Height="636" Width="1295">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="21*"/>
+                <RowDefinition Height="629*"/>
+            </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="2*"/>
                 <ColumnDefinition Width="3*"/>
             </Grid.ColumnDefinitions>
 
-            <materialDesign:Card Height="400" Width="350" Background="{DynamicResource MaterialDesignPaper}" UniformCornerRadius="15" materialDesign:ElevationAssist.Elevation= "Dp4" Margin="-61,0,481,50">
-                <StackPanel Grid.Column="0" Margin="30">
+            <materialDesign:Card Background="{DynamicResource MaterialDesignPaper}" UniformCornerRadius="15" materialDesign:ElevationAssist.Elevation= "Dp4" Margin="37,58,44,128" Grid.Row="1">
+                <StackPanel Grid.Column="0" Margin="30,30,30,18">
                     <Grid>
                         <Ellipse Width="150" Height="150">
                             <Ellipse.Fill>
@@ -34,7 +39,7 @@
                             </MultiBinding>
                         </TextBlock.Text>
                     </TextBlock>
-                    <Grid HorizontalAlignment="Center">
+                    <Grid HorizontalAlignment="Center" Height="151" Width="344">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="40" />
                             <RowDefinition Height="40" />
@@ -46,22 +51,23 @@
                             <ColumnDefinition Width="200" />
                         </Grid.ColumnDefinitions>
 
-                        <TextBlock Text="Дата рождения"></TextBlock>
-                        <TextBlock x:Name="DateOfBirthTextBlock" Grid.Row="0" Grid.Column="1" FontWeight="Bold" HorizontalAlignment="Right"></TextBlock>
-                        <TextBlock Grid.Row="1" Text="Почта"></TextBlock>
-                        <TextBlock x:Name="EmailTextBlock" FontWeight="Bold" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Right" TextWrapping="Wrap"></TextBlock>
-                        <TextBlock Grid.Row="2" Text="Телефон"></TextBlock>
-                        <TextBlock x:Name="PhoneTextBlock" Grid.Row="2" FontWeight="Bold" Grid.Column="1" HorizontalAlignment="Right"></TextBlock>
-                        <TextBlock Grid.Row="3" Text="Адресс"></TextBlock>
-                        <TextBlock x:Name="AddresTextBlock" Grid.Row="3" FontWeight="Bold" Grid.Column="1" HorizontalAlignment="Right" TextWrapping="Wrap"></TextBlock>
+                        <TextBlock Text="Дата рождения" FontSize="20"></TextBlock>
+                        <TextBlock x:Name="DateOfBirthTextBlock" FontSize="20" Grid.Row="0" Grid.Column="1" FontWeight="Bold" HorizontalAlignment="Right"></TextBlock>
+                        <TextBlock Grid.Row="1" FontSize="20" Text="Почта"></TextBlock>
+                        <TextBlock x:Name="EmailTextBlock" FontSize="20" FontWeight="Bold" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Right" TextWrapping="Wrap"></TextBlock>
+                        <TextBlock Grid.Row="2" FontSize="20" Text="Телефон"></TextBlock>
+                        <TextBlock x:Name="PhoneTextBlock" Grid.Row="2" FontSize="20" FontWeight="Bold" Grid.Column="1" HorizontalAlignment="Right"></TextBlock>
+                        <TextBlock Grid.Row="3" FontSize="20" Text="Адресс"></TextBlock>
+                        <TextBlock x:Name="AddresTextBlock" Grid.Row="3" FontSize="20" FontWeight="Bold" Grid.Column="1" HorizontalAlignment="Right" TextWrapping="Wrap"></TextBlock>
                     </Grid>
                 </StackPanel>
             </materialDesign:Card>
 
-            <materialDesign:Card Height="600" Width="700" Margin="390,0,10,50" Background="{DynamicResource MaterialDesignPaper}" UniformCornerRadius="15" materialDesign:ElevationAssist.Elevation= "Dp4" Grid.ColumnSpan="2">
+            <materialDesign:Card Height="600" Margin="508,10,10,26" Background="{DynamicResource MaterialDesignPaper}" UniformCornerRadius="15" materialDesign:ElevationAssist.Elevation= "Dp4" Grid.RowSpan="2" Grid.ColumnSpan="2">
                 <Grid HorizontalAlignment="Center">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="50" />
+                        <RowDefinition Height="11.307" />
+                        <RowDefinition Height="38.693"/>
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
@@ -72,17 +78,17 @@
                     </Grid.ColumnDefinitions>
                     <Button x:Name="ProfileUpdate" Click="ProfileUpdate_Click" Style="{StaticResource MaterialDesignFlatButton}" Foreground="{DynamicResource PrimaryHueLightForegroundBrush}"
                             materialDesign:ButtonAssist.CornerRadius="6" Width="auto" Height="35" materialDesign:RippleAssist.Feedback="White"
-                            Margin="0 0 0 15" HorizontalAlignment="Center" Cursor="Hand" Content="Профиль" />
+                            Margin="0,0,0,15" HorizontalAlignment="Center" Cursor="Hand" Content="Профиль" Grid.RowSpan="2" />
                     <Button Grid.Column="1" Style="{StaticResource MaterialDesignFlatButton}" Foreground="{DynamicResource PrimaryHueLightForegroundBrush}"
                             materialDesign:ButtonAssist.CornerRadius="6" Width="auto" Height="35" materialDesign:RippleAssist.Feedback="White"
-                            Margin="0 0 0 15" HorizontalAlignment="Center" Cursor="Hand" Content="Документы" />
+                            Margin="0,0,0,15" HorizontalAlignment="Center" Cursor="Hand" Content="Документы" Grid.RowSpan="2" />
                     <Button Grid.Column="2" Style="{StaticResource MaterialDesignFlatButton}" Foreground="{DynamicResource PrimaryHueLightForegroundBrush}"
                             materialDesign:ButtonAssist.CornerRadius="6" Width="auto" Height="35" materialDesign:RippleAssist.Feedback="White"
-                            Margin="0 0 0 15" HorizontalAlignment="Center" Cursor="Hand" Content="Статистика" />
+                            Margin="0,0,0,15" HorizontalAlignment="Center" Cursor="Hand" Content="Статистика" Grid.RowSpan="2" />
                     <Button Grid.Column="3" Style="{StaticResource MaterialDesignFlatButton}" Foreground="{DynamicResource PrimaryHueLightForegroundBrush}"
                             materialDesign:ButtonAssist.CornerRadius="6" Width="auto" Height="35" materialDesign:RippleAssist.Feedback="White"
-                            Margin="0 0 0 15" HorizontalAlignment="Center" Cursor="Hand" Content="Настройки аккаунта" />
-                    <Border Grid.Row="1" Grid.ColumnSpan="4">
+                            Margin="0,0,0,15" HorizontalAlignment="Center" Cursor="Hand" Content="Настройки аккаунта" Grid.RowSpan="2" />
+                    <Border Grid.Row="2" Grid.ColumnSpan="4">
                         <Frame x:Name="MainContentFrameProfile" Height="500" Width="660" NavigationUIVisibility="Hidden"/>
                     </Border>
                 </Grid>
