@@ -294,9 +294,6 @@ namespace EJ.MainMenu
                             tr.Append(thValid);
                             tr.Append(thInvalid);
                             table.Append(tr);
-                            
-
-                            
 
                             foreach (var student in students)
                             {

@@ -23,23 +23,43 @@ namespace EJ.MainMenu
             DataContext = this;
         }
 
+        private void UpdateTeachers()
+        {
+            using (var db = new BDEntities())
+            {
+                var teachers = db.Teachers.Include("Users").ToList();
+                Teachers.Clear();
+                foreach (var teacher in teachers)
+                {
+                    Teachers.Add(teacher);
+                }
+            }
+        }
+
         private void AddTeacherGroup_Click(object sender, RoutedEventArgs e)
         {
             var window = new AddTeacher();
             window.ShowDialog();
+            UpdateTeachers();
         }
-
-        private void SaveChangesButton_Click(object sender, RoutedEventArgs e)
+        private void DeleteButton_Click(object sender, RoutedEventArgs e)
         {
-            using (var db = new BDEntities())
-            {
-                foreach (var student in Teachers)
-                {
-                    db.Entry(student).State = System.Data.Entity.EntityState.Modified;
-                    db.Entry(student.Users).State = System.Data.Entity.EntityState.Modified;
-                }
+            var selectedTeacher = teacherDataGrid.SelectedItem as Teachers; // Получаем выбранного студента из DataGrid
 
-                db.SaveChanges();
+            if (selectedTeacher != null)
+            {
+                // Выполняем удаление из базы данных
+                using (var dbContext = new BDEntities())
+                {
+                    var teacherToDelete = dbContext.Teachers.Find(selectedTeacher.TeacherId);
+                    if (teacherToDelete != null)
+                    {
+                        dbContext.Teachers.Remove(teacherToDelete);
+                        dbContext.SaveChanges();
+                        // Удаляем студента из коллекции Students, чтобы обновить DataGrid
+                        Teachers.Remove(selectedTeacher);
+                    }
+                }
             }
         }
     }

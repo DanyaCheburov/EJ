@@ -1,4 +1,5 @@
 ﻿using EJ.MainMenu;
+using MaterialDesignThemes.Wpf;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -52,7 +53,7 @@ namespace EJ.AuthorizationANDRegistration
                 txtPassword.Password = "";
                 txtUsername.Focus();
             }
-        }
+        }    
 
         private void SignupBtn_Click(object sender, RoutedEventArgs e)
         {

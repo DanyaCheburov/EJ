@@ -16,14 +16,13 @@
         <DataGrid x:Name="teacherDataGrid" ItemsSource="{Binding Teachers}" AutoGenerateColumns="False" IsReadOnly="False" CanUserAddRows="False">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="ID" Binding="{Binding TeacherId}" IsReadOnly="True"/>
-                <DataGridTextColumn Header="ФИО" Binding="{Binding Users.UserName}"/>
-                <DataGridTextColumn Header="Отдел" Binding="{Binding Department}"/>
+                <DataGridTextColumn Header="ФИО" Binding="{Binding Users.UserName}" IsReadOnly="True"/>
                 <DataGridTextColumn Header="Должность" Binding="{Binding Position}"/>
             </DataGrid.Columns>
         </DataGrid>
         <DockPanel Grid.Row="1">
             <Button Content="Добавить преподавателя" Width="250" DockPanel.Dock="Left" Click="AddTeacherGroup_Click" Cursor="Hand" Margin="15"/>
-            <Button Width="250" DockPanel.Dock="Right" Content="Сохранить изменения" Click="SaveChangesButton_Click" Cursor="Hand" Margin="15"/>
+            <Button Width="250" DockPanel.Dock="Right" Content="Удалить" Click="DeleteButton_Click" Cursor="Hand" Margin="15"/>
         </DockPanel>
     </Grid>
 </Page>

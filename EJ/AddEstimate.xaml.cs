@@ -54,7 +54,7 @@ namespace EJ
         }
         private void BtnExit_Click(object sender, RoutedEventArgs e)
         {
-            this.Hide();
+            this.Close();
         }
 
         private void add_estimate_Click(object sender, RoutedEventArgs e)

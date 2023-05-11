@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -33,25 +34,45 @@ namespace EJ.MainMenu
 
             DataContext = this;
         }
-
-        private void SaveChangesButton_Click(object sender, System.Windows.RoutedEventArgs e)
+        private void UpdateStudents()
         {
             using (var db = new BDEntities())
             {
-                foreach (var student in Students)
+                var students = db.Students.Include("Users").ToList();
+                var groups = db.Students.Include("Groups").ToList();
+                Students.Clear();
+                foreach (var student in students)
                 {
-                    db.Entry(student).State = System.Data.Entity.EntityState.Modified;
-                    db.Entry(student.Users).State = System.Data.Entity.EntityState.Modified;
+                    Students.Add(student);
                 }
-
-                db.SaveChanges();
             }
         }
-
         private void AddStudentGroup_Click(object sender, RoutedEventArgs e)
         {
             var window = new AddStudentGroup();
             window.ShowDialog();
+            UpdateStudents();
+        }
+
+        private void DeleteButton_Click(object sender, RoutedEventArgs e)
+        {
+            var selectedStudent = studentDataGrid.SelectedItem as Students; // Получаем выбранного студента из DataGrid
+
+            if (selectedStudent != null)
+            {
+                // Выполняем удаление из базы данных
+                using (var dbContext = new BDEntities())
+                {
+                    var studentToDelete = dbContext.Students.Find(selectedStudent.StudentId);
+                    if (studentToDelete != null)
+                    {
+                        dbContext.Students.Remove(studentToDelete);
+                        dbContext.SaveChanges();
+                        // Удаляем студента из коллекции Students, чтобы обновить DataGrid
+                        Students.Remove(selectedStudent);
+                    }
+                }
+            }
         }
     }
 }

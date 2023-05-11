@@ -14,6 +14,7 @@ namespace EJ
     /// </summary>
     public partial class MainWindow : Window
     {
+        public bool IsDarkTheme { get; set; }
         private readonly string _username;
         public MainWindow(string username)
         {
@@ -68,7 +69,7 @@ namespace EJ
             base.OnMouseLeftButtonDown(e);
             DragMove();
         }
-        public bool IsDarkTheme { get; set; }
+
 
         private readonly PaletteHelper paletteHelper = new PaletteHelper();
         private void ThemeToggle_Click(object sender, RoutedEventArgs e)
@@ -126,6 +127,17 @@ namespace EJ
 
         private void LeaveProfile_Click(object sender, RoutedEventArgs e)
         {
+            // Включаем светлую тему
+            ITheme theme = paletteHelper.GetTheme();
+            IsDarkTheme = false;
+            theme.SetBaseTheme(Theme.Light);
+            UserButton.Foreground = Brushes.Black;
+            AttendanceButton.Foreground = Brushes.Black;
+            StudentButton.Foreground = Brushes.Black;
+            TeacherButton.Foreground = Brushes.Black;
+            HelpButton.Foreground = Brushes.Black;
+            EstimateButton.Foreground = Brushes.Black;
+            paletteHelper.SetTheme(theme);
             // Закрыть текущее окно MainWindow
             this.Close();
 

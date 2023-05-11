@@ -19,6 +19,7 @@ namespace EJ
     /// </summary>
     public partial class AddTeacher : Window
     {
+        public static BDEntities db = new BDEntities();
         public AddTeacher()
         {
             InitializeComponent();
@@ -27,8 +28,25 @@ namespace EJ
 
         private void Add_Teacher_Click(object sender, RoutedEventArgs e)
         {
+            var selectedUser = (Users)ComboUsers.SelectedItem;
 
+            // Проверяем, есть ли уже такой преподаватель
+            var existingTeacher = db.Teachers.FirstOrDefault(t => t.UserId == selectedUser.UserId);
+
+            if (existingTeacher != null)
+            {
+                MessageBox.Show("Преподаватель уже существует.");
+            }
+            else
+            {
+                // Иначе создаем новую запись для преподавателя
+                var newTeacher = new Teachers { UserId = selectedUser.UserId };
+                db.Teachers.Add(newTeacher);
+                db.SaveChanges();
+                MessageBox.Show("Преподаватель успешно добавлен.");
+            }
         }
+
         protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
         {
             base.OnMouseLeftButtonDown(e);
@@ -37,7 +55,7 @@ namespace EJ
 
         private void BtnExit_Click(object sender, RoutedEventArgs e)
         {
-            this.Hide();
+            this.Close();
         }
     }
 }
