@@ -57,7 +57,7 @@ namespace EJ
             this.Close();
         }
 
-        private void add_estimate_Click(object sender, RoutedEventArgs e)
+        private void Add_estimate_Click(object sender, RoutedEventArgs e)
         {
             try
             {

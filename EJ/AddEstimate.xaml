@@ -49,7 +49,7 @@
                 <ComboBoxItem>4</ComboBoxItem>
                 <ComboBoxItem>5</ComboBoxItem>
             </ComboBox>
-            <Button x:Name="add_estimate" Click="add_estimate_Click" Content="Добавить" Margin="10" Grid.Row="6" Grid.ColumnSpan="2" />
+            <Button x:Name="add_estimate" Click="Add_estimate_Click" Content="Добавить" Margin="10" Grid.Row="6" Grid.ColumnSpan="2" />
         </Grid>
     </materialDesign:Card>
 </Window>
