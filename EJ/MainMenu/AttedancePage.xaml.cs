@@ -205,6 +205,8 @@ namespace EJ.MainMenu
 
         private void ExportToWord_Click(object sender, RoutedEventArgs e)
         {
+            string selectedMonthText = ((ComboBoxItem)ComboMonth.SelectedItem).Content.ToString();
+
             int selectedMonth = ComboMonth.SelectedIndex + 1;
             string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
             string folderName = "Посещаемость-Отчет";
@@ -231,7 +233,7 @@ namespace EJ.MainMenu
                         var attendance = queryInAttendence.Where(s => s.GroupName == groupName && s.SubjectId == subject.SubjectId && s.Date.Month == selectedMonth).ToList();
 
                         //Создаем документ Word
-                        string fileName = $"{subject.SubjectName} - {groupName} - {ComboMonth.SelectedItem} {СomboYear.SelectedItem}.docx".Replace('/', '-');
+                        string fileName = $"{subject.SubjectName} - {groupName} - {selectedMonthText} {СomboYear.SelectedItem}.docx".Replace('/', '-');
                         string invalidChars = new string(Path.GetInvalidFileNameChars()) + new string(Path.GetInvalidPathChars());
                         string cleanedFileName = new string(fileName.Where(x => !invalidChars.Contains(x)).ToArray());
                         string path = Path.Combine(folderPath, cleanedFileName);
@@ -262,10 +264,10 @@ namespace EJ.MainMenu
 
                             //Добавляем таблицу
                             Table table = new Table();
-                            TableProperties tblProp = new TableProperties();
-                            TableWidth tblWidth = new TableWidth() { Width = "5000", Type = TableWidthUnitValues.Pct };
-                            tblProp.Append(tblWidth);
-                            
+                            TableProperties tblProp = new TableProperties(new TableWidth() { Width = "100%", Type = TableWidthUnitValues.Pct },
+                                new TableCellVerticalAlignment() { Val = TableVerticalAlignmentValues.Center });                            
+                            tblProp.Append();                            
+
                             //Add borders
                             TableBorders borders = new TableBorders();
                             borders.TopBorder = new TopBorder() { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 4 };
@@ -281,16 +283,34 @@ namespace EJ.MainMenu
                             //Add rows and cells
                             TableRow tr = new TableRow();
                             TableCell th = new TableCell(new Paragraph(new Run(new Text("ФИО"))));
+                            TableCellProperties thProps = new TableCellProperties(
+                                new TableCellWidth() { Width = "5000" },
+                                new TableCellVerticalAlignment() { Val = TableVerticalAlignmentValues.Center });
+                            th.Append(thProps);
                             tr.Append(th);
 
-                            //Create table cells for all days in the selected month
-                            for (int day = 1; day <= DateTime.DaysInMonth(DateTime.Now.Year, selectedMonth); day++)
+                            // Get number of days in selected month
+                            int numDaysInMonth = DateTime.DaysInMonth(DateTime.Now.Year, selectedMonth);
+
+                            // Calculate width of each day column
+                            int dayColWidth = (int)(5000 / (numDaysInMonth + 2)); // +2 for "По уважительной причиной" and "Без уважительной причины"
+                            
+                            // Create table cells for all days in the selected month with the calculated width
+                            for (int day = 1; day <= numDaysInMonth; day++)
                             {
                                 TableCell cell = new TableCell(new Paragraph(new Run(new Text(day.ToString()))));
+                                TableCellProperties cellProps = new TableCellProperties(
+                                    new TableCellWidth() { Width = $"{dayColWidth}" },
+                                    new TableCellVerticalAlignment() { Val = TableVerticalAlignmentValues.Center });
+                                cell.Append(cellProps);
                                 tr.Append(cell);
                             }
                             TableCell thValid = new TableCell(new Paragraph(new Run(new Text("По уважительной причиной"))));
+                            TableCellProperties thValidProps = new TableCellProperties(new TableCellWidth() { Width = $"{dayColWidth}" });
+                            thValid.Append(thValidProps);
                             TableCell thInvalid = new TableCell(new Paragraph(new Run(new Text("Без уважительной причины"))));
+                            TableCellProperties thInvalidProps = new TableCellProperties(new TableCellWidth() { Width = $"{dayColWidth}" });
+                            thInvalid.Append(thInvalidProps);
                             tr.Append(thValid);
                             tr.Append(thInvalid);
                             table.Append(tr);
@@ -300,34 +320,36 @@ namespace EJ.MainMenu
                                 TableRow trStudent = new TableRow();
                                 TableCell tdName = new TableCell(new Paragraph(new Run(new Text(student.UserName))));
                                 trStudent.Append(tdName);
-
+                                int validAbsences = attendance.Where(a => a.StudentId == student.StudentId && a.PassType == true).Count();
+                                int invalidAbsences = attendance.Where(a => a.StudentId == student.StudentId && a.PassType == false).Count();
                                 //Create table cells for all days in the selected month
                                 for (int day = 1; day <= DateTime.DaysInMonth(DateTime.Now.Year, selectedMonth); day++)
                                 {
-                                    int validPassCount = 0;
-                                    int invalidPassCount = 0;
+                                    
                                     var att = attendance.FirstOrDefault(x => x.Date.Day == day && x.StudentId == student.StudentId);
                                     string attString = att != null ? (att.PassType ? "②" : "2") : "";
                                     TableCell tdAttendance = new TableCell(new Paragraph(new Run(new Text(attString))));
-                                    if (att != null)
-                                    {
-                                        if (att.PassType == true)
-                                        {
-                                            validPassCount++;
-                                        }
-                                        else
-                                        {
-                                            invalidPassCount++;
-                                        }
-                                    }
-                                    TableCell tdValidPassCount = new TableCell(new Paragraph(new Run(new Text(validPassCount.ToString()))));
-                                    TableCell tdInvalidPassCount = new TableCell(new Paragraph(new Run(new Text(invalidPassCount.ToString()))));
-                                    trStudent.Append(tdValidPassCount);
-                                    trStudent.Append(tdInvalidPassCount);
                                     trStudent.Append(tdAttendance);
                                 }
-
                                 table.Append(trStudent);
+                                validAbsences *= 2;
+                                invalidAbsences *= 2;
+                                //Add cells for valid and invalid absences
+                                TableCell tdValidAbsences = new TableCell(new Paragraph(new Run(new Text(validAbsences.ToString()))));
+                                trStudent.Append(tdValidAbsences);
+
+                                TableCell tdInvalidAbsences = new TableCell(new Paragraph(new Run(new Text(invalidAbsences.ToString()))));
+                                trStudent.Append(tdInvalidAbsences);
+                            }
+                            foreach (TableRow row in table.Elements<TableRow>())
+                            {
+                                foreach (TableCell cell in row.Elements<TableCell>())
+                                {
+                                    ParagraphProperties props = new ParagraphProperties();
+                                    Justification justification = new Justification() { Val = JustificationValues.Center };
+                                    props.Append(justification);
+                                    cell.Append(props);
+                                }
                             }
                             body.Append(table);
                             body.Append(orientation);
