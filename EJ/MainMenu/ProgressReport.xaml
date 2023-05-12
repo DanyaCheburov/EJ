@@ -1,0 +1,67 @@
+﻿<Window x:Class="EJ.MainMenu.ProgressReport"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:charts="clr-namespace:System.Windows.Forms.DataVisualization.Charting;assembly=System.Windows.Forms.DataVisualization"
+        xmlns:local="clr-namespace:EJ.MainMenu"
+        mc:Ignorable="d"
+        Title="Report" Height="450" Width="800"
+        
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        Background="{x:Null}"
+        WindowStyle="None"
+        WindowStartupLocation="CenterScreen">
+
+    <materialDesign:Card Background="{DynamicResource MaterialDesignPaper}" UniformCornerRadius="15" materialDesign:ElevationAssist.Elevation= "Dp4">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="60"></RowDefinition>
+                <RowDefinition Height="auto"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+
+            <StackPanel Orientation="Horizontal" FlowDirection="RightToLeft" Margin="15">
+                <!-- Start: Button Close | Restore | Minimize -->
+                <Button x:Name="btnExit" Style="{StaticResource IconButtonsStyle}" Content="{DynamicResource close}" Click="BtnExit_Click" Tag="IsCloseButton"/>
+                <Button x:Name="btnRestore" Margin="5 0" Style="{DynamicResource IconButtonsStyle}" Content="{DynamicResource restore}" Click="BtnRestore_Click" Tag="IsRestoreandMinimizeButton"/>
+                <Button x:Name="btnMinimize" Style="{DynamicResource IconButtonsStyle}" Content="{DynamicResource minimize}" Click="BtnMinimize_Click" Cursor="Hand" Tag="IsRestoreandMinimizeButton"/>
+                <!-- End: Button Close | Restore | Minimize -->
+            </StackPanel>
+
+            <StackPanel Grid.Row="1" Orientation="Vertical" HorizontalAlignment="Center">
+                <StackPanel Orientation="Horizontal" Width="773">
+                    <TextBlock Text="Группа:" Width="76" Margin="5" VerticalAlignment="Center" TextAlignment="Right"></TextBlock>
+                    <ComboBox Name="ComboGroup" ItemsSource="{Binding Groups}" DisplayMemberPath="GroupName" SelectionChanged="UpdateChart" SelectedIndex="0" Width="53" Margin="5"></ComboBox>
+                    <TextBlock  Text="Студент" Width="61" Margin="5" VerticalAlignment="Center" TextAlignment="Right"></TextBlock>
+                    <ComboBox Name="ComboStudents" ItemsSource="{Binding Students}" DisplayMemberPath="UserName" SelectedIndex="0" Width="119"/>
+                    <TextBlock Text="Предмет:" Width="58" Margin="5" VerticalAlignment="Center" TextAlignment="Right"></TextBlock>
+                    <ComboBox Name="ComboSubject" ItemsSource="{Binding Subjects}" DisplayMemberPath="SubjectName"  SelectionChanged="UpdateChart"  SelectedIndex="0" Width="95" Margin="5"></ComboBox>
+                    <TextBlock Text="Месяц:" Width="48" Margin="5" VerticalAlignment="Center" TextAlignment="Right"></TextBlock>
+                    <ComboBox Name="ComboMonth" ItemsSource="{Binding Months}" SelectionChanged="UpdateChart" SelectedIndex="0" Width="60" Margin="5">
+
+                    </ComboBox>
+                    <TextBlock Text="Год:" Width="37" Margin="5" VerticalAlignment="Center" TextAlignment="Right"></TextBlock>
+                    <ComboBox Name="ComboYear" ItemsSource="{Binding Years}" SelectionChanged="UpdateChart" SelectedIndex="0" Width="60" Margin="5"></ComboBox>
+                </StackPanel>
+            </StackPanel>
+            <WindowsFormsHost Grid.Row="2" Margin="5">
+                <charts:Chart x:Name="ChartesEtimates">
+                    <charts:Chart.Legends>
+                        <charts:Legend>
+
+                        </charts:Legend>
+                    </charts:Chart.Legends>
+                    <charts:Chart.Series>
+                        <charts:Series Name="Attendance" IsValueShownAsLabel="True"></charts:Series>
+                    </charts:Chart.Series>
+                    <charts:Chart.ChartAreas>
+                        <charts:ChartArea Name="Main"></charts:ChartArea>
+                    </charts:Chart.ChartAreas>
+                </charts:Chart>
+            </WindowsFormsHost>
+        </Grid>
+    </materialDesign:Card>
+</Window>
+

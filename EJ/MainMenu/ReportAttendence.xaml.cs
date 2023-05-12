@@ -124,8 +124,8 @@ namespace EJ.MainMenu
                         string studentName = reader.GetString(0);
                         int absences = reader.GetInt32(1);
                         numberOfLessons = reader.GetInt32(2);
-
-                        height = (double)absences; // вычисляем высоту столбца
+                        numberOfLessons *= 2;
+                        height = (double)absences*2; // вычисляем высоту столбца
                         maxNumberOfLessons = Math.Max(maxNumberOfLessons, numberOfLessons);
 
                         var dataPoint = new DataPoint();

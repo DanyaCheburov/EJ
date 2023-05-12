@@ -36,6 +36,7 @@
             <Label Content="Год:" Margin="10"/>
             <ComboBox x:Name="СomboYear" Margin="10" SelectionChanged="ComboYear_SelectionChanged"/>
             <Button x:Name="Add_estimate" Click="Add_estimate_Click" Content="Добавить оценку" Margin="10"/>
+            <Button x:Name="Graphs" Click="Graphs_Click" Content="График успеваемости"/>
         </StackPanel>
         <DataGrid x:Name="myDataGrid" Grid.Row="1" AutoGenerateColumns="False">
             <DataGrid.Columns>
