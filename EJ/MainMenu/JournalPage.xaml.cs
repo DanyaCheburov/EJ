@@ -167,5 +167,16 @@ namespace EJ.MainMenu
             window.ShowDialog();
             LoadGrid();
         }
+
+        private void Graphs_Click(object sender, RoutedEventArgs e)
+        {
+            if (ComboGroup.SelectedItem != null && ComboSubject.SelectedItem != null)
+            {
+                var report = new ProgressReport(((Groups)ComboGroup.SelectedItem).GroupName, ((Subjects)ComboSubject.SelectedItem).SubjectName, (int)СomboYear.SelectedItem, (int)ComboMonth.SelectedIndex);
+                report.Show();
+            }
+            else
+                MessageBox.Show("Выберите группу и предмет!");
+        }
     }
 }

@@ -129,6 +129,9 @@
     <Compile Include="MainMenu\JournalPage.xaml.cs">
       <DependentUpon>JournalPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="MainMenu\ProgressReport.xaml.cs">
+      <DependentUpon>ProgressReport.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MainMenu\ThemePage.xaml.cs">
       <DependentUpon>ThemePage.xaml</DependentUpon>
     </Compile>
@@ -200,6 +203,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="MainMenu\JournalPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MainMenu\ProgressReport.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
