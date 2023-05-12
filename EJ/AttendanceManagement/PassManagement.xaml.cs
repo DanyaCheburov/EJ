@@ -3,25 +3,31 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
 
-namespace EJ
+namespace EJ.AttendanceManagement
 {
     /// <summary>
-    /// Логика взаимодействия для AddAttedance.xaml
+    /// Логика взаимодействия для PassManagement.xaml
     /// </summary>
-    public partial class AddAttedance : Window
+    public partial class PassManagement : Window
     {
-        public AddAttedance()
+        public PassManagement()
         {
             InitializeComponent();
             ComboGroup.ItemsSource = BDEntities.GetContext().Groups.Local;
             ComboSubject.ItemsSource = BDEntities.GetContext().Subjects.ToList();
             ComboStudent.ItemsSource = Students;
         }
-
         private List<Students> Students
         {
             get
@@ -56,7 +62,7 @@ namespace EJ
                     var entity2 = ComboSubject.SelectedItem as Subjects;
                     context.Entry(entity).State = EntityState.Detached;
 
-                    using (SqlConnection connection = new SqlConnection(@"Data Source=YOGAPC\SQLEXPRESS;Initial Catalog=BD;Integrated Security=True"))
+                    using (SqlConnection connection = new SqlConnection(@"Data Source=localhost\SQLEXPRESS;Initial Catalog=BD;Integrated Security=True"))
                     {
                         connection.Open();
 
@@ -80,6 +86,20 @@ namespace EJ
                                 else if (ComboPassType.SelectedIndex == 1) // Отсутствие по уважительной причине
                                 {
                                     newPassType = true;
+                                }
+                                else if (ComboPassType.SelectedIndex == 2) // Удаление пропуска
+                                {
+                                    reader.Close();
+
+                                    using (SqlCommand deleteCommand = new SqlCommand("DELETE FROM Attendance WHERE StudentId = @Value AND Date = @Value1 AND SubjectId = @Value2", connection))
+                                    {
+                                        deleteCommand.Parameters.AddWithValue("@Value", entity.StudentId);
+                                        deleteCommand.Parameters.AddWithValue("@Value1", datePicker.SelectedDate.Value.ToString("yyyy-MM-dd"));
+                                        deleteCommand.Parameters.AddWithValue("@Value2", entity2.SubjectId);
+                                        deleteCommand.ExecuteNonQuery();
+                                        MessageBox.Show("Пропуск удален.");
+                                    }
+                                    return;
                                 }
 
                                 if (previousPassType != newPassType) // Если тип пропуска изменился
@@ -105,6 +125,13 @@ namespace EJ
                             else
                             {
                                 reader.Close();
+
+
+                                if (ComboPassType.SelectedIndex == 2) // Удаление пропуска, но его нет
+                                {
+                                    MessageBox.Show("Пропуска нет, чтобы его удалить.");
+                                    return;
+                                }
 
                                 using (SqlCommand insertCommand = new SqlCommand("INSERT INTO Attendance (StudentId, Date, SubjectId, PassType) VALUES (@Value,  @Value1, @Value2, @Value3)", connection))
                                 {
@@ -154,3 +181,4 @@ namespace EJ
         }
     }
 }
+

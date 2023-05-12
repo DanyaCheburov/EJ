@@ -14,7 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace EJ
+namespace EJ.AttendanceManagement
 {
     /// <summary>
     /// Логика взаимодействия для AddEstimate.xaml
@@ -28,7 +28,6 @@ namespace EJ
             ComboSubject.ItemsSource = BDEntities.GetContext().Subjects.ToList();
             ComboStudent.ItemsSource = Students;
         }
-
         private List<Students> Students
         {
             get

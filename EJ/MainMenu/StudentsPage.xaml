@@ -21,7 +21,7 @@
             </DataGrid.Columns>
         </DataGrid>
         <DockPanel Grid.Row="1">
-            <Button Content="Добавить/Изменить" Width="250" Click="AddStudentGroup_Click" Cursor="Hand" Margin="15"/>
+            <Button Content="Управление студентами" Width="250" Click="AddStudentGroup_Click" Cursor="Hand" Margin="15"/>
             <Button Content="Удалить" Width="250" Click="DeleteButton_Click" Cursor="Hand"/>
         </DockPanel>
     </Grid>

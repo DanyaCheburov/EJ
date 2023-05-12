@@ -12,7 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace EJ
+namespace EJ.AttendanceManagement
 {
     /// <summary>
     /// Логика взаимодействия для AddTeacher.xaml
@@ -25,7 +25,6 @@ namespace EJ
             InitializeComponent();
             ComboUsers.ItemsSource = BDEntities.GetContext().Users.ToList();
         }
-
         private void Add_Teacher_Click(object sender, RoutedEventArgs e)
         {
             var selectedUser = (Users)ComboUsers.SelectedItem;

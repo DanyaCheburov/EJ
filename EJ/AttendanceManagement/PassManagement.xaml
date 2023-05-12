@@ -1,12 +1,12 @@
-﻿<Window x:Class="EJ.AddEstimate"
+﻿<Window x:Class="EJ.AttendanceManagement.PassManagement"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:EJ"
+        xmlns:local="clr-namespace:EJ.AttendanceManagement"
         mc:Ignorable="d"
-        Title="AddEstimate" Height="400" Width="430"
+        Title="PassManagement" Height="400" Width="430"
         
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         Background="{x:Null}"
@@ -29,7 +29,7 @@
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <TextBlock Text="Добавить оценку" FontSize="15" FontWeight="Bold" Margin="10 15 0 0"></TextBlock>
+            <TextBlock Text="Управления пропусками" FontSize="15" FontWeight="Bold" Margin="10 15 0 0"></TextBlock>
             <Button Name="BtnExit" Click="BtnExit_Click" Style="{StaticResource MaterialDesignIconButton}" materialDesign:ButtonAssist.CornerRadius="6"
                                 Width="40" Height="40" DockPanel.Dock="Right" HorizontalAlignment="Right" Grid.Column="2">
                 <materialDesign:PackIcon Kind="Close" />
@@ -42,15 +42,13 @@
             <ComboBox x:Name="ComboSubject" ItemsSource="{Binding Subjects}" DisplayMemberPath="SubjectName" Grid.Column="1" Margin="10" Grid.Row="3" />
             <TextBlock Text="Выберите дату:" Margin="10" Grid.Row="4" />
             <DatePicker x:Name="datePicker" SelectedDate="{Binding Date}" Grid.Column="1" Margin="10" Grid.Row="4" />
-            <TextBlock Text="Выберите оценку:" Margin="10" Grid.Row="5" />
-            <ComboBox x:Name="ComboEstimate" Grid.Column="1" Margin="10" Grid.Row="5">
-                <ComboBoxItem>2</ComboBoxItem>
-                <ComboBoxItem>3</ComboBoxItem>
-                <ComboBoxItem>4</ComboBoxItem>
-                <ComboBoxItem>5</ComboBoxItem>
+            <TextBlock Text="Выберите пропуск:" Margin="10" Grid.Row="5" />
+            <ComboBox x:Name="ComboPassType" Grid.Column="1" Margin="10" Grid.Row="5">
+                <ComboBoxItem>Отсутствие по неуважительной причине</ComboBoxItem>
+                <ComboBoxItem>Отсутствие по уважительной причине</ComboBoxItem>
+                <ComboBoxItem>Удалить пропуск</ComboBoxItem>
             </ComboBox>
-            <Button x:Name="add_estimate" Click="Add_estimate_Click" Content="Добавить" Margin="10" Grid.Row="6" Grid.ColumnSpan="2" />
+            <Button x:Name="add_attendance" Click="Add_attendance_Click" Content="Добавить" Margin="10" Grid.Row="6" Grid.ColumnSpan="2" />
         </Grid>
     </materialDesign:Card>
 </Window>
-

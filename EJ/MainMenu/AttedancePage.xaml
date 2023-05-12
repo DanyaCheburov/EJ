@@ -35,7 +35,7 @@
             </ComboBox>
             <Label Content="Год:" Margin="10"/>
             <ComboBox x:Name="СomboYear" Margin="10" SelectionChanged="ComboYear_SelectionChanged"/>
-            <Button x:Name="Add_attedance" Click="Add_attedance_Click" Content="Добавить пропуск" Margin="10"/>
+            <Button x:Name="PassManagement" Click="PassManagement_Click" Content="Управление пропусками" Margin="10"/>
             <Button x:Name="Graphs" Click="Graphs_Click" Content="График" Margin="10"></Button>
             <Button x:Name="ExportToWord" Click="ExportToWord_Click" Content="Word" Width="94"/>
         </StackPanel>

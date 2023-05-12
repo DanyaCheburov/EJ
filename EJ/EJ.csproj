@@ -85,23 +85,23 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="AddAttedance.xaml.cs">
-      <DependentUpon>AddAttedance.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="AddEstimate.xaml.cs">
-      <DependentUpon>AddEstimate.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="AddStudentGroup.xaml.cs">
-      <DependentUpon>AddStudentGroup.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="AddTeacher.xaml.cs">
-      <DependentUpon>AddTeacher.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Administrators.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Attendance.cs">
       <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AttendanceManagement\AddEstimate.xaml.cs">
+      <DependentUpon>AddEstimate.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="AttendanceManagement\AddStudentGroup.xaml.cs">
+      <DependentUpon>AddStudentGroup.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="AttendanceManagement\AddTeacher.xaml.cs">
+      <DependentUpon>AddTeacher.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="AttendanceManagement\PassManagement.xaml.cs">
+      <DependentUpon>PassManagement.xaml</DependentUpon>
     </Compile>
     <Compile Include="AuthorizationANDRegistration\Authorization.xaml.cs">
       <DependentUpon>Authorization.xaml</DependentUpon>
@@ -171,19 +171,19 @@
     <Compile Include="Users.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
-    <Page Include="AddAttedance.xaml">
+    <Page Include="AttendanceManagement\AddEstimate.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="AddEstimate.xaml">
+    <Page Include="AttendanceManagement\AddStudentGroup.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="AddStudentGroup.xaml">
+    <Page Include="AttendanceManagement\AddTeacher.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="AddTeacher.xaml">
+    <Page Include="AttendanceManagement\PassManagement.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -1,6 +1,7 @@
 ﻿using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
+using EJ.AttendanceManagement;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -56,9 +57,9 @@ namespace EJ.MainMenu
             ComboMonth.SelectedIndex = currentMonthIndex;
         }
 
-        private void Add_attedance_Click(object sender, RoutedEventArgs e)
+        private void PassManagement_Click(object sender, RoutedEventArgs e)
         {
-            var window = new AddAttedance();
+            var window = new PassManagement();
             window.ShowDialog();
             LoadGrid();
         }
@@ -282,34 +283,40 @@ namespace EJ.MainMenu
 
                             //Add rows and cells
                             TableRow tr = new TableRow();
-                            TableCell th = new TableCell(new Paragraph(new Run(new Text("ФИО"))));
+                            TableCell th = new TableCell();
+                            Paragraph p = new Paragraph(new Run(new Text("ФИО")));
+
                             TableCellProperties thProps = new TableCellProperties(
-                                new TableCellWidth() { Width = "5000" },
+                                new TableCellWidth() { Width = "10%" },
                                 new TableCellVerticalAlignment() { Val = TableVerticalAlignmentValues.Center });
                             th.Append(thProps);
+
+                            // устанавливаем выравнивание по центру
+                            p.ParagraphProperties = new ParagraphProperties(new Justification() { Val = JustificationValues.Center });
+                            th.Append(p);
                             tr.Append(th);
 
                             // Get number of days in selected month
                             int numDaysInMonth = DateTime.DaysInMonth(DateTime.Now.Year, selectedMonth);
 
                             // Calculate width of each day column
-                            int dayColWidth = (int)(5000 / (numDaysInMonth + 2)); // +2 for "По уважительной причиной" and "Без уважительной причины"
+                            //int dayColWidth = (int)(5000 / (numDaysInMonth + 2)); // +2 for "По уважительной причиной" and "Без уважительной причины"
                             
                             // Create table cells for all days in the selected month with the calculated width
                             for (int day = 1; day <= numDaysInMonth; day++)
                             {
                                 TableCell cell = new TableCell(new Paragraph(new Run(new Text(day.ToString()))));
                                 TableCellProperties cellProps = new TableCellProperties(
-                                    new TableCellWidth() { Width = $"{dayColWidth}" },
+                                    new TableCellWidth() { Width = "2%" },
                                     new TableCellVerticalAlignment() { Val = TableVerticalAlignmentValues.Center });
                                 cell.Append(cellProps);
                                 tr.Append(cell);
                             }
                             TableCell thValid = new TableCell(new Paragraph(new Run(new Text("По уважительной причиной"))));
-                            TableCellProperties thValidProps = new TableCellProperties(new TableCellWidth() { Width = $"{dayColWidth}" });
+                            TableCellProperties thValidProps = new TableCellProperties(new TableCellWidth() { Width = "3%" });
                             thValid.Append(thValidProps);
                             TableCell thInvalid = new TableCell(new Paragraph(new Run(new Text("Без уважительной причины"))));
-                            TableCellProperties thInvalidProps = new TableCellProperties(new TableCellWidth() { Width = $"{dayColWidth}" });
+                            TableCellProperties thInvalidProps = new TableCellProperties(new TableCellWidth() { Width = "3%" });
                             thInvalid.Append(thInvalidProps);
                             tr.Append(thValid);
                             tr.Append(thInvalid);
@@ -318,8 +325,20 @@ namespace EJ.MainMenu
                             foreach (var student in students)
                             {
                                 TableRow trStudent = new TableRow();
-                                TableCell tdName = new TableCell(new Paragraph(new Run(new Text(student.UserName))));
+                                string fullName = student.UserName;
+                                string[] nameParts = fullName.Split(' ');
+                                string fio;
+                                if (nameParts.Length == 3)
+                                {
+                                    fio = $"{nameParts[0]} {nameParts[1][0]}.{nameParts[2][0]}.";
+                                }
+                                else
+                                {
+                                    fio = $"{nameParts[0]} {nameParts[1]}";
+                                }
+                                TableCell tdName = new TableCell(new Paragraph(new Run(new Text(fio))));
                                 trStudent.Append(tdName);
+
                                 int validAbsences = attendance.Where(a => a.StudentId == student.StudentId && a.PassType == true).Count();
                                 int invalidAbsences = attendance.Where(a => a.StudentId == student.StudentId && a.PassType == false).Count();
                                 //Create table cells for all days in the selected month
@@ -360,7 +379,7 @@ namespace EJ.MainMenu
                             mainPart.Document.Save();
                             wordDoc.Dispose();
 
-                            MessageBox.Show("Файл успешно сохранен.");
+                            MessageBox.Show("Отчет успешно сохранен на рабочем столе", "Успешно", MessageBoxButton.OK, MessageBoxImage.Information);
 
                         }
                     }

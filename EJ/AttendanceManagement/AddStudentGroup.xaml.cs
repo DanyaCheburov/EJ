@@ -12,7 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace EJ
+namespace EJ.AttendanceManagement
 {
     /// <summary>
     /// Логика взаимодействия для AddStudentGroup.xaml
@@ -26,7 +26,6 @@ namespace EJ
             ComboGroup.ItemsSource = BDEntities.GetContext().Groups.ToList();
             ComboUsers.ItemsSource = BDEntities.GetContext().Users.ToList();
         }
-
         private void Add_student_Click(object sender, RoutedEventArgs e)
         {
             var selectedGroup = (Groups)ComboGroup.SelectedItem;
