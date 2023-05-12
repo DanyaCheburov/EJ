@@ -284,7 +284,7 @@ namespace EJ.MainMenu
                             //Add rows and cells
                             TableRow tr = new TableRow();
                             TableCell th = new TableCell();
-                            Paragraph p = new Paragraph(new Run(new Text("ФИО")));
+                            Paragraph p = new Paragraph(new Run(new Text("ФИО студента")));
 
                             TableCellProperties thProps = new TableCellProperties(
                                 new TableCellWidth() { Width = "10%" },
@@ -298,9 +298,6 @@ namespace EJ.MainMenu
 
                             // Get number of days in selected month
                             int numDaysInMonth = DateTime.DaysInMonth(DateTime.Now.Year, selectedMonth);
-
-                            // Calculate width of each day column
-                            //int dayColWidth = (int)(5000 / (numDaysInMonth + 2)); // +2 for "По уважительной причиной" and "Без уважительной причины"
                             
                             // Create table cells for all days in the selected month with the calculated width
                             for (int day = 1; day <= numDaysInMonth; day++)
@@ -334,13 +331,14 @@ namespace EJ.MainMenu
                                 }
                                 else
                                 {
-                                    fio = $"{nameParts[0]} {nameParts[1]}";
+                                    fio = $"{nameParts[0]} {nameParts[1][0]}.";
                                 }
                                 TableCell tdName = new TableCell(new Paragraph(new Run(new Text(fio))));
                                 trStudent.Append(tdName);
 
                                 int validAbsences = attendance.Where(a => a.StudentId == student.StudentId && a.PassType == true).Count();
                                 int invalidAbsences = attendance.Where(a => a.StudentId == student.StudentId && a.PassType == false).Count();
+
                                 //Create table cells for all days in the selected month
                                 for (int day = 1; day <= DateTime.DaysInMonth(DateTime.Now.Year, selectedMonth); day++)
                                 {
@@ -353,6 +351,7 @@ namespace EJ.MainMenu
                                 table.Append(trStudent);
                                 validAbsences *= 2;
                                 invalidAbsences *= 2;
+
                                 //Add cells for valid and invalid absences
                                 TableCell tdValidAbsences = new TableCell(new Paragraph(new Run(new Text(validAbsences.ToString()))));
                                 trStudent.Append(tdValidAbsences);
