@@ -32,10 +32,10 @@
 
             <StackPanel Grid.Row="1" Orientation="Vertical" HorizontalAlignment="Center">
                 <StackPanel Orientation="Horizontal" Width="773">
-                    <TextBlock Text="Группа:" Width="76" Margin="5" VerticalAlignment="Center" TextAlignment="Right"></TextBlock>
-                    <ComboBox Name="ComboGroup" ItemsSource="{Binding Groups}" DisplayMemberPath="GroupName" SelectionChanged="UpdateChart" SelectedIndex="0" Width="53" Margin="5"></ComboBox>
+                    <TextBlock Text="Группа:" Width="62" Margin="5" VerticalAlignment="Center" TextAlignment="Right"></TextBlock>
+                    <ComboBox Name="ComboGroup" ItemsSource="{Binding Groups}" DisplayMemberPath="GroupName" SelectionChanged="UpdateChart" SelectedIndex="0" Width="67" Margin="5"></ComboBox>
                     <TextBlock  Text="Студент" Width="61" Margin="5" VerticalAlignment="Center" TextAlignment="Right"></TextBlock>
-                    <ComboBox Name="ComboStudents" ItemsSource="{Binding Students}" DisplayMemberPath="UserName" SelectedIndex="0" Width="119"/>
+                    <ComboBox Name="ComboStudents" ItemsSource="{Binding Students}" DisplayMemberPath="Users.UserName" SelectedIndex="0" Width="119"/>
                     <TextBlock Text="Предмет:" Width="58" Margin="5" VerticalAlignment="Center" TextAlignment="Right"></TextBlock>
                     <ComboBox Name="ComboSubject" ItemsSource="{Binding Subjects}" DisplayMemberPath="SubjectName"  SelectionChanged="UpdateChart"  SelectedIndex="0" Width="95" Margin="5"></ComboBox>
                     <TextBlock Text="Месяц:" Width="48" Margin="5" VerticalAlignment="Center" TextAlignment="Right"></TextBlock>
@@ -43,11 +43,11 @@
 
                     </ComboBox>
                     <TextBlock Text="Год:" Width="37" Margin="5" VerticalAlignment="Center" TextAlignment="Right"></TextBlock>
-                    <ComboBox Name="ComboYear" ItemsSource="{Binding Years}" SelectionChanged="UpdateChart" SelectedIndex="0" Width="60" Margin="5"></ComboBox>
+                    <ComboBox Name="ComboYear" ItemsSource="{Binding Years}" SelectionChanged="UpdateChart" SelectedIndex="0" Width="52" Margin="5"></ComboBox>
                 </StackPanel>
             </StackPanel>
             <WindowsFormsHost Grid.Row="2" Margin="5">
-                <charts:Chart x:Name="ChartesEtimates">
+                <charts:Chart x:Name="ChartsEtimates">
                     <charts:Chart.Legends>
                         <charts:Legend>
 
