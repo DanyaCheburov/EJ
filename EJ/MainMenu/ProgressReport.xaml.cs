@@ -126,15 +126,25 @@ namespace EJ.MainMenu
                         }
                         
                     }
-                    
+
+                    var gradeLabels = new List<string>();
+
                     foreach (var item in gradesCount)
                     {
                         double percentage = (double)item.Value / grades.Count * 100;
-                        string label = $"{percentage}%";
+                        string label = $" {percentage:f2}%";
+                        gradeLabels.Add(item.Key); // добавляем оценку в коллекцию
                         currentSeries.Points.AddXY(label, item.Value);
                     }
+
                     ChartsEtimates.Series.Clear();
                     ChartsEtimates.Series.Add(currentSeries);
+
+                    // устанавливаем метки оценок в легенде
+                    for (int i = 0; i < gradeLabels.Count; i++)
+                    {
+                        ChartsEtimates.Series[0].Points[i].LegendText = gradeLabels[i];
+                    }
                 }
 
             }
