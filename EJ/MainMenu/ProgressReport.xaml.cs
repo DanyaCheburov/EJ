@@ -68,7 +68,11 @@ namespace EJ.MainMenu
             else
                 WindowState = WindowState.Normal;
         }
-
+        protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
+        {
+            base.OnMouseLeftButtonDown(e);
+            DragMove();
+        }
         private void BtnMinimize_Click(object sender, RoutedEventArgs e)
         {
             WindowState = WindowState.Minimized;

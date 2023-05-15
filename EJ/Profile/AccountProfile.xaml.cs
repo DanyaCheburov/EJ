@@ -75,7 +75,6 @@ namespace EJ.Profile
             {
                 NameTextBlock.Text = userName;
             }
-
         }
 
         private void ProfileUpdate_Click(object sender, RoutedEventArgs e)

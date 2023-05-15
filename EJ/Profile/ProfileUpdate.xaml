@@ -6,21 +6,33 @@
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
       xmlns:local="clr-namespace:EJ.Profile"
       mc:Ignorable="d" 
-      d:DesignHeight="550" d:DesignWidth="660"
+      d:DesignHeight="500" d:DesignWidth="790"
       Title="ProfileUpdate">
     <Grid>
-        <TextBlock Margin="47,10,0,0"  HorizontalAlignment="Left" FontSize="17" FontWeight="SemiBold" Text="ФИО" Foreground="Gray" Height="33" VerticalAlignment="Top"></TextBlock>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="107*" />
+            <RowDefinition Height="107*" />
+            <RowDefinition Height="107*" />
+            <RowDefinition Height="107*" />
+        </Grid.RowDefinitions>
 
-        <TextBox Margin="35,48,0,379" Width="282" FontSize="18" HorizontalAlignment="Left" 
-                         materialDesign:HintAssist.Hint="ФИО" BorderThickness="2" 
-                         BorderBrush="{DynamicResource MaterialDesignDivider}" Style="{StaticResource MaterialDesignOutlinedTextBox}"/>
-        <TextBlock Margin="47,171,0,0"  HorizontalAlignment="Left" FontSize="17" FontWeight="SemiBold" Text="Телефон" Foreground="Gray" Height="33" VerticalAlignment="Top"></TextBlock>
-        <TextBox Margin="35,209,0,218" Width="282" FontSize="18" HorizontalAlignment="Left" 
-                         materialDesign:HintAssist.Hint="Телефон" BorderThickness="2" 
-                         BorderBrush="{DynamicResource MaterialDesignDivider}" Style="{StaticResource MaterialDesignOutlinedTextBox}"/>
-        <TextBlock Margin="47,340,0,0"  HorizontalAlignment="Left" FontSize="17" FontWeight="SemiBold" Text="Адрес" Foreground="Gray" Height="33" VerticalAlignment="Top"></TextBlock>
-        <TextBox Margin="35,378,0,49" Width="282" FontSize="18" HorizontalAlignment="Left" 
-                         materialDesign:HintAssist.Hint="Адрес" BorderThickness="2" 
-                         BorderBrush="{DynamicResource MaterialDesignDivider}" Style="{StaticResource MaterialDesignOutlinedTextBox}"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Grid.Row="0" Grid.Column="0" Margin="47,10,0,0" HorizontalAlignment="Left" FontSize="17" FontWeight="SemiBold" Text="ФИО" Foreground="Gray" Height="33" VerticalAlignment="Top" Width="39" />
+        <TextBox x:Name="NameTextBox" Grid.Row="0" Grid.Column="0" Margin="35,48,0,0" Width="282" FontSize="18" HorizontalAlignment="Left" materialDesign:HintAssist.Hint="ФИО" BorderThickness="2" BorderBrush="{DynamicResource MaterialDesignDivider}" Style="{StaticResource MaterialDesignOutlinedTextBox}" />
+
+        <TextBlock Grid.Row="0" Grid.Column="1" Margin="10,10,0,0" HorizontalAlignment="Left" FontSize="17" FontWeight="SemiBold" Text="Дата рождения" Foreground="Gray" Height="33" VerticalAlignment="Top" Width="124" />
+        <TextBox x:Name="DateOfBirthTextBox" Grid.Row="0" Grid.Column="1" Margin="10,48,0,0" Width="282" FontSize="18" HorizontalAlignment="Left" materialDesign:HintAssist.Hint="Дата рождения" BorderThickness="2" BorderBrush="{DynamicResource MaterialDesignDivider}" Style="{StaticResource MaterialDesignOutlinedTextBox}" />
+
+        <TextBlock Grid.Row="1" Grid.Column="0" Margin="47,10,0,0" HorizontalAlignment="Left" FontSize="17" FontWeight="SemiBold" Text="Телефон" Foreground="Gray" Height="33" VerticalAlignment="Top" Width="68" />
+        <TextBox x:Name="PhoneTextBox" Grid.Row="1" Grid.Column="0" Margin="35,48,0,0" Width="282" FontSize="18" HorizontalAlignment="Left" materialDesign:HintAssist.Hint="Телефон" BorderThickness="2" BorderBrush="{DynamicResource MaterialDesignDivider}" Style="{StaticResource MaterialDesignOutlinedTextBox}" />
+
+        <TextBlock Grid.Row="1" Grid.Column="1" Margin="10,10,0,0" HorizontalAlignment="Left" FontSize="17" FontWeight="SemiBold" Text="Адресс" Foreground="Gray" Height="33" VerticalAlignment="Top" Width="49" />
+        <TextBox x:Name="AddresTextBox" Grid.Row="1" Grid.Column="1" Margin="10,48,0,0" Width="282" FontSize="18" HorizontalAlignment="Left" materialDesign:HintAssist.Hint="Адрес" BorderThickness="2" BorderBrush="{DynamicResource MaterialDesignDivider}" Style="{StaticResource MaterialDesignOutlinedTextBox}" />
+
+        <Button x:Name="SaveButton" Click="SaveButton_Click" Content="Сохранить" FontSize="23" Grid.Row="4" Grid.ColumnSpan="2" HorizontalAlignment="Center" Width="250" Height="50"/>
     </Grid>
 </Page>
