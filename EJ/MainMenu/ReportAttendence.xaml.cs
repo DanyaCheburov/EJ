@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DocumentFormat.OpenXml.Drawing.Charts;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
@@ -66,7 +67,7 @@ namespace EJ.MainMenu
                  ComboSubject.SelectedItem is Subjects currentSubject &&
                  ComboMonth.SelectedItem is string selectedMonthName)
             {
-                ChartPayments.Series.Clear();
+                ChartAttendences.Series.Clear();
                 Series currentSeries = new Series
                 {
                     Name = "Пропуски по неуважительной причине",
@@ -78,77 +79,65 @@ namespace EJ.MainMenu
                 currentSeries["PointWidth"] = "1";
                 currentSeries.CustomProperties = "PixelPointWidth=40, MaxPixelPointWidth=100";
 
-                ChartPayments.Series.Add(currentSeries);
+                ChartAttendences.Series.Add(currentSeries);
 
-                var _connection = (@"Data Source=localhost\SQLEXPRESS;Initial Catalog=BD;Integrated Security=True");
-                string lessonsQuery = "SELECT COUNT(*) as Lessons FROM Lessons_by_subject WHERE Subject_Id = @SubjectId";
-                SqlConnection lessonsConnection = new SqlConnection(_connection);
-                SqlCommand lessonsCommand = new SqlCommand(lessonsQuery, lessonsConnection);
-                lessonsCommand.Parameters.AddWithValue("@SubjectId", currentSubject.SubjectId);
-                lessonsConnection.Open();
-                int numberOfLessons = (int)lessonsCommand.ExecuteScalar();
-                lessonsConnection.Close();
-
-                currentSeries["PointHeight"] = $"{numberOfLessons / 100.0:P0}";
-                currentSeries["HeightPercent"] = "100";
-
-                int selectedMonth = Array.IndexOf(CultureInfo.CurrentCulture.DateTimeFormat.MonthNames, selectedMonthName);
-
-                // Выбираем студентов для определенной группы и отображаем их на графике
-                string query = "SELECT u.UserName, COUNT(*) as Absences, l.Nubmer_of_lessons AS Lessons " +
-                               "FROM Users AS u " +
-                               "JOIN Students AS s ON s.UserId=u.UserId " +
-                               "JOIN Groups AS g ON g.GroupId=s.GroupId " +
-                               "JOIN Attendance AS a ON a.StudentId=s.StudentId " +
-                               "JOIN Subjects AS s1 ON s1.SubjectId = a.SubjectId " +
-                               "JOIN Lessons_by_subject AS l ON s1.SubjectId = l.Subject_Id " +
-                               "WHERE g.GroupName = @GroupName  AND s1.SubjectName=@Name AND a.PassType = 0 AND MONTH(a.Date) = @Month AND YEAR(a.Date) = @Year " +
-                               "GROUP BY u.UserName, l.Nubmer_of_lessons " +
-                               "HAVING COUNT(a.PassType) > 0";
-                SqlConnection connection = new SqlConnection(_connection);
-                SqlCommand command = new SqlCommand(query, connection);
-                command.Parameters.AddWithValue("@GroupName", currentGroup.GroupName);
-                command.Parameters.AddWithValue("@Name", currentSubject.SubjectName);
-                command.Parameters.AddWithValue("@Month", selectedMonth + 1);
-                command.Parameters.AddWithValue("@Year", SelectedYear);
-
-                try
+                using (var context = new BDEntities()) 
                 {
-                    connection.Open();
-                    SqlDataReader reader = command.ExecuteReader();
-                    double maxNumberOfLessons = 0; // используйте double для максимального значения
-                    double height = 0; // определите переменную для высоты столбцов
+                    var numberOfLessonsQuery = context.Lessons_by_subject
+                        .Where(l => l.Subject_Id == currentSubject.SubjectId).ToList();
+                    int numberOfLessons = numberOfLessonsQuery.Count();
 
-                    while (reader.Read())
+                    currentSeries["PointHeight"] = $"{numberOfLessons / 100.0:P0}";
+                    currentSeries["HeightPercent"] = "100";
+
+                    int selectedMonth = Array.IndexOf(CultureInfo.CurrentCulture.DateTimeFormat.MonthNames, selectedMonthName);
+
+                    var query = from u in context.Users
+                                join s in context.Students on u.UserId equals s.UserId
+                                join g in context.Groups on s.GroupId equals g.GroupId
+                                join a in context.Attendance on s.StudentId equals a.StudentId
+                                join s1 in context.Subjects on a.SubjectId equals s1.SubjectId
+                                join l in context.Lessons_by_subject on s1.SubjectId equals l.Subject_Id
+                                where g.GroupName == currentGroup.GroupName &&
+                                      s1.SubjectName == currentSubject.SubjectName &&
+                                      a.PassType == false &&
+                                      a.Date.Month == selectedMonth + 1 &&
+                                      a.Date.Year == SelectedYear
+                                group new { u.UserName, l.Nubmer_of_lessons } by new { u.UserName, l.Nubmer_of_lessons } into grp
+                                where grp.Count() > 0
+                                select new
+                                {
+                                    UserName = grp.Key.UserName,
+                                    Absences = grp.Count(),
+                                    Lessons = grp.Key.Nubmer_of_lessons
+                                };
+
+                    try
                     {
-                        string studentName = reader.GetString(0);
-                        int absences = reader.GetInt32(1);
-                        numberOfLessons = reader.GetInt32(2);
-                        numberOfLessons *= 2;
-                        height = (double)absences*2; // вычисляем высоту столбца
-                        maxNumberOfLessons = Math.Max(maxNumberOfLessons, numberOfLessons);
+                        double maxNumberOfLessons = 0;
+                        double height = 0;
+                        foreach (var result in query)
+                        {
+                            string studentName = result.UserName;
+                            int absences = result.Absences;
+                            numberOfLessons *= 2;
+                            height = (double)absences * 2; // вычисляем высоту столбца
+                            maxNumberOfLessons = Math.Max(maxNumberOfLessons, numberOfLessons);
 
-                        var dataPoint = new DataPoint();
-                        dataPoint.SetValueY(height); // используйте переменную height для установки значения Y
-                        dataPoint.AxisLabel = studentName;
-                        double percentAbsent = (double)absences / (double)numberOfLessons; // вычисляем процент пропущенных занятий
-                        dataPoint.Label = $"{percentAbsent:P0}"; // устанавливаем метку, содержащую процентное соотношение пропущенных занятий к общему количеству занятий
-                        currentSeries.Points.Add(dataPoint);
+                            var dataPoint = new System.Windows.Forms.DataVisualization.Charting.DataPoint();
+                            dataPoint.SetValueY(height); // используйте переменную height для установки значения Y
+                            dataPoint.AxisLabel = studentName;
+                            double percentAbsent = (double)absences / (double)numberOfLessons; // вычисляем процент пропущенных занятий
+                            dataPoint.Label = $"{percentAbsent:P0}"; // устанавливаем метку, содержащую процентное соотношение пропущенных занятий к общему количеству занятий
+                            currentSeries.Points.Add(dataPoint);
+                        }
+
+                        ChartAttendences.ChartAreas[0].AxisY.Maximum = Math.Ceiling(currentSeries.Points.Select(p => p.YValues[0]).Max());
+                        ChartAttendences.ChartAreas[0].AxisY.Minimum = 0;
                     }
-                    reader.Close();
-                    ChartPayments.ChartAreas[0].AxisY.Maximum = Math.Ceiling(maxNumberOfLessons); // устанавливаем максимальное значение для оси Y
-                    ChartPayments.ChartAreas[0].AxisY.Minimum = 0; // устанавливаем минимальное значение для оси Y
-
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message);
-                }
-                finally
-                {
-                    if (connection.State == ConnectionState.Open)
+                    catch (Exception ex)
                     {
-                        connection.Close();
+                        MessageBox.Show(ex.Message);
                     }
                 }
             }

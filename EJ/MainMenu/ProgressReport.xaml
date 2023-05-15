@@ -35,7 +35,7 @@
                     <TextBlock Text="Группа:" Width="62" Margin="5" VerticalAlignment="Center" TextAlignment="Right"></TextBlock>
                     <ComboBox Name="ComboGroup" ItemsSource="{Binding Groups}" DisplayMemberPath="GroupName" SelectionChanged="UpdateChart" SelectedIndex="0" Width="67" Margin="5"></ComboBox>
                     <TextBlock  Text="Студент" Width="61" Margin="5" VerticalAlignment="Center" TextAlignment="Right"></TextBlock>
-                    <ComboBox Name="ComboStudents" ItemsSource="{Binding Students}" DisplayMemberPath="Users.UserName" SelectedIndex="0" Width="119"/>
+                    <ComboBox Name="ComboStudents" ItemsSource="{Binding Students}" DisplayMemberPath="Users.UserName" SelectionChanged="UpdateChart" SelectedIndex="0" Width="119"/>
                     <TextBlock Text="Предмет:" Width="58" Margin="5" VerticalAlignment="Center" TextAlignment="Right"></TextBlock>
                     <ComboBox Name="ComboSubject" ItemsSource="{Binding Subjects}" DisplayMemberPath="SubjectName"  SelectionChanged="UpdateChart"  SelectedIndex="0" Width="95" Margin="5"></ComboBox>
                     <TextBlock Text="Месяц:" Width="48" Margin="5" VerticalAlignment="Center" TextAlignment="Right"></TextBlock>
@@ -54,7 +54,7 @@
                         </charts:Legend>
                     </charts:Chart.Legends>
                     <charts:Chart.Series>
-                        <charts:Series Name="Attendance" IsValueShownAsLabel="True"></charts:Series>
+                        <charts:Series Name="Estimates" IsValueShownAsLabel="True"></charts:Series>
                     </charts:Chart.Series>
                     <charts:Chart.ChartAreas>
                         <charts:ChartArea Name="Main"></charts:ChartArea>

@@ -45,7 +45,7 @@
                 </StackPanel>
             </StackPanel>
             <WindowsFormsHost Grid.Row="2" Margin="5">
-                <charts:Chart x:Name="ChartPayments">
+                <charts:Chart x:Name="ChartAttendences">
                     <charts:Chart.Legends>
                         <charts:Legend>
 
