@@ -63,6 +63,7 @@ namespace EJ.MainMenu
 
         private void UpdateChart(object sender, SelectionChangedEventArgs e)
         {
+            int numberOfLessons = 0;
             if (ComboGroup.SelectedItem is Groups currentGroup &&
                  ComboSubject.SelectedItem is Subjects currentSubject &&
                  ComboMonth.SelectedItem is string selectedMonthName)
@@ -84,8 +85,11 @@ namespace EJ.MainMenu
                 using (var context = new BDEntities()) 
                 {
                     var numberOfLessonsQuery = context.Lessons_by_subject
-                        .Where(l => l.Subject_Id == currentSubject.SubjectId).ToList();
-                    int numberOfLessons = numberOfLessonsQuery.Count();
+                        .Where(l => l.Subject_Id == currentSubject.SubjectId)
+                        .Select(l => new { l.Subject_Id, l.Nubmer_of_lessons })
+                        .ToList();
+
+                    numberOfLessons = numberOfLessonsQuery.Sum(l => l.Nubmer_of_lessons);
 
                     currentSeries["PointHeight"] = $"{numberOfLessons / 100.0:P0}";
                     currentSeries["HeightPercent"] = "100";
@@ -120,7 +124,7 @@ namespace EJ.MainMenu
                         {
                             string studentName = result.UserName;
                             int absences = result.Absences;
-                            numberOfLessons *= 2;
+                            //numberOfLessons *= 2;
                             height = (double)absences * 2; // вычисляем высоту столбца
                             maxNumberOfLessons = Math.Max(maxNumberOfLessons, numberOfLessons);
 
@@ -132,7 +136,7 @@ namespace EJ.MainMenu
                             currentSeries.Points.Add(dataPoint);
                         }
 
-                        ChartAttendences.ChartAreas[0].AxisY.Maximum = Math.Ceiling(currentSeries.Points.Select(p => p.YValues[0]).Max());
+                        ChartAttendences.ChartAreas[0].AxisY.Maximum = Math.Ceiling(maxNumberOfLessons*2); // устанавливаем максимальное значение для оси Y
                         ChartAttendences.ChartAreas[0].AxisY.Minimum = 0;
                     }
                     catch (Exception ex)
