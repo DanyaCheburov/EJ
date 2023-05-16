@@ -1,6 +1,6 @@
-﻿using DocumentFormat.OpenXml.Drawing.Diagrams;
-using System;
-using System.Data.SqlClient;
+﻿using System;
+using System.Globalization;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
@@ -15,7 +15,16 @@ namespace EJ.Profile
         public ProfileUpdate()
         {
             InitializeComponent();
+
+
+            // Получаем данные пользователя из свойств приложения
+            string userName = (string)Application.Current.Properties["Name"];
             DateTime? dateOfBirth = Application.Current.Properties["DateOfBirth"] as DateTime?;
+            string phone = (string)Application.Current.Properties["Phone"];
+            string address = (string)Application.Current.Properties["Addres"];
+
+            // Заполняем текстовые поля на странице профиля
+            NameTextBox.Text = userName;
             if (dateOfBirth.HasValue)
             {
                 DateOfBirthTextBox.Text = dateOfBirth.Value.ToString("dd.MM.yyyy");
@@ -24,28 +33,8 @@ namespace EJ.Profile
             {
                 DateOfBirthTextBox.Text = "";
             }
-
-            string phone = Application.Current.Properties["Phone"] as string;
-            if (!string.IsNullOrEmpty(phone))
-            {
-                PhoneTextBox.Text = phone;
-            }
-            else
-            {
-                PhoneTextBox.Text = "";
-            }
-
-            string address = Application.Current.Properties["Addres"] as string;
-            if (!string.IsNullOrEmpty(address))
-            {
-                AddresTextBox.Text = address;
-            }
-            else
-            {
-                AddresTextBox.Text = "";
-            }
-            string userName = Application.Current.Properties["Name"] as string;
-            NameTextBox.Text = userName;
+            PhoneTextBox.Text = phone ?? "";
+            AddresTextBox.Text = address ?? "";
         }
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
@@ -55,7 +44,6 @@ namespace EJ.Profile
             string dateOfBirth = DateOfBirthTextBox.Text.Trim();
             string phone = PhoneTextBox.Text.Trim();
             string address = AddresTextBox.Text.Trim();
-
             // Проверяем правильность формата ФИО
             bool isNameValid = Regex.IsMatch(userName, @"^[А-ЯЁ][а-яё]*(\s[А-ЯЁ][а-яё]*)*$");
 
@@ -64,30 +52,25 @@ namespace EJ.Profile
 
             if (isNameValid && isDateOfBirthValid)
             {
-                // Создаем объект подключения
-                using (SqlConnection connection = new SqlConnection(@"Data Source=localhost\SQLEXPRESS;Initial Catalog=BD;Integrated Security=True"))
-                {
-                    // Открываем соединение
-                    connection.Open();
+                // Получаем email текущего пользователя из свойства приложения
+                string userEmail = (string)Application.Current.Properties["Email"];
 
-                    // Создаем SQL-запрос на обновление данных пользователя
-                    string query = "UPDATE Users SET UserName = @UserName, Email = @Email,  DateOfBirth = @DateOfBirth, Phone = @Phone, Address = @Address";
+                // Получаем данные пользователя из БД
+                var currentUser = BDEntities.db.Users.FirstOrDefault(u => u.Email == userEmail);
 
-                    // Создаем объект команды с параметрами
-                    using (SqlCommand command = new SqlCommand(query, connection))
-                    {
-                        command.Parameters.AddWithValue("@UserName", userName);
-                        command.Parameters.AddWithValue("@DateOfBirth", dateOfBirth);
-                        command.Parameters.AddWithValue("@Phone", phone);
-                        command.Parameters.AddWithValue("@Address", address);
+                // Обновляем данные пользователя в базе данных
+                currentUser.UserName = userName;
+                currentUser.DateOfBirth = DateTime.ParseExact(dateOfBirth, "dd.MM.yyyy", CultureInfo.InvariantCulture);
+                currentUser.Phone = phone;
+                currentUser.Address = address;
+                BDEntities.db.SaveChanges();
 
-                        // Выполняем команду
-                        command.ExecuteNonQuery();
-                    }
+                // Обновляем данные в свойствах приложения
+                Application.Current.Properties["Name"] = userName;
+                Application.Current.Properties["DateOfBirth"] = currentUser.DateOfBirth;
+                Application.Current.Properties["Phone"] = phone;
+                Application.Current.Properties["Addres"] = address;
 
-                    // Закрываем соединение
-                    connection.Close();
-                }
                 MessageBox.Show("Данные успешно сохранены.");
             }
             else

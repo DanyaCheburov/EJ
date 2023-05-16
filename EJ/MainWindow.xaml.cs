@@ -1,7 +1,10 @@
-﻿using EJ.AuthorizationANDRegistration;
+﻿using DocumentFormat.OpenXml.Spreadsheet;
+using EJ.AuthorizationANDRegistration;
 using EJ.Profile;
 using MaterialDesignThemes.Wpf;
 using System;
+using System.Data.Entity;
+using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -15,12 +18,11 @@ namespace EJ
     public partial class MainWindow : Window
     {
         public bool IsDarkTheme { get; set; }
-        private readonly string _username;
-        public MainWindow(string username)
+        public MainWindow()
         {
             InitializeComponent();
-            _username = username;
-            myChip.Content = _username;
+            string userName = (string)Application.Current.Properties["Name"];
+            myChip.Content = userName;
             StateChanged += Window_StateChanged;
         }
         private void Window_StateChanged(object sender, EventArgs e)

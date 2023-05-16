@@ -62,71 +62,51 @@ namespace EJ.AttendanceManagement
             {
                 using (var context = new BDEntities())
                 {
-                    var entity = ComboStudent.SelectedItem as Students;
-                    var entity2 = ComboSubject.SelectedItem as Subjects;
-                    context.Entry(entity).State = EntityState.Detached;
-                    using (SqlConnection connection = new SqlConnection(@"Data Source=localhost\SQLEXPRESS;Initial Catalog=BD;Integrated Security=True"))
+                    var selectedStudent = ComboStudent.SelectedItem as Students;
+                    var selectedSubject = ComboSubject.SelectedItem as Subjects;
+
+                    var existingRecord = context.Journal
+                        .FirstOrDefault(j => j.StudentId == selectedStudent.StudentId &&
+                                             j.SubjectId == selectedSubject.SubjectId &&
+                                             j.Date == datePicker.SelectedDate.Value);
+
+                    if (existingRecord != null)
                     {
-                        connection.Open();
+                        int previousEstimate = existingRecord.Estimate;
+                        int newEstimate = Convert.ToInt32(((ComboBoxItem)ComboEstimate.SelectedItem).Content);
 
-                        using (SqlCommand command = new SqlCommand("SELECT * FROM Journal WHERE StudentId = @Value AND SubjectId = @Value1 AND Date = @Value2", connection))
+                        if (previousEstimate != newEstimate)
                         {
-                            command.Parameters.AddWithValue("@Value", entity.StudentId);
-                            command.Parameters.AddWithValue("@Value1", entity2.SubjectId);
-                            command.Parameters.AddWithValue("@Value2", datePicker.SelectedDate.Value.ToString("yyyy-MM-dd"));
+                            existingRecord.Estimate = newEstimate;
+                            context.SaveChanges();
+                            MessageBox.Show("Оценка обновлена.");
+                        }
+                        else
+                        {
+                            MessageBox.Show("Оценка уже существует.");
+                        }
+                    }
+                    else
+                    {
+                        if (datePicker.SelectedDate != null && selectedStudent != null)
+                        {
+                            int estimate = Convert.ToInt32(((ComboBoxItem)ComboEstimate.SelectedItem).Content);
 
-                            SqlDataReader reader = command.ExecuteReader();
-
-                            if (reader.Read())
+                            var newRecord = new Journal
                             {
-                                int previousEstimate = reader.GetInt32(reader.GetOrdinal("Estimate"));
-                                int newEstimate = Convert.ToInt32(((ComboBoxItem)ComboEstimate.SelectedItem).Content);
+                                StudentId = selectedStudent.StudentId,
+                                SubjectId = selectedSubject.SubjectId,
+                                Date = datePicker.SelectedDate.Value,
+                                Estimate = estimate
+                            };
 
-                                if (previousEstimate != newEstimate) // Если оценка изменилась
-                                {
-                                    reader.Close();
-
-                                    using (SqlCommand updateCommand = new SqlCommand("UPDATE Journal SET Estimate = @Value3 WHERE StudentId = @Value AND SubjectId = @Value1 AND Date = @Value2", connection))
-                                    {
-                                        updateCommand.Parameters.AddWithValue("@Value", entity.StudentId);
-                                        updateCommand.Parameters.AddWithValue("@Value1", entity2.SubjectId);
-                                        updateCommand.Parameters.AddWithValue("@Value2", datePicker.SelectedDate.Value.ToString("yyyy-MM-dd"));
-                                        updateCommand.Parameters.AddWithValue("@Value3", newEstimate);
-                                        updateCommand.ExecuteNonQuery();
-                                        MessageBox.Show("Оценка обновлена.");
-                                    }
-                                }
-                                else
-                                {
-                                    reader.Close();
-                                    MessageBox.Show("Оценка уже существует.");
-                                }
-                            }
-                            else
-                            {
-                                reader.Close();
-
-                                using (SqlCommand insertCommand = new SqlCommand("INSERT INTO Journal (StudentId, SubjectId, Date, Estimate) VALUES (@Value,  @Value1, @Value2, @Value3)", connection))
-                                {
-                                    if (datePicker.SelectedDate != null && entity != null)
-                                    {
-                                        int estimate = Convert.ToInt32(((ComboBoxItem)ComboEstimate.SelectedItem).Content);
-
-                                        insertCommand.Parameters.AddWithValue("@Value", entity.StudentId);
-                                        insertCommand.Parameters.AddWithValue("@Value1", entity2.SubjectId);
-                                        insertCommand.Parameters.AddWithValue("@Value2", datePicker.SelectedDate.Value.ToString("yyyy-MM-dd"));
-                                        insertCommand.Parameters.AddWithValue("@Value3", estimate);
-                                        insertCommand.ExecuteNonQuery();
-                                        MessageBox.Show("Оценка добавлена.");
-                                    }
-                                    else
-                                    {
-                                        MessageBox.Show("Пожалуйста, выберите действительного студента и дату из комбо-боксов.");
-                                    }
-                                }
-                            }
-
-                            connection.Close();
+                            context.Journal.Add(newRecord);
+                            context.SaveChanges();
+                            MessageBox.Show("Оценка добавлена.");
+                        }
+                        else
+                        {
+                            MessageBox.Show("Пожалуйста, выберите действительного студента и дату из комбо-боксов.");
                         }
                     }
                 }

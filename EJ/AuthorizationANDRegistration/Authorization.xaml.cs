@@ -42,7 +42,7 @@ namespace EJ.AuthorizationANDRegistration
                 Application.Current.Properties["DateOfBirth"] = currentUser.DateOfBirth;
                 Application.Current.Properties["Phone"] = currentUser.Phone;
                 Application.Current.Properties["Addres"] = currentUser.Address;
-                MainWindow mainWindow = new MainWindow(currentUser.UserName);
+                MainWindow mainWindow = new MainWindow();
                 mainWindow.Show();
                 Hide();
             }

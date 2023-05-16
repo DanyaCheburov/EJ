@@ -62,107 +62,76 @@ namespace EJ.AttendanceManagement
                     var entity2 = ComboSubject.SelectedItem as Subjects;
                     context.Entry(entity).State = EntityState.Detached;
 
-                    using (SqlConnection connection = new SqlConnection(@"Data Source=localhost\SQLEXPRESS;Initial Catalog=BD;Integrated Security=True"))
+                    var attendance = context.Attendance.FirstOrDefault(a => a.StudentId == entity.StudentId && a.Date == datePicker.SelectedDate.Value && a.SubjectId == entity2.SubjectId);
+
+                    if (attendance != null)
                     {
-                        connection.Open();
+                        bool previousPassType = attendance.PassType;
+                        bool newPassType = false;
 
-                        using (SqlCommand command = new SqlCommand("SELECT * FROM Attendance WHERE StudentId = @Value AND Date = @Value1 AND SubjectId = @Value2", connection))
+                        if (ComboPassType.SelectedIndex == 0) // Отсутствие по неуважительной причине
                         {
-                            command.Parameters.AddWithValue("@Value", entity.StudentId);
-                            command.Parameters.AddWithValue("@Value1", datePicker.SelectedDate.Value.ToString("yyyy-MM-dd"));
-                            command.Parameters.AddWithValue("@Value2", entity2.SubjectId);
+                            newPassType = false;
+                        }
+                        else if (ComboPassType.SelectedIndex == 1) // Отсутствие по уважительной причине
+                        {
+                            newPassType = true;
+                        }
+                        else if (ComboPassType.SelectedIndex == 2) // Удаление пропуска
+                        {
+                            context.Attendance.Remove(attendance);
+                            context.SaveChanges();
+                            MessageBox.Show("Пропуск удален.");
+                            return;
+                        }
 
-                            SqlDataReader reader = command.ExecuteReader();
+                        if (previousPassType != newPassType) // Если тип пропуска изменился
+                        {
+                            attendance.PassType = newPassType;
+                            context.SaveChanges();
+                            MessageBox.Show("Пропуск обновлен.");
+                        }
+                        else
+                        {
+                            MessageBox.Show("Пропуск уже существует.");
+                        }
+                    }
+                    else
+                    {
+                        if (ComboPassType.SelectedIndex == 2) // Удаление пропуска, но его нет
+                        {
+                            MessageBox.Show("Пропуска нет, чтобы его удалить.");
+                            return;
+                        }
 
-                            if (reader.Read())
+                        if (datePicker.SelectedDate != null && entity != null)
+                        {
+                            bool passType = false;
+
+                            if (ComboPassType.SelectedIndex == 0) // Отсутствие по неуважительной причине
                             {
-                                bool previousPassType = reader.GetBoolean(reader.GetOrdinal("PassType"));
-                                bool newPassType = false;
-
-                                if (ComboPassType.SelectedIndex == 0) // Отсутствие по неуважительной причине
-                                {
-                                    newPassType = false;
-                                }
-                                else if (ComboPassType.SelectedIndex == 1) // Отсутствие по уважительной причине
-                                {
-                                    newPassType = true;
-                                }
-                                else if (ComboPassType.SelectedIndex == 2) // Удаление пропуска
-                                {
-                                    reader.Close();
-
-                                    using (SqlCommand deleteCommand = new SqlCommand("DELETE FROM Attendance WHERE StudentId = @Value AND Date = @Value1 AND SubjectId = @Value2", connection))
-                                    {
-                                        deleteCommand.Parameters.AddWithValue("@Value", entity.StudentId);
-                                        deleteCommand.Parameters.AddWithValue("@Value1", datePicker.SelectedDate.Value.ToString("yyyy-MM-dd"));
-                                        deleteCommand.Parameters.AddWithValue("@Value2", entity2.SubjectId);
-                                        deleteCommand.ExecuteNonQuery();
-                                        MessageBox.Show("Пропуск удален.");
-                                    }
-                                    return;
-                                }
-
-                                if (previousPassType != newPassType) // Если тип пропуска изменился
-                                {
-                                    reader.Close();
-
-                                    using (SqlCommand updateCommand = new SqlCommand("UPDATE Attendance SET PassType = @Value3 WHERE StudentId = @Value AND Date = @Value1 AND SubjectId = @Value2", connection))
-                                    {
-                                        updateCommand.Parameters.AddWithValue("@Value", entity.StudentId);
-                                        updateCommand.Parameters.AddWithValue("@Value1", datePicker.SelectedDate.Value.ToString("yyyy-MM-dd"));
-                                        updateCommand.Parameters.AddWithValue("@Value2", entity2.SubjectId);
-                                        updateCommand.Parameters.AddWithValue("@Value3", newPassType);
-                                        updateCommand.ExecuteNonQuery();
-                                        MessageBox.Show("Пропуск обновлен.");
-                                    }
-                                }
-                                else
-                                {
-                                    reader.Close();
-                                    MessageBox.Show("Пропуск уже существует.");
-                                }
+                                passType = false;
                             }
-                            else
+                            else if (ComboPassType.SelectedIndex == 1) // Отсутствие по уважительной причине
                             {
-                                reader.Close();
-
-
-                                if (ComboPassType.SelectedIndex == 2) // Удаление пропуска, но его нет
-                                {
-                                    MessageBox.Show("Пропуска нет, чтобы его удалить.");
-                                    return;
-                                }
-
-                                using (SqlCommand insertCommand = new SqlCommand("INSERT INTO Attendance (StudentId, Date, SubjectId, PassType) VALUES (@Value,  @Value1, @Value2, @Value3)", connection))
-                                {
-                                    if (datePicker.SelectedDate != null && entity != null)
-                                    {
-                                        bool passType = false;
-
-                                        if (ComboPassType.SelectedIndex == 0) // Отсутствие по неуважительной причине
-                                        {
-                                            passType = false;
-                                        }
-                                        else if (ComboPassType.SelectedIndex == 1) // Отсутствие по уважительной причине
-                                        {
-                                            passType = true;
-                                        }
-
-                                        insertCommand.Parameters.AddWithValue("@Value", entity.StudentId);
-                                        insertCommand.Parameters.AddWithValue("@Value1", datePicker.SelectedDate.Value.ToString("yyyy-MM-dd"));
-                                        insertCommand.Parameters.AddWithValue("@Value2", entity2.SubjectId);
-                                        insertCommand.Parameters.AddWithValue("@Value3", passType);
-                                        insertCommand.ExecuteNonQuery();
-                                        MessageBox.Show("Пропуск добавлен.");
-                                    }
-                                    else
-                                    {
-                                        MessageBox.Show("Пожалуйста, выберите действительного студента и дату из комбо-боксов.");
-                                    }
-                                }
+                                passType = true;
                             }
 
-                            connection.Close();
+                            Attendance newAttendance = new Attendance()
+                            {
+                                StudentId = entity.StudentId,
+                                Date = datePicker.SelectedDate.Value,
+                                SubjectId = entity2.SubjectId,
+                                PassType = passType
+                            };
+
+                            context.Attendance.Add(newAttendance);
+                            context.SaveChanges();
+                            MessageBox.Show("Пропуск добавлен.");
+                        }
+                        else
+                        {
+                            MessageBox.Show("Пожалуйста, выберите действительного студента и дату из комбо-боксов.");
                         }
                     }
                 }
@@ -173,7 +142,6 @@ namespace EJ.AttendanceManagement
                 MessageBox.Show("Ошибка сохранения данных: " + ex.Message);
             }
         }
-
 
         private void BtnExit_Click(object sender, RoutedEventArgs e)
         {
