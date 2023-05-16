@@ -69,22 +69,14 @@
           <Property Name="SubjectId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="SubjectName" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
-        <EntityType Name="sysdiagrams">
-          <Key>
-            <PropertyRef Name="diagram_id" />
-          </Key>
-          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
-          <Property Name="principal_id" Type="int" Nullable="false" />
-          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="version" Type="int" />
-          <Property Name="definition" Type="varbinary(max)" />
-        </EntityType>
         <EntityType Name="Teachers">
           <Key>
             <PropertyRef Name="TeacherId" />
           </Key>
           <Property Name="TeacherId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="Department" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Position" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="Users">
           <Key>
@@ -134,7 +126,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Teachers__UserId__5FB337D6">
+        <Association Name="FK__Teachers__UserId__628FA481">
           <End Role="Users" Type="Self.Users" Multiplicity="1" />
           <End Role="Teachers" Type="Self.Teachers" Multiplicity="*" />
           <ReferentialConstraint>
@@ -203,7 +195,6 @@
           <EntitySet Name="Lessons_by_subject" EntityType="Self.Lessons_by_subject" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Students" EntityType="Self.Students" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Subjects" EntityType="Self.Subjects" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Teachers" EntityType="Self.Teachers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK__Attendanc__Stude__571DF1D5" Association="Self.FK__Attendanc__Stude__571DF1D5">
@@ -218,7 +209,7 @@
             <End Role="Users" EntitySet="Users" />
             <End Role="Students" EntitySet="Students" />
           </AssociationSet>
-          <AssociationSet Name="FK__Teachers__UserId__5FB337D6" Association="Self.FK__Teachers__UserId__5FB337D6">
+          <AssociationSet Name="FK__Teachers__UserId__628FA481" Association="Self.FK__Teachers__UserId__628FA481">
             <End Role="Users" EntitySet="Users" />
             <End Role="Teachers" EntitySet="Teachers" />
           </AssociationSet>
@@ -321,23 +312,15 @@
           <NavigationProperty Name="Journal" Relationship="Self.FK_Journal_Subjects" FromRole="Subjects" ToRole="Journal" />
           <NavigationProperty Name="Lessons_by_subject" Relationship="Self.FK_Lessons_by_subject_Subjects" FromRole="Subjects" ToRole="Lessons_by_subject" />
         </EntityType>
-        <EntityType Name="sysdiagrams">
-          <Key>
-            <PropertyRef Name="diagram_id" />
-          </Key>
-          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="principal_id" Type="Int32" Nullable="false" />
-          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="version" Type="Int32" />
-          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
-        </EntityType>
         <EntityType Name="Teachers">
           <Key>
             <PropertyRef Name="TeacherId" />
           </Key>
           <Property Name="TeacherId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="UserId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Users" Relationship="Self.FK__Teachers__UserId__5FB337D6" FromRole="Teachers" ToRole="Users" />
+          <Property Name="Department" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Position" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Users" Relationship="Self.FK__Teachers__UserId__628FA481" FromRole="Teachers" ToRole="Users" />
         </EntityType>
         <EntityType Name="Users">
           <Key>
@@ -351,7 +334,7 @@
           <Property Name="Phone" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="Address" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Students" Relationship="Self.FK__Students__UserId__59063A47" FromRole="Users" ToRole="Students" />
-          <NavigationProperty Name="Teachers" Relationship="Self.FK__Teachers__UserId__5FB337D6" FromRole="Users" ToRole="Teachers" />
+          <NavigationProperty Name="Teachers" Relationship="Self.FK__Teachers__UserId__628FA481" FromRole="Users" ToRole="Teachers" />
         </EntityType>
         <Association Name="FK__Attendanc__Stude__571DF1D5">
           <End Role="Students" Type="Self.Students" Multiplicity="1" />
@@ -437,7 +420,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Teachers__UserId__5FB337D6">
+        <Association Name="FK__Teachers__UserId__628FA481">
           <End Role="Users" Type="Self.Users" Multiplicity="1" />
           <End Role="Teachers" Type="Self.Teachers" Multiplicity="*" />
           <ReferentialConstraint>
@@ -458,7 +441,6 @@
           <EntitySet Name="Lessons_by_subject" EntityType="Self.Lessons_by_subject" />
           <EntitySet Name="Students" EntityType="Self.Students" />
           <EntitySet Name="Subjects" EntityType="Self.Subjects" />
-          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
           <EntitySet Name="Teachers" EntityType="Self.Teachers" />
           <EntitySet Name="Users" EntityType="Self.Users" />
           <AssociationSet Name="FK__Attendanc__Stude__571DF1D5" Association="Self.FK__Attendanc__Stude__571DF1D5">
@@ -489,7 +471,7 @@
             <End Role="Users" EntitySet="Users" />
             <End Role="Students" EntitySet="Students" />
           </AssociationSet>
-          <AssociationSet Name="FK__Teachers__UserId__5FB337D6" Association="Self.FK__Teachers__UserId__5FB337D6">
+          <AssociationSet Name="FK__Teachers__UserId__628FA481" Association="Self.FK__Teachers__UserId__628FA481">
             <End Role="Users" EntitySet="Users" />
             <End Role="Teachers" EntitySet="Teachers" />
           </AssociationSet>
@@ -572,22 +554,13 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="sysdiagrams">
-            <EntityTypeMapping TypeName="BDModel.sysdiagrams">
-              <MappingFragment StoreEntitySet="sysdiagrams">
-                <ScalarProperty Name="name" ColumnName="name" />
-                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
-                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
-                <ScalarProperty Name="version" ColumnName="version" />
-                <ScalarProperty Name="definition" ColumnName="definition" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Teachers">
             <EntityTypeMapping TypeName="BDModel.Teachers">
               <MappingFragment StoreEntitySet="Teachers">
                 <ScalarProperty Name="TeacherId" ColumnName="TeacherId" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Department" ColumnName="Department" />
+                <ScalarProperty Name="Position" ColumnName="Position" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -44,7 +44,6 @@ namespace EJ
         public virtual DbSet<Lessons_by_subject> Lessons_by_subject { get; set; }
         public virtual DbSet<Students> Students { get; set; }
         public virtual DbSet<Subjects> Subjects { get; set; }
-        public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
         public virtual DbSet<Teachers> Teachers { get; set; }
         public virtual DbSet<Users> Users { get; set; }
     }

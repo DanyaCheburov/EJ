@@ -16,6 +16,8 @@ namespace EJ
     {
         public int TeacherId { get; set; }
         public int UserId { get; set; }
+        public string Department { get; set; }
+        public string Position { get; set; }
     
         public virtual Users Users { get; set; }
     }
