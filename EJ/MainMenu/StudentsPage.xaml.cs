@@ -1,20 +1,8 @@
 ﻿using EJ.AttendanceManagement;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Data.Entity;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace EJ.MainMenu
 {
@@ -25,7 +13,7 @@ namespace EJ.MainMenu
         public StudentsPage()
         {
             InitializeComponent();
-           
+
             using (var db = new BDEntities())
             {
                 var students = db.Students.Include("Users").ToList();
@@ -57,11 +45,10 @@ namespace EJ.MainMenu
 
         private void DeleteButton_Click(object sender, RoutedEventArgs e)
         {
-            var selectedStudent = studentDataGrid.SelectedItem as Students; // Получаем выбранного студента из DataGrid
+            var selectedStudent = studentDataGrid.SelectedItem as Students;
 
             if (selectedStudent != null)
             {
-                // Выполняем удаление из базы данных
                 using (var dbContext = new BDEntities())
                 {
                     var studentToDelete = dbContext.Students.Find(selectedStudent.StudentId);
@@ -69,7 +56,6 @@ namespace EJ.MainMenu
                     {
                         dbContext.Students.Remove(studentToDelete);
                         dbContext.SaveChanges();
-                        // Удаляем студента из коллекции Students, чтобы обновить DataGrid
                         Students.Remove(selectedStudent);
                     }
                 }

@@ -1,10 +1,5 @@
-﻿using DocumentFormat.OpenXml.Drawing.Charts;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Data;
-using System.Data.Common;
-using System.Data.SqlClient;
-using System.Drawing;
 using System.Globalization;
 using System.Linq;
 using System.Windows;
@@ -30,13 +25,13 @@ namespace EJ.MainMenu
             ComboGroup.SelectedItem = _context.Groups.FirstOrDefault(g => g.GroupName == SelectedGroup); // установить выбранное значение ComboGroup
             SelectedSubject = selectedSubject;
             ComboSubject.ItemsSource = _context.Subjects.ToList();
-            ComboSubject.SelectedItem = _context.Subjects.FirstOrDefault(s => s.SubjectName == SelectedSubject);                
-            
-            ComboYear.ItemsSource = Enumerable.Range(2019, DateTime.Now.Year - 2018); // используем метод Enumerable.Range для заполнения ComboBox годами с 2019 до текущего года
+            ComboSubject.SelectedItem = _context.Subjects.FirstOrDefault(s => s.SubjectName == SelectedSubject);
+
+            ComboYear.ItemsSource = Enumerable.Range(2019, DateTime.Now.Year - 2018);
             ComboYear.SelectedItem = selectedYear;
 
             ComboMonth.ItemsSource = CultureInfo.CurrentCulture.DateTimeFormat.MonthNames.Take(12).ToList();
-            ComboMonth.SelectedItem = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(selectedMonth+1);
+            ComboMonth.SelectedItem = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(selectedMonth + 1);
         }
 
         protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
@@ -82,7 +77,7 @@ namespace EJ.MainMenu
 
                 ChartAttendences.Series.Add(currentSeries);
 
-                using (var context = new BDEntities()) 
+                using (var context = new BDEntities())
                 {
                     var numberOfLessonsQuery = context.Lessons_by_subject
                         .Where(l => l.Subject_Id == currentSubject.SubjectId)
@@ -136,7 +131,7 @@ namespace EJ.MainMenu
                             currentSeries.Points.Add(dataPoint);
                         }
 
-                        ChartAttendences.ChartAreas[0].AxisY.Maximum = Math.Ceiling(maxNumberOfLessons*2); // устанавливаем максимальное значение для оси Y
+                        ChartAttendences.ChartAreas[0].AxisY.Maximum = Math.Ceiling(maxNumberOfLessons * 2); // устанавливаем максимальное значение для оси Y
                         ChartAttendences.ChartAreas[0].AxisY.Minimum = 0;
                     }
                     catch (Exception ex)

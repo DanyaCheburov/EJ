@@ -1,16 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace EJ.AttendanceManagement
 {
@@ -28,8 +18,6 @@ namespace EJ.AttendanceManagement
         private void Add_Teacher_Click(object sender, RoutedEventArgs e)
         {
             var selectedUser = (Users)ComboUsers.SelectedItem;
-
-            // Проверяем, есть ли уже такой преподаватель
             var existingTeacher = db.Teachers.FirstOrDefault(t => t.UserId == selectedUser.UserId);
 
             if (existingTeacher != null)
@@ -38,7 +26,6 @@ namespace EJ.AttendanceManagement
             }
             else
             {
-                // Иначе создаем новую запись для преподавателя
                 var newTeacher = new Teachers { UserId = selectedUser.UserId };
                 db.Teachers.Add(newTeacher);
                 db.SaveChanges();

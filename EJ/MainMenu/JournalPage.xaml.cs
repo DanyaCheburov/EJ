@@ -1,5 +1,4 @@
-﻿using DocumentFormat.OpenXml.Packaging;
-using EJ.AttendanceManagement;
+﻿using EJ.AttendanceManagement;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -33,10 +32,7 @@ namespace EJ.MainMenu
 
             DataContext = this;
 
-            //Автоматическое добавление даты
             СomboYear.Items.Add(2019);
-
-            // Add all years between 2019 and the current year to the combo box
             int currentYear = DateTime.Now.Year;
             for (int year = 2019; year <= currentYear; year++)
             {
@@ -109,7 +105,7 @@ namespace EJ.MainMenu
                         {
                             employeeJournalList.Add(employeeJournal);
                         }
-                        employeeJournal = new EmployeeJournal { Name = row.UserName }; // заменяем StudentId на Name
+                        employeeJournal = new EmployeeJournal { Name = row.UserName };
                         lastEmpID = empID;
                     }
                     var score = row.Score.ToString() ?? "";

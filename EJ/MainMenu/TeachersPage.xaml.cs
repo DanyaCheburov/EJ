@@ -45,11 +45,10 @@ namespace EJ.MainMenu
         }
         private void DeleteButton_Click(object sender, RoutedEventArgs e)
         {
-            var selectedTeacher = teacherDataGrid.SelectedItem as Teachers; // Получаем выбранного студента из DataGrid
+            var selectedTeacher = teacherDataGrid.SelectedItem as Teachers;
 
             if (selectedTeacher != null)
             {
-                // Выполняем удаление из базы данных
                 using (var dbContext = new BDEntities())
                 {
                     var teacherToDelete = dbContext.Teachers.Find(selectedTeacher.TeacherId);
@@ -57,7 +56,6 @@ namespace EJ.MainMenu
                     {
                         dbContext.Teachers.Remove(teacherToDelete);
                         dbContext.SaveChanges();
-                        // Удаляем студента из коллекции Students, чтобы обновить DataGrid
                         Teachers.Remove(selectedTeacher);
                     }
                 }

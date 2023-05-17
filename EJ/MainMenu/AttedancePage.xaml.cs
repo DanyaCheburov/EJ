@@ -36,10 +36,7 @@ namespace EJ.MainMenu
 
             DataContext = this;
 
-            //Автоматическое добавление даты
             СomboYear.Items.Add(2019);
-
-            // Add all years between 2019 and the current year to the combo box
             int currentYear = DateTime.Now.Year;
             for (int year = 2019; year <= currentYear; year++)
             {
@@ -97,7 +94,7 @@ namespace EJ.MainMenu
                             from a in aGroup.DefaultIfEmpty()
                             join sub in db.Subjects on a.SubjectId equals sub.SubjectId into subGroup
                             from sub in subGroup.DefaultIfEmpty()
-                            let passType = a != null ? a.PassType : false // добавляем переменную passType, которая будет содержать тип пропуска
+                            let passType = a != null ? a.PassType : false
                             where g.GroupName == groupName
                             orderby s.StudentId
                             select new { u.UserName, StudentId = s.StudentId, Date = (a != null ? a.Date : default(DateTime?)), HasAbsence = (a != null), SubjectName = (sub != null ? sub.SubjectName : ""), PassType = passType };
@@ -120,7 +117,7 @@ namespace EJ.MainMenu
                         {
                             employeeAttendanceList.Add(employeeAttendance);
                         }
-                        employeeAttendance = new EmployeeAttendance { Name = row.UserName }; // заменяем StudentId на Name
+                        employeeAttendance = new EmployeeAttendance { Name = row.UserName };
                         lastEmpID = empID;
                     }
 
@@ -251,11 +248,11 @@ namespace EJ.MainMenu
                             //Создаем документ и добавляем заголовок
                             Document doc = new Document();
                             Body body = new Body();
-                            Paragraph orientation = new Paragraph(new ParagraphProperties(new SectionProperties(new PageSize() 
-                            { 
-                                Width = (UInt32Value)15840U, 
-                                Height = (UInt32Value)12240U, 
-                                Orient = PageOrientationValues.Landscape 
+                            Paragraph orientation = new Paragraph(new ParagraphProperties(new SectionProperties(new PageSize()
+                            {
+                                Width = (UInt32Value)15840U,
+                                Height = (UInt32Value)12240U,
+                                Orient = PageOrientationValues.Landscape
                             },
                             new PageMargin())));
                             Paragraph paraTitle = new Paragraph(new Run(new Text(cleanedFileName.Replace(".docx", ""))));
@@ -266,10 +263,9 @@ namespace EJ.MainMenu
                             //Добавляем таблицу
                             Table table = new Table();
                             TableProperties tblProp = new TableProperties(new TableWidth() { Width = "100%", Type = TableWidthUnitValues.Pct },
-                                new TableCellVerticalAlignment() { Val = TableVerticalAlignmentValues.Center });                            
-                            tblProp.Append();                            
+                                new TableCellVerticalAlignment() { Val = TableVerticalAlignmentValues.Center });
+                            tblProp.Append();
 
-                            //Add borders
                             TableBorders borders = new TableBorders();
                             borders.TopBorder = new TopBorder() { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 4 };
                             borders.BottomBorder = new BottomBorder() { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 4 };
@@ -281,7 +277,6 @@ namespace EJ.MainMenu
 
                             table.AppendChild(tblProp);
 
-                            //Add rows and cells
                             TableRow tr = new TableRow();
                             TableCell th = new TableCell();
                             Paragraph p = new Paragraph(new Run(new Text("ФИО студента")));
@@ -296,10 +291,8 @@ namespace EJ.MainMenu
                             th.Append(p);
                             tr.Append(th);
 
-                            // Get number of days in selected month
                             int numDaysInMonth = DateTime.DaysInMonth(DateTime.Now.Year, selectedMonth);
-                            
-                            // Create table cells for all days in the selected month with the calculated width
+
                             for (int day = 1; day <= numDaysInMonth; day++)
                             {
                                 TableCell cell = new TableCell(new Paragraph(new Run(new Text(day.ToString()))));
@@ -339,10 +332,9 @@ namespace EJ.MainMenu
                                 int validAbsences = attendance.Where(a => a.StudentId == student.StudentId && a.PassType == true).Count();
                                 int invalidAbsences = attendance.Where(a => a.StudentId == student.StudentId && a.PassType == false).Count();
 
-                                //Create table cells for all days in the selected month
                                 for (int day = 1; day <= DateTime.DaysInMonth(DateTime.Now.Year, selectedMonth); day++)
                                 {
-                                    
+
                                     var att = attendance.FirstOrDefault(x => x.Date.Day == day && x.StudentId == student.StudentId);
                                     string attString = att != null ? (att.PassType ? "②" : "2") : "";
                                     TableCell tdAttendance = new TableCell(new Paragraph(new Run(new Text(attString))));
@@ -352,7 +344,6 @@ namespace EJ.MainMenu
                                 validAbsences *= 2;
                                 invalidAbsences *= 2;
 
-                                //Add cells for valid and invalid absences
                                 TableCell tdValidAbsences = new TableCell(new Paragraph(new Run(new Text(validAbsences.ToString()))));
                                 trStudent.Append(tdValidAbsences);
 
@@ -371,10 +362,10 @@ namespace EJ.MainMenu
                             }
                             body.Append(table);
                             body.Append(orientation);
-                            
+
                             doc.Append(body);
                             mainPart.Document = doc;
-                            
+
                             mainPart.Document.Save();
                             wordDoc.Dispose();
 

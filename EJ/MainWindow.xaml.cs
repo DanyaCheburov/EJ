@@ -1,14 +1,9 @@
-﻿using DocumentFormat.OpenXml.Spreadsheet;
-using EJ.AuthorizationANDRegistration;
-using EJ.Profile;
+﻿using EJ.AuthorizationANDRegistration;
 using MaterialDesignThemes.Wpf;
 using System;
-using System.Data.Entity;
-using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Navigation;
 
 namespace EJ
 {
@@ -140,10 +135,8 @@ namespace EJ
             HelpButton.Foreground = Brushes.Black;
             EstimateButton.Foreground = Brushes.Black;
             paletteHelper.SetTheme(theme);
-            // Закрыть текущее окно MainWindow
             this.Close();
 
-            // Создать и открыть новое окно Authorization
             Authorization authWindow = new Authorization();
             authWindow.Show();
         }
