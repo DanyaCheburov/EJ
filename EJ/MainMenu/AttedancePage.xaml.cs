@@ -56,7 +56,7 @@ namespace EJ.MainMenu
 
         private void PassManagement_Click(object sender, RoutedEventArgs e)
         {
-            var window = new PassManagement();
+            var window = new PassManagement(((Groups)ComboGroup.SelectedItem).GroupName, ((Subjects)ComboSubject.SelectedItem).SubjectName);
             window.ShowDialog();
             LoadGrid();
         }

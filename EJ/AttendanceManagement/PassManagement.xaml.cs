@@ -13,11 +13,20 @@ namespace EJ.AttendanceManagement
     /// </summary>
     public partial class PassManagement : Window
     {
-        public PassManagement()
+        private BDEntities _context = new BDEntities();
+        public string SelectedGroup { get; set; }
+        public string SelectedSubject { get; set; }
+        public PassManagement(string selectedGroup, string selectedSubject)
         {
             InitializeComponent();
-            ComboGroup.ItemsSource = BDEntities.GetContext().Groups.Local;
-            ComboSubject.ItemsSource = BDEntities.GetContext().Subjects.ToList();
+            SelectedGroup = selectedGroup;
+            ComboGroup.ItemsSource = _context.Groups.ToList();
+            ComboGroup.SelectedItem = _context.Groups.FirstOrDefault(g => g.GroupName == SelectedGroup); // установить выбранное значение ComboGroup
+
+            SelectedSubject = selectedSubject;
+            ComboSubject.ItemsSource = _context.Subjects.ToList();
+            ComboSubject.SelectedItem = _context.Subjects.FirstOrDefault(s => s.SubjectName == SelectedSubject);
+
             ComboStudent.ItemsSource = Students;
         }
         private List<Students> Students

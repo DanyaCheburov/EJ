@@ -52,13 +52,13 @@
                         </Grid.ColumnDefinitions>
 
                         <TextBlock Text="Дата рождения" FontSize="20"></TextBlock>
-                        <TextBlock x:Name="DateOfBirthTextBlock" FontSize="20" Grid.Row="0" Grid.Column="1" FontWeight="Bold" HorizontalAlignment="Right"></TextBlock>
+                        <TextBlock x:Name="DateOfBirthTextBlock" FontSize="15" Grid.Row="0" Grid.Column="1" FontWeight="Bold" HorizontalAlignment="Right"></TextBlock>
                         <TextBlock Grid.Row="1" FontSize="20" Text="Почта"></TextBlock>
-                        <TextBlock x:Name="EmailTextBlock" FontSize="20" FontWeight="Bold" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Right" TextWrapping="Wrap"></TextBlock>
+                        <TextBlock x:Name="EmailTextBlock" FontSize="15" FontWeight="Bold" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Right" TextWrapping="Wrap"></TextBlock>
                         <TextBlock Grid.Row="2" FontSize="20" Text="Телефон"></TextBlock>
-                        <TextBlock x:Name="PhoneTextBlock" Grid.Row="2" FontSize="20" FontWeight="Bold" Grid.Column="1" HorizontalAlignment="Right"></TextBlock>
+                        <TextBlock x:Name="PhoneTextBlock" Grid.Row="2" FontSize="15" FontWeight="Bold" Grid.Column="1" HorizontalAlignment="Right"></TextBlock>
                         <TextBlock Grid.Row="3" FontSize="20" Text="Адресс"></TextBlock>
-                        <TextBlock x:Name="AddresTextBlock" Grid.Row="3" FontSize="20" FontWeight="Bold" Grid.Column="1" HorizontalAlignment="Right" TextWrapping="Wrap"></TextBlock>
+                        <TextBlock x:Name="AddresTextBlock" Grid.Row="3" FontSize="15" FontWeight="Bold" Grid.Column="1" HorizontalAlignment="Right" TextWrapping="Wrap"></TextBlock>
                     </Grid>
                 </StackPanel>
             </materialDesign:Card>
