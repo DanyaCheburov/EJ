@@ -99,10 +99,10 @@ namespace EJ.MainMenu
                             from a in aGroup.DefaultIfEmpty()
                             join sub in db.Subjects on a.SubjectId equals sub.SubjectId into subGroup
                             from sub in subGroup.DefaultIfEmpty()
-                            let passType = a != null ? a.PassType : false
+                            let passType = a != null && a.PassType
                             where g.GroupName == groupName
                             orderby s.StudentId
-                            select new { u.UserName, StudentId = s.StudentId, Date = (a != null ? a.Date : default(DateTime?)), HasAbsence = (a != null), SubjectName = (sub != null ? sub.SubjectName : ""), PassType = passType };
+                            select new { u.UserName, s.StudentId, Date = (a != null ? a.Date : default(DateTime?)), HasAbsence = (a != null), SubjectName = (sub != null ? sub.SubjectName : ""), PassType = passType };
 
 
                 var rstEdata = query.ToList();
@@ -232,7 +232,7 @@ namespace EJ.MainMenu
                         var queryInAttendence = from a in db.Attendance
                                                 join s in db.Students on a.StudentId equals s.StudentId
                                                 join g in db.Groups on s.GroupId equals g.GroupId
-                                                select new { AttendanceId = a.AttendanceId, g.GroupName, s.StudentId, a.SubjectId, a.Date, a.PassType };
+                                                select new { a.AttendanceId, g.GroupName, s.StudentId, a.SubjectId, a.Date, a.PassType };
                         var attendance = queryInAttendence.Where(s => s.GroupName == groupName && s.SubjectId == subject.SubjectId && s.Date.Month == selectedMonth).ToList();
 
                         //Создаем документ Word
@@ -260,9 +260,11 @@ namespace EJ.MainMenu
                                 Orient = PageOrientationValues.Landscape
                             },
                             new PageMargin())));
-                            Paragraph paraTitle = new Paragraph(new Run(new Text(cleanedFileName.Replace(".docx", ""))));
-                            paraTitle.ParagraphProperties = new ParagraphProperties(
-                                new Justification() { Val = JustificationValues.Center });
+                            Paragraph paraTitle = new Paragraph(new Run(new Text(cleanedFileName.Replace(".docx", ""))))
+                            {
+                                ParagraphProperties = new ParagraphProperties(
+                                new Justification() { Val = JustificationValues.Center })
+                            };
                             body.Append(paraTitle);
 
                             //Добавляем таблицу
@@ -271,13 +273,15 @@ namespace EJ.MainMenu
                                 new TableCellVerticalAlignment() { Val = TableVerticalAlignmentValues.Center });
                             tblProp.Append();
 
-                            TableBorders borders = new TableBorders();
-                            borders.TopBorder = new TopBorder() { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 4 };
-                            borders.BottomBorder = new BottomBorder() { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 4 };
-                            borders.LeftBorder = new LeftBorder() { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 4 };
-                            borders.RightBorder = new RightBorder() { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 4 };
-                            borders.InsideHorizontalBorder = new InsideHorizontalBorder() { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 4 };
-                            borders.InsideVerticalBorder = new InsideVerticalBorder() { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 4 };
+                            TableBorders borders = new TableBorders
+                            {
+                                TopBorder = new TopBorder() { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 4 },
+                                BottomBorder = new BottomBorder() { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 4 },
+                                LeftBorder = new LeftBorder() { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 4 },
+                                RightBorder = new RightBorder() { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 4 },
+                                InsideHorizontalBorder = new InsideHorizontalBorder() { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 4 },
+                                InsideVerticalBorder = new InsideVerticalBorder() { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 4 }
+                            };
                             tblProp.Append(borders);
 
                             table.AppendChild(tblProp);

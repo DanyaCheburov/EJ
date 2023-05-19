@@ -11,7 +11,7 @@ namespace EJ.MainMenu
 {
     public partial class Report : Window
     {
-        private BDEntities _context = new BDEntities();
+        private readonly BDEntities _context = new BDEntities();
         public string SelectedGroup { get; set; }
         public string SelectedSubject { get; set; }
         public int SelectedYear { get; set; }
@@ -106,7 +106,7 @@ namespace EJ.MainMenu
                                 where grp.Count() > 0
                                 select new
                                 {
-                                    UserName = grp.Key.UserName,
+                                    grp.Key.UserName,
                                     Absences = grp.Count(),
                                     Lessons = grp.Key.Nubmer_of_lessons
                                 };

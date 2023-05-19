@@ -14,7 +14,7 @@ namespace EJ.MainMenu
     /// </summary>
     public partial class ProgressReport : Window
     {
-        private BDEntities _context = new BDEntities();
+        private readonly BDEntities _context = new BDEntities();
         public string SelectedGroup { get; set; }
         public string SelectedSubject { get; set; }
         public int SelectedYear { get; set; }
@@ -103,11 +103,11 @@ namespace EJ.MainMenu
                                     && j.Date.Year == selectedYear
                                 select new
                                 {
-                                    GroupName = g.GroupName,
-                                    UserName = u.UserName,
-                                    SubjectName = sb.SubjectName,
-                                    Estimate = j.Estimate,
-                                    Date = j.Date
+                                    g.GroupName,
+                                    u.UserName,
+                                    sb.SubjectName,
+                                    j.Estimate,
+                                    j.Date
                                 };
                     var grades = query.ToList();
                     Dictionary<string, int> gradesCount = new Dictionary<string, int>();

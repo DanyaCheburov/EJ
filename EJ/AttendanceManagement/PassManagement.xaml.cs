@@ -13,7 +13,7 @@ namespace EJ.AttendanceManagement
     /// </summary>
     public partial class PassManagement : Window
     {
-        private BDEntities _context = new BDEntities();
+        private readonly BDEntities _context = new BDEntities();
         public string SelectedGroup { get; set; }
         public string SelectedSubject { get; set; }
         public PassManagement(string selectedGroup, string selectedSubject)
