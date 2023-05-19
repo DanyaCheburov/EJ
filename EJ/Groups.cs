@@ -17,12 +17,15 @@ namespace EJ
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Groups()
         {
+            this.Lesson_themes = new HashSet<Lesson_themes>();
             this.Students = new HashSet<Students>();
         }
     
         public int GroupId { get; set; }
         public string GroupName { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Lesson_themes> Lesson_themes { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Students> Students { get; set; }
     }

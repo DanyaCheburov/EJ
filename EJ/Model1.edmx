@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="Хранилище BDModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="Хранилище AAAAEJ12Model" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Administrators">
           <Key>
             <PropertyRef Name="AdministratorId" />
@@ -45,6 +45,22 @@
           <Property Name="SubjectId" Type="int" Nullable="false" />
           <Property Name="Date" Type="date" Nullable="false" />
           <Property Name="Estimate" Type="int" Nullable="false" />
+        </EntityType>
+        <!--Ошибки, обнаруженные при создании:
+предупреждение 6002: В таблице или представлении "AAAAEJ12.dbo.Lesson_themes" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.-->
+        <EntityType Name="Lesson_themes">
+          <Key>
+            <PropertyRef Name="Themes_id" />
+            <PropertyRef Name="Group_id" />
+            <PropertyRef Name="Subject_id" />
+            <PropertyRef Name="Date" />
+            <PropertyRef Name="Description" />
+          </Key>
+          <Property Name="Themes_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Group_id" Type="int" Nullable="false" />
+          <Property Name="Subject_id" Type="int" Nullable="false" />
+          <Property Name="Date" Type="date" Nullable="false" />
+          <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
         </EntityType>
         <EntityType Name="Lessons_by_subject">
           <Key>
@@ -162,6 +178,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Lesson_themes_Groups">
+          <End Role="Groups" Type="Self.Groups" Multiplicity="1" />
+          <End Role="Lesson_themes" Type="Self.Lesson_themes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Groups">
+              <PropertyRef Name="GroupId" />
+            </Principal>
+            <Dependent Role="Lesson_themes">
+              <PropertyRef Name="Group_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Lesson_themes_Subjects">
+          <End Role="Subjects" Type="Self.Subjects" Multiplicity="1" />
+          <End Role="Lesson_themes" Type="Self.Lesson_themes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Subjects">
+              <PropertyRef Name="SubjectId" />
+            </Principal>
+            <Dependent Role="Lesson_themes">
+              <PropertyRef Name="Subject_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Lessons_by_subject_Subjects">
           <End Role="Subjects" Type="Self.Subjects" Multiplicity="1" />
           <End Role="Lessons_by_subject" Type="Self.Lessons_by_subject" Multiplicity="*" />
@@ -186,7 +226,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="Хранилище BDModelContainer">
+        <EntityContainer Name="Хранилище AAAAEJ12ModelContainer">
           <EntitySet Name="Administrators" EntityType="Self.Administrators" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Attendance" EntityType="Self.Attendance" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Departments" EntityType="Self.Departments" Schema="dbo" store:Type="Tables" />
@@ -197,6 +237,15 @@
           <EntitySet Name="Subjects" EntityType="Self.Subjects" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Teachers" EntityType="Self.Teachers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Lesson_themes" EntityType="Self.Lesson_themes" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [Lesson_themes].[Themes_id] AS [Themes_id], 
+    [Lesson_themes].[Group_id] AS [Group_id], 
+    [Lesson_themes].[Subject_id] AS [Subject_id], 
+    [Lesson_themes].[Date] AS [Date], 
+    [Lesson_themes].[Description] AS [Description]
+    FROM [dbo].[Lesson_themes] AS [Lesson_themes]</DefiningQuery>
+          </EntitySet>
           <AssociationSet Name="FK__Attendanc__Stude__571DF1D5" Association="Self.FK__Attendanc__Stude__571DF1D5">
             <End Role="Students" EntitySet="Students" />
             <End Role="Attendance" EntitySet="Attendance" />
@@ -221,6 +270,14 @@
             <End Role="Subjects" EntitySet="Subjects" />
             <End Role="Journal" EntitySet="Journal" />
           </AssociationSet>
+          <AssociationSet Name="FK_Lesson_themes_Groups" Association="Self.FK_Lesson_themes_Groups">
+            <End Role="Groups" EntitySet="Groups" />
+            <End Role="Lesson_themes" EntitySet="Lesson_themes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Lesson_themes_Subjects" Association="Self.FK_Lesson_themes_Subjects">
+            <End Role="Subjects" EntitySet="Subjects" />
+            <End Role="Lesson_themes" EntitySet="Lesson_themes" />
+          </AssociationSet>
           <AssociationSet Name="FK_Lessons_by_subject_Subjects" Association="Self.FK_Lessons_by_subject_Subjects">
             <End Role="Subjects" EntitySet="Subjects" />
             <End Role="Lessons_by_subject" EntitySet="Lessons_by_subject" />
@@ -234,7 +291,7 @@
     </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema Namespace="BDModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+      <Schema Namespace="AAAAEJ12Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityType Name="Administrators">
           <Key>
             <PropertyRef Name="AdministratorId" />
@@ -267,6 +324,7 @@
           </Key>
           <Property Name="GroupId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="GroupName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Lesson_themes" Relationship="Self.FK_Lesson_themes_Groups" FromRole="Groups" ToRole="Lesson_themes" />
           <NavigationProperty Name="Students" Relationship="Self.FK_Students_Groups" FromRole="Groups" ToRole="Students" />
         </EntityType>
         <EntityType Name="Journal">
@@ -311,6 +369,7 @@
           <NavigationProperty Name="Attendance" Relationship="Self.FK__Attendanc__Subje__59063A47" FromRole="Subjects" ToRole="Attendance" />
           <NavigationProperty Name="Journal" Relationship="Self.FK_Journal_Subjects" FromRole="Subjects" ToRole="Journal" />
           <NavigationProperty Name="Lessons_by_subject" Relationship="Self.FK_Lessons_by_subject_Subjects" FromRole="Subjects" ToRole="Lessons_by_subject" />
+          <NavigationProperty Name="Lesson_themes" Relationship="Self.FK_Lesson_themes_Subjects" FromRole="Subjects" ToRole="Lesson_themes" />
         </EntityType>
         <EntityType Name="Teachers">
           <Key>
@@ -336,6 +395,22 @@
           <NavigationProperty Name="Students" Relationship="Self.FK__Students__UserId__59063A47" FromRole="Users" ToRole="Students" />
           <NavigationProperty Name="Teachers" Relationship="Self.FK__Teachers__UserId__628FA481" FromRole="Users" ToRole="Teachers" />
         </EntityType>
+        <EntityType Name="Lesson_themes">
+          <Key>
+            <PropertyRef Name="Themes_id" />
+            <PropertyRef Name="Group_id" />
+            <PropertyRef Name="Subject_id" />
+            <PropertyRef Name="Date" />
+            <PropertyRef Name="Description" />
+          </Key>
+          <Property Name="Themes_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Group_id" Type="Int32" Nullable="false" />
+          <Property Name="Subject_id" Type="Int32" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Groups" Relationship="Self.FK_Lesson_themes_Groups" FromRole="Lesson_themes" ToRole="Groups" />
+          <NavigationProperty Name="Subjects" Relationship="Self.FK_Lesson_themes_Subjects" FromRole="Lesson_themes" ToRole="Subjects" />
+        </EntityType>
         <Association Name="FK__Attendanc__Stude__571DF1D5">
           <End Role="Students" Type="Self.Students" Multiplicity="1" />
           <End Role="Attendance" Type="Self.Attendance" Multiplicity="*" />
@@ -357,6 +432,18 @@
             </Principal>
             <Dependent Role="Attendance">
               <PropertyRef Name="SubjectId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Lesson_themes_Groups">
+          <End Role="Groups" Type="Self.Groups" Multiplicity="1" />
+          <End Role="Lesson_themes" Type="Self.Lesson_themes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Groups">
+              <PropertyRef Name="GroupId" />
+            </Principal>
+            <Dependent Role="Lesson_themes">
+              <PropertyRef Name="Group_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -420,6 +507,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Lesson_themes_Subjects">
+          <End Role="Subjects" Type="Self.Subjects" Multiplicity="1" />
+          <End Role="Lesson_themes" Type="Self.Lesson_themes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Subjects">
+              <PropertyRef Name="SubjectId" />
+            </Principal>
+            <Dependent Role="Lesson_themes">
+              <PropertyRef Name="Subject_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK__Teachers__UserId__628FA481">
           <End Role="Users" Type="Self.Users" Multiplicity="1" />
           <End Role="Teachers" Type="Self.Teachers" Multiplicity="*" />
@@ -443,6 +542,7 @@
           <EntitySet Name="Subjects" EntityType="Self.Subjects" />
           <EntitySet Name="Teachers" EntityType="Self.Teachers" />
           <EntitySet Name="Users" EntityType="Self.Users" />
+          <EntitySet Name="Lesson_themes" EntityType="Self.Lesson_themes" />
           <AssociationSet Name="FK__Attendanc__Stude__571DF1D5" Association="Self.FK__Attendanc__Stude__571DF1D5">
             <End Role="Students" EntitySet="Students" />
             <End Role="Attendance" EntitySet="Attendance" />
@@ -450,6 +550,10 @@
           <AssociationSet Name="FK__Attendanc__Subje__59063A47" Association="Self.FK__Attendanc__Subje__59063A47">
             <End Role="Subjects" EntitySet="Subjects" />
             <End Role="Attendance" EntitySet="Attendance" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Lesson_themes_Groups" Association="Self.FK_Lesson_themes_Groups">
+            <End Role="Groups" EntitySet="Groups" />
+            <End Role="Lesson_themes" EntitySet="Lesson_themes" />
           </AssociationSet>
           <AssociationSet Name="FK_Students_Groups" Association="Self.FK_Students_Groups">
             <End Role="Groups" EntitySet="Groups" />
@@ -471,6 +575,10 @@
             <End Role="Users" EntitySet="Users" />
             <End Role="Students" EntitySet="Students" />
           </AssociationSet>
+          <AssociationSet Name="FK_Lesson_themes_Subjects" Association="Self.FK_Lesson_themes_Subjects">
+            <End Role="Subjects" EntitySet="Subjects" />
+            <End Role="Lesson_themes" EntitySet="Lesson_themes" />
+          </AssociationSet>
           <AssociationSet Name="FK__Teachers__UserId__628FA481" Association="Self.FK__Teachers__UserId__628FA481">
             <End Role="Users" EntitySet="Users" />
             <End Role="Teachers" EntitySet="Teachers" />
@@ -481,9 +589,9 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="Хранилище BDModelContainer" CdmEntityContainer="BDEntities">
+        <EntityContainerMapping StorageEntityContainer="Хранилище AAAAEJ12ModelContainer" CdmEntityContainer="BDEntities">
           <EntitySetMapping Name="Administrators">
-            <EntityTypeMapping TypeName="BDModel.Administrators">
+            <EntityTypeMapping TypeName="AAAAEJ12Model.Administrators">
               <MappingFragment StoreEntitySet="Administrators">
                 <ScalarProperty Name="AdministratorId" ColumnName="AdministratorId" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
@@ -491,7 +599,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Attendance">
-            <EntityTypeMapping TypeName="BDModel.Attendance">
+            <EntityTypeMapping TypeName="AAAAEJ12Model.Attendance">
               <MappingFragment StoreEntitySet="Attendance">
                 <ScalarProperty Name="AttendanceId" ColumnName="AttendanceId" />
                 <ScalarProperty Name="StudentId" ColumnName="StudentId" />
@@ -502,7 +610,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Departments">
-            <EntityTypeMapping TypeName="BDModel.Departments">
+            <EntityTypeMapping TypeName="AAAAEJ12Model.Departments">
               <MappingFragment StoreEntitySet="Departments">
                 <ScalarProperty Name="DepartmentId" ColumnName="DepartmentId" />
                 <ScalarProperty Name="DepartmentName" ColumnName="DepartmentName" />
@@ -510,7 +618,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Groups">
-            <EntityTypeMapping TypeName="BDModel.Groups">
+            <EntityTypeMapping TypeName="AAAAEJ12Model.Groups">
               <MappingFragment StoreEntitySet="Groups">
                 <ScalarProperty Name="GroupId" ColumnName="GroupId" />
                 <ScalarProperty Name="GroupName" ColumnName="GroupName" />
@@ -518,7 +626,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Journal">
-            <EntityTypeMapping TypeName="BDModel.Journal">
+            <EntityTypeMapping TypeName="AAAAEJ12Model.Journal">
               <MappingFragment StoreEntitySet="Journal">
                 <ScalarProperty Name="JournalId" ColumnName="JournalId" />
                 <ScalarProperty Name="StudentId" ColumnName="StudentId" />
@@ -529,7 +637,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Lessons_by_subject">
-            <EntityTypeMapping TypeName="BDModel.Lessons_by_subject">
+            <EntityTypeMapping TypeName="AAAAEJ12Model.Lessons_by_subject">
               <MappingFragment StoreEntitySet="Lessons_by_subject">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Subject_Id" ColumnName="Subject_Id" />
@@ -538,7 +646,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Students">
-            <EntityTypeMapping TypeName="BDModel.Students">
+            <EntityTypeMapping TypeName="AAAAEJ12Model.Students">
               <MappingFragment StoreEntitySet="Students">
                 <ScalarProperty Name="StudentId" ColumnName="StudentId" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
@@ -547,7 +655,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Subjects">
-            <EntityTypeMapping TypeName="BDModel.Subjects">
+            <EntityTypeMapping TypeName="AAAAEJ12Model.Subjects">
               <MappingFragment StoreEntitySet="Subjects">
                 <ScalarProperty Name="SubjectId" ColumnName="SubjectId" />
                 <ScalarProperty Name="SubjectName" ColumnName="SubjectName" />
@@ -555,7 +663,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Teachers">
-            <EntityTypeMapping TypeName="BDModel.Teachers">
+            <EntityTypeMapping TypeName="AAAAEJ12Model.Teachers">
               <MappingFragment StoreEntitySet="Teachers">
                 <ScalarProperty Name="TeacherId" ColumnName="TeacherId" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
@@ -565,7 +673,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Users">
-            <EntityTypeMapping TypeName="BDModel.Users">
+            <EntityTypeMapping TypeName="AAAAEJ12Model.Users">
               <MappingFragment StoreEntitySet="Users">
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="UserName" ColumnName="UserName" />
@@ -574,6 +682,17 @@
                 <ScalarProperty Name="DateOfBirth" ColumnName="DateOfBirth" />
                 <ScalarProperty Name="Phone" ColumnName="Phone" />
                 <ScalarProperty Name="Address" ColumnName="Address" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Lesson_themes">
+            <EntityTypeMapping TypeName="AAAAEJ12Model.Lesson_themes">
+              <MappingFragment StoreEntitySet="Lesson_themes">
+                <ScalarProperty Name="Themes_id" ColumnName="Themes_id" />
+                <ScalarProperty Name="Group_id" ColumnName="Group_id" />
+                <ScalarProperty Name="Subject_id" ColumnName="Subject_id" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

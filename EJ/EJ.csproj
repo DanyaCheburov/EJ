@@ -121,6 +121,9 @@
     <Compile Include="Lessons_by_subject.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Lesson_themes.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="MainMenu\AttedancePage.xaml.cs">
       <DependentUpon>AttedancePage.xaml</DependentUpon>
     </Compile>
