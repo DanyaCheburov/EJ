@@ -56,9 +56,14 @@ namespace EJ.MainMenu
 
         private void PassManagement_Click(object sender, RoutedEventArgs e)
         {
-            var window = new PassManagement(((Groups)ComboGroup.SelectedItem).GroupName, ((Subjects)ComboSubject.SelectedItem).SubjectName);
-            window.ShowDialog();
-            LoadGrid();
+            if (ComboGroup.SelectedItem != null && ComboSubject.SelectedItem != null)
+            {
+                var window = new PassManagement(((Groups)ComboGroup.SelectedItem).GroupName, ((Subjects)ComboSubject.SelectedItem).SubjectName);
+                window.ShowDialog();
+                LoadGrid();
+            }
+            else
+                MessageBox.Show("Выберите группу и предмет!");
         }
 
         private void LoadGrid()
@@ -191,7 +196,7 @@ namespace EJ.MainMenu
 
         private void Graphs_Click(object sender, RoutedEventArgs e)
         {
-            if (ComboGroup.SelectedItem != null || ComboSubject.SelectedItem != null)
+            if (ComboGroup.SelectedItem != null && ComboSubject.SelectedItem != null)
             {
                 var report = new Report(((Groups)ComboGroup.SelectedItem).GroupName, ((Subjects)ComboSubject.SelectedItem).SubjectName, (int)СomboYear.SelectedItem, (int)ComboMonth.SelectedIndex);
                 report.Show();
