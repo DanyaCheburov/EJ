@@ -211,7 +211,7 @@ namespace EJ.MainMenu
             string folderPath = Path.Combine(desktopPath, folderName);
             Directory.CreateDirectory(folderPath);
 
-            if (ComboGroup.SelectedItem != null || ComboSubject.SelectedItem != null)
+            if (ComboGroup.SelectedItem != null && ComboSubject.SelectedItem != null)
             {
                 try
                 {
