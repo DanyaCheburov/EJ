@@ -31,6 +31,7 @@ namespace EJ
 
         public static BDEntities db = new BDEntities();
 
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             throw new UnintentionalCodeFirstException();
@@ -46,5 +47,6 @@ namespace EJ
         public virtual DbSet<Subjects> Subjects { get; set; }
         public virtual DbSet<Teachers> Teachers { get; set; }
         public virtual DbSet<Users> Users { get; set; }
+        public virtual DbSet<Lesson_themes> Lesson_themes { get; set; }
     }
 }

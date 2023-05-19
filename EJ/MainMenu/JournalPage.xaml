@@ -38,11 +38,17 @@
             <Button x:Name="Add_estimate" Click="Add_estimate_Click" Content="Добавить оценку" Margin="10"/>
             <Button x:Name="Graphs" Click="Graphs_Click" Content="График" Margin="10"/>
             <Button x:Name="ExportToWord" Click="ExportToWord_CLick" Content="Word" Margin="10"/>
+            <CheckBox x:Name="Theme" Click="Theme_Click" Content="Показать темы" Margin="10"/>
 
         </StackPanel>
-        <DataGrid x:Name="myDataGrid" Grid.Row="1" AutoGenerateColumns="False">
+        <DataGrid x:Name="myDataGrid" Grid.Row="1" AutoGenerateColumns="False" Visibility="Collapsed">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="ФИО" Binding="{Binding Name}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="ФИО" Binding="{Binding Name}" IsReadOnly="False"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        <DataGrid x:Name="ThemeDataGrid" Grid.Row="1" AutoGenerateColumns="False" Visibility="Collapsed">
+            <DataGrid.Columns>
+
             </DataGrid.Columns>
         </DataGrid>
     </Grid>

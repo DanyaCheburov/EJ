@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Dynamic;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -21,9 +22,12 @@ namespace EJ.MainMenu
     public partial class JournalPage : Page
     {
         public ObservableCollection<Students> Students { get; set; }
+        public Subjects SelectedSubject { get; set; }
+        public int SelectedMonthIndex { get; set; }
 
         public JournalPage()
         {
+
             InitializeComponent();
             CreateTable();
             ComboSubject.ItemsSource = BDEntities.GetContext().Subjects.ToList();
@@ -125,11 +129,70 @@ namespace EJ.MainMenu
 
             }
         }
+        private void LoadThemeGrid()
+        {
+
+            string groupName = null;
+            if (ComboGroup.SelectedItem != null)
+            {
+                groupName = ((Groups)ComboGroup.SelectedItem).GroupName;
+            }
+            if (string.IsNullOrEmpty(groupName))
+            {
+                return;
+            }
+
+            int year = (int)СomboYear.SelectedItem;
+            int month = ComboMonth.SelectedIndex + 1;
+            DateTime startDate = new DateTime(year, month, 1);
+            DateTime endDate = startDate.AddMonths(1).AddDays(-1);
+
+            int subjectId = SelectedSubject?.SubjectId ?? 0;
+            if (ComboSubject.SelectedItem != null)
+            {
+                subjectId = ((Subjects)ComboSubject.SelectedItem).SubjectId;
+            }
+
+            using (var db = new BDEntities())
+            {
+                // Выполнение запроса LINQ to Entities без операции .Date
+                var query = from l in db.Lesson_themes
+                            join g in db.Groups on l.Group_id equals g.GroupId
+                            join t in db.Lesson_themes.Where(j => j.Date >= startDate && j.Date <= endDate && j.Subject_id == subjectId)
+                                on l.Subject_id equals t.Subject_id into aGroup
+                            from a in aGroup.DefaultIfEmpty()
+                            join sub in db.Subjects on a.Subject_id equals sub.SubjectId into subGroup
+                            from sub in subGroup.DefaultIfEmpty()
+                            where g.GroupName == groupName
+                            select new { Date = (a != null ? a.Date : default(DateTime?)), Description = (a != null ? a.Description : "") };
+
+                // Извлечение данных из базы данных
+                var rstEdata = query.ToList();
+
+                // Преобразование даты на стороне клиента
+                var processedData = rstEdata.Select(x => new { Date = x.Date?.Date.ToString("yyyy-MM-dd"), x.Description }).ToList();
+
+                // Назначение обработанных данных на DataGrid
+                ThemeDataGrid.ItemsSource = processedData;
+            }
+        }
 
 
         private void ComboGroup_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            LoadGrid();
+
+            if (Theme.IsChecked == true)
+            {
+                LoadThemeGrid();
+                myDataGrid.Visibility = Visibility.Hidden;
+                ThemeDataGrid.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                LoadGrid();
+                myDataGrid.Visibility = Visibility.Visible;
+                ThemeDataGrid.Visibility = Visibility.Hidden;
+            }
         }
 
 
@@ -144,29 +207,101 @@ namespace EJ.MainMenu
                     IsReadOnly = true
                 });
             }
+            ThemeDataGrid.Columns.Add(new DataGridTextColumn
+            {
+                Header = "Тема",
+                Binding = new Binding("Description"),
+                IsReadOnly = true
+            });
+            ThemeDataGrid.Columns.Add(new DataGridTextColumn
+            {
+                Header = "Date",
+                Binding = new Binding("Date"),
+                IsReadOnly = true
+            });
 
 
         }
         private void ComboMonth_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            LoadGrid();
+            if (Theme.IsChecked == true)
+            {
+                LoadThemeGrid();
+                myDataGrid.Visibility = Visibility.Hidden;
+                ThemeDataGrid.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                LoadGrid();
+                myDataGrid.Visibility = Visibility.Visible;
+                ThemeDataGrid.Visibility = Visibility.Hidden;
+            }
         }
 
         private void ComboYear_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            LoadGrid();
+            if (Theme.IsChecked == true)
+            {
+                LoadThemeGrid();
+                myDataGrid.Visibility = Visibility.Hidden;
+                ThemeDataGrid.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                LoadGrid();
+                myDataGrid.Visibility = Visibility.Visible;
+                ThemeDataGrid.Visibility = Visibility.Hidden;
+            }
         }
 
         private void ComboSubject_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            LoadGrid();
+            if (Theme.IsChecked == true)
+            {
+                LoadThemeGrid();
+                myDataGrid.Visibility = Visibility.Hidden;
+                ThemeDataGrid.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                LoadGrid();
+                myDataGrid.Visibility = Visibility.Visible;
+                ThemeDataGrid.Visibility = Visibility.Hidden;
+            }
         }
 
         private void Add_estimate_Click(object sender, RoutedEventArgs e)
         {
-            var window = new AddEstimate();
-            window.ShowDialog();
-            LoadGrid();
+
+            if (Theme.IsChecked == true)
+            {
+                Add_estimate.Content = "Добавить тему";
+               // var window = new AddTheme();
+              //  window.ShowDialog
+                   
+                LoadThemeGrid();
+            }
+            else
+            {
+                var window = new AddEstimate();
+                window.ShowDialog();
+                LoadGrid();
+            }
+        }
+        private void Theme_Click(object sender, RoutedEventArgs e)
+        {
+            if (Theme.IsChecked == true)
+            {
+                LoadThemeGrid();
+                myDataGrid.Visibility = Visibility.Hidden;
+                ThemeDataGrid.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                LoadGrid();
+                myDataGrid.Visibility = Visibility.Visible;
+                ThemeDataGrid.Visibility = Visibility.Hidden;
+            }
         }
 
         private void Graphs_Click(object sender, RoutedEventArgs e)
@@ -363,5 +498,7 @@ namespace EJ.MainMenu
             }
             else MessageBox.Show("Выберите группу или предмет");
         }
+
+
     }
 }
