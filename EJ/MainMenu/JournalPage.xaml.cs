@@ -170,10 +170,14 @@ namespace EJ.MainMenu
                 var rstEdata = query.ToList();
 
                 // Преобразование даты на стороне клиента
-                var processedData = rstEdata.Select(x => new { Date = x.Date?.Date.ToString("yyyy-MM-dd"), x.Description }).ToList();
+                var processedData = rstEdata
+                    .Select(x => new { Date = x.Date?.Date.ToString("yyyy-MM-dd"), x.Description })
+                    .Distinct()
+                    .ToList();
 
                 // Назначение обработанных данных на DataGrid
                 ThemeDataGrid.ItemsSource = processedData;
+
             }
         }
 
