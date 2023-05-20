@@ -345,16 +345,19 @@ namespace EJ.MainMenu
                                              join st in db.Students on j.StudentId equals st.StudentId
                                              join u in db.Users on st.UserId equals u.UserId
                                              join g in db.Groups on st.GroupId equals g.GroupId
+                                             join lt in db.Lesson_themes on sb.SubjectId equals lt.Subject_id
                                              select new
                                              {
                                                  u.UserName,
                                                  g.GroupName,
                                                  sb.SubjectName,
                                                  j.Date,
-                                                 j.Estimate
+                                                 j.Estimate,
+                                                 LessonDate=lt.Date,
+                                                 lt.Description
                                              };
                         var estimates = queryInJournal.Where(j => j.GroupName == groupName && j.SubjectName == subject.SubjectName && j.Date.Month == selectedMonth).ToList();
-                        var dates = estimates.Select(j => j.Date.Day).Distinct().ToList();
+                        var dates = estimates.Select(j => j.Date.Date).Distinct().ToList();
 
                         string fileName = $"{subject.SubjectName} - {groupName} - {selectedMonthText} {СomboYear.SelectedItem}.docx".Replace('/', '-');
                         string invalidChars = new string(Path.GetInvalidFileNameChars()) + new string(Path.GetInvalidPathChars());
@@ -421,7 +424,7 @@ namespace EJ.MainMenu
                             tr.Append(th);
                             foreach (var day in dates)
                             {
-                                TableCell cell = new TableCell(new Paragraph(new Run(new Text(day.ToString()))));
+                                TableCell cell = new TableCell(new Paragraph(new Run(new Text(day.ToString("d.MM")))));
                                 TableCellProperties cellProps = new TableCellProperties(
                                     new TableCellWidth() { Width = "2%" },
                                     new TableCellVerticalAlignment() { Val = TableVerticalAlignmentValues.Center });
@@ -449,7 +452,7 @@ namespace EJ.MainMenu
 
                                 foreach (var day in dates)
                                 {
-                                    var estimate = estimates.FirstOrDefault(x => x.Date.Day == day && x.UserName == student.UserName);
+                                    var estimate = estimates.FirstOrDefault(x => x.Date.Date == day && x.UserName == student.UserName);
                                     string estimateString = estimate != null ? estimate.Estimate.ToString() : "";
                                     TableCell tdEstimate = new TableCell(new Paragraph(new Run(new Text(estimateString))));
                                     trStudent.Append(tdEstimate);
@@ -457,47 +460,55 @@ namespace EJ.MainMenu
                                 table.Append(trStudent);
                             }
 
+                            int rowIndex = 0;
                             foreach (TableRow row in table.Elements<TableRow>())
                             {
                                 foreach (TableCell cell in row.Elements<TableCell>())
                                 {
-                                    TableCellProperties cellProperties = new TableCellProperties();
-                                    cellProperties.Append(new TableCellWidth() { Type = TableWidthUnitValues.Auto });
-                                    //cellProperties.Append(new Shading() { Val = "clear" });
-                                    cellProperties.Append(new TableCellBorders(
-                                        new TopBorder() { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 2 },
-                                        new BottomBorder() { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 2 },
-                                        new LeftBorder() { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 2 },
-                                        new RightBorder() { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 2 }
-                                    ));
-
-                                    cell.Append(cellProperties);
-                                    foreach (Paragraph paragraph in cell.Elements<Paragraph>())
+                                    if (rowIndex == 0) // Проверяем, что это заголовок таблицы
                                     {
-                                        foreach (Run run in paragraph.Elements<Run>())
+                                        foreach (Paragraph paragraph in cell.Elements<Paragraph>())
                                         {
-                                            foreach (Text text in run.Elements<Text>())
+                                            foreach (Run run in paragraph.Elements<Run>())
                                             {
-                                                // Создаем объект RunProperties для применения стиля Bold
-                                                RunProperties runProperties = new RunProperties();
-                                                runProperties.Append(new Bold());
+                                                foreach (Text text in run.Elements<Text>())
+                                                {
+                                                    RunProperties runProperties = new RunProperties();
+                                                    runProperties.Append(new Bold());
 
-                                                // Применяем созданный объект RunProperties к объекту Run
-                                                run.RunProperties = runProperties;
+                                                    run.RunProperties = runProperties;
+                                                }
                                             }
-
                                         }
                                     }
-                                }
+                                    else // Для остальных ячеек таблицы не применяем жирное начертание
+                                    {
+                                        TableCellProperties cellProperties = new TableCellProperties();
+                                        cellProperties.Append(new TableCellWidth() { Type = TableWidthUnitValues.Auto });
+                                        cellProperties.Append(new TableCellBorders(
+                                            new TopBorder() { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 2 },
+                                            new BottomBorder() { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 2 },
+                                            new LeftBorder() { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 2 },
+                                            new RightBorder() { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 2 }
+                                        ));
 
+                                        cell.Append(cellProperties);
+                                    }
+                                }
+                                rowIndex++;
                             }
                             // Добавляем таблицу в тело документа
                             body.Append(table);
+                            body.Append(orientation);
                             doc.Append(body);
                             mainPart.Document = doc;
+                            mainPart.Document.Save();
+                            wordDoc.Dispose();
+
+                            
                         }
                     }
-                    MessageBox.Show("Экспорт успешно завершен.");
+                    MessageBox.Show("Отчет успешно сохранен на рабочем столе", "Успешно", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
                 catch (Exception ex)
                 {
@@ -506,7 +517,5 @@ namespace EJ.MainMenu
             }
             else MessageBox.Show("Выберите группу или предмет");
         }
-
-
     }
 }
