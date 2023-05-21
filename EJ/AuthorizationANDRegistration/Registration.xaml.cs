@@ -2,6 +2,9 @@
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Input;
+using System.Security.Cryptography;
+using System.Text;
+using System;
 
 namespace EJ.AuthorizationANDRegistration
 {
@@ -54,6 +57,9 @@ namespace EJ.AuthorizationANDRegistration
                 MessageBox.Show("Пароль и подтверждение пароля не совпадают!");
                 return;
             }
+
+            string hashedPassword = HashPassword(password);
+
             using (var context = new BDEntities())
             {
                 var user = context.Users.FirstOrDefault(u => u.Email == email);
@@ -69,7 +75,7 @@ namespace EJ.AuthorizationANDRegistration
                 {
                     UserName = fio,
                     Email = email,
-                    Password = password
+                    Password = hashedPassword
                 };
                 context.Users.Add(user);
                 context.SaveChanges();
@@ -78,6 +84,15 @@ namespace EJ.AuthorizationANDRegistration
             Authorization authorization = new Authorization();
             authorization.Show();
             Hide();
+        }
+
+        private string HashPassword(string password)
+        {
+            using (var sha256 = SHA256.Create())
+            {
+                byte[] hashedBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
+                return Convert.ToBase64String(hashedBytes);
+            }
         }
     }
 }

@@ -1,6 +1,9 @@
 ﻿using System.Linq;
 using System.Windows;
 using System.Windows.Input;
+using System.Security.Cryptography;
+using System.Text;
+using System;
 
 namespace EJ.AuthorizationANDRegistration
 {
@@ -21,25 +24,41 @@ namespace EJ.AuthorizationANDRegistration
 
         private void LoginBtn_Click(object sender, RoutedEventArgs e)
         {
-            var currentUser = BDEntities.db.Users.FirstOrDefault(u => u.Email == txtUsername.Text && u.Password == txtPassword.Password);
+            string email = txtUsername.Text.Trim();
+            string password = txtPassword.Password.Trim();
 
-            if (currentUser != null)
+            using (var context = new BDEntities())
             {
-                Application.Current.Properties["Email"] = currentUser.Email;
-                Application.Current.Properties["Name"] = currentUser.UserName;
-                Application.Current.Properties["DateOfBirth"] = currentUser.DateOfBirth;
-                Application.Current.Properties["Phone"] = currentUser.Phone;
-                Application.Current.Properties["Addres"] = currentUser.Address;
-                MainWindow mainWindow = new MainWindow();
-                mainWindow.Show();
-                Hide();
+                var currentUser = context.Users.FirstOrDefault(u => u.Email == email);
+
+                if (currentUser != null && VerifyPassword(password, currentUser.Password))
+                {
+                    Application.Current.Properties["Email"] = currentUser.Email;
+                    Application.Current.Properties["Name"] = currentUser.UserName;
+                    Application.Current.Properties["DateOfBirth"] = currentUser.DateOfBirth;
+                    Application.Current.Properties["Phone"] = currentUser.Phone;
+                    Application.Current.Properties["Addres"] = currentUser.Address;
+                    MainWindow mainWindow = new MainWindow();
+                    mainWindow.Show();
+                    Hide();
+                }
+                else
+                {
+                    MessageBox.Show("Неверное имя пользователя или пароль. \nПожалуйста, попробуйте еще раз.", "Login Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                    txtUsername.Text = "";
+                    txtPassword.Password = "";
+                    txtUsername.Focus();
+                }
             }
-            else
+        }
+
+        private bool VerifyPassword(string enteredPassword, string hashedPassword)
+        {
+            using (var sha256 = SHA256.Create())
             {
-                MessageBox.Show("Неверное имя пользователя или пароль. \nПожалуйста, попробуйте еще раз.", "Login Failed", MessageBoxButton.OK, MessageBoxImage.Error);
-                txtUsername.Text = "";
-                txtPassword.Password = "";
-                txtUsername.Focus();
+                byte[] hashedBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(enteredPassword));
+                string enteredPasswordHash = Convert.ToBase64String(hashedBytes);
+                return hashedPassword == enteredPasswordHash;
             }
         }
 

@@ -12,11 +12,16 @@ namespace EJ.Profile
     /// </summary>
     public partial class ProfileUpdate : Page
     {
-        public ProfileUpdate()
+        private AccountProfile accountProfile;
+        public ProfileUpdate(AccountProfile accountProfile)
         {
             InitializeComponent();
+            ProfileUserData();
+            this.accountProfile = accountProfile;
+        }
 
-
+        public void ProfileUserData()
+        {
             // Получаем данные пользователя из свойств приложения
             string userName = (string)Application.Current.Properties["Name"];
             DateTime? dateOfBirth = Application.Current.Properties["DateOfBirth"] as DateTime?;
@@ -71,6 +76,7 @@ namespace EJ.Profile
                 Application.Current.Properties["Phone"] = phone;
                 Application.Current.Properties["Addres"] = address;
 
+                accountProfile.UserData();
                 MessageBox.Show("Данные успешно сохранены.");
             }
             else

@@ -1,5 +1,4 @@
-﻿using System.Collections.ObjectModel;
-using System.Data.Entity;
+﻿using EJ.MainMenu.Editing_information;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -8,30 +7,22 @@ namespace EJ.MainMenu
 {
     public partial class UsersPage : Page
     {
-        public ObservableCollection<Users> Users { get; set; }
-
         public UsersPage()
         {
             InitializeComponent();
-
-            using (var db = new BDEntities())
-            {
-                var users = db.Users.ToList();
-                Users = new ObservableCollection<Users>(users);
-            }
-            DataContext = this;
+            usersDataGrid.ItemsSource = BDEntities.GetContext().Users.ToList();
         }
 
-        private void UpdateButton_Click(object sender, RoutedEventArgs e)
+        public void Refresh()
         {
-            using (var db = new BDEntities())
-            {
-                foreach (var user in Users)
-                {
-                    db.Entry(user).State = EntityState.Modified;
-                }
-                db.SaveChanges();
-            }
+            usersDataGrid.ItemsSource = BDEntities.GetContext().Users.ToList();
+        }
+
+        private void EditButton_Click(object sender, RoutedEventArgs e)
+        {
+            var addedituser = new AddEditUser((sender as Button).DataContext as Users);
+            addedituser.ShowDialog();
+            Refresh();
         }
     }
 }

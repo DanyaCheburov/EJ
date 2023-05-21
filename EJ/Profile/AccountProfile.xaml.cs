@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -12,6 +13,10 @@ namespace EJ.Profile
         public AccountProfile()
         {
             InitializeComponent();
+            UserData();
+        }
+        public void UserData()
+        {
             string userEmail = Application.Current.Properties["Email"] as string;
             EmailTextBlock.Text = userEmail;
             DateTime? dateOfBirth = Application.Current.Properties["DateOfBirth"] as DateTime?;
@@ -65,10 +70,10 @@ namespace EJ.Profile
                 NameTextBlock.Text = userName;
             }
         }
-
         private void ProfileUpdate_Click(object sender, RoutedEventArgs e)
         {
-            MainContentFrameProfile.Navigate(new Uri("Profile/ProfileUpdate.xaml", UriKind.Relative));
+            ProfileUpdate profileUpdatePage = new ProfileUpdate(this);
+            MainContentFrameProfile.Navigate(profileUpdatePage);
         }
     }
 }
