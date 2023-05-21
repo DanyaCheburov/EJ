@@ -9,6 +9,10 @@
       Title="UsersPage">
 
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="377*"/>
+            <RowDefinition Height="60*"/>
+        </Grid.RowDefinitions>
         <DataGrid x:Name="usersDataGrid" AutoGenerateColumns="False" IsReadOnly="True" CanUserAddRows="False">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="ФИО" Binding="{Binding UserName, UpdateSourceTrigger=PropertyChanged}"/>
@@ -23,5 +27,7 @@
                 </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
+        <Button Content="Добавить" Grid.Row="1" Width="250" HorizontalAlignment="Left" Name="BtnAdd" Click="BtnAdd_Click"></Button>
+        <Button Content="Удалить" Grid.Row="1" Width="250" HorizontalAlignment="Right" Name="BtnDelete" Click="BtnDelete_Click"></Button>
     </Grid>
 </Page>

@@ -44,7 +44,11 @@ namespace EJ.MainMenu.Editing_information
             }
 
             if (_currentUser.UserId == 0)
+            {
+                string hashedPassword = HashPassword(_currentUser.Password);
+                _currentUser.Password = hashedPassword;
                 BDEntities.GetContext().Users.Add(_currentUser);
+            }
             else
             {
                 string hashedPassword = HashPassword(_currentUser.Password);
