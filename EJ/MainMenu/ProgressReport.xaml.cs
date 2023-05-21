@@ -101,6 +101,7 @@ namespace EJ.MainMenu
                                     && sb.SubjectName == selectedSubject.SubjectName
                                     && j.Date.Month == selectedMonth
                                     && j.Date.Year == selectedYear
+                                    && u.UserId == currentStudent.UserId
                                 select new
                                 {
                                     g.GroupName,
