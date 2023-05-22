@@ -12,7 +12,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 
-
 namespace EJ.MainMenu
 {
     /// <summary>
@@ -27,26 +26,29 @@ namespace EJ.MainMenu
             CreateTable();
             ComboSubject.ItemsSource = BDEntities.GetContext().Subjects.ToList();
             ComboGroup.ItemsSource = BDEntities.GetContext().Groups.ToList();
-
+            SetYearComboBox();
+            LoadStudents();
+        }
+        private void LoadStudents()
+        {
             using (var db = new BDEntities())
             {
                 var students = db.Students.Include("Users").ToList();
                 Students = new ObservableCollection<Students>(students);
             }
-
             DataContext = this;
+        }
 
-            СomboYear.Items.Add(2019);
+        private void SetYearComboBox()
+        {
             int currentYear = DateTime.Now.Year;
             for (int year = 2019; year <= currentYear; year++)
             {
-                if (!СomboYear.Items.Contains(year))
-                {
-                    СomboYear.Items.Add(year);
-                }
+                СomboYear.Items.Add(year);
             }
             СomboYear.SelectedItem = currentYear;
         }
+
         private void ComboBox_Loaded(object sender, RoutedEventArgs e)
         {
             int currentMonthIndex = DateTime.Now.Month - 1;
@@ -68,25 +70,24 @@ namespace EJ.MainMenu
 
         private void LoadGrid()
         {
-            string groupName = null;
-            if (ComboGroup.SelectedItem != null)
-            {
-                groupName = ((Groups)ComboGroup.SelectedItem).GroupName;
-            }
-            if (string.IsNullOrEmpty(groupName))
-            {
+            if (!(ComboGroup.SelectedItem is Groups selectedGroup))
                 return;
-            }
 
-            int year = (int)СomboYear.SelectedItem;
-            int month = ComboMonth.SelectedIndex + 1;
-            DateTime startDate = new DateTime(year, month, 1);
+            if (!(СomboYear.SelectedItem is int selectedYear))
+                return;
+
+            if (ComboMonth.SelectedIndex < 0)
+                return;
+
+            int selectedMonth = ComboMonth.SelectedIndex + 1;
+
+            DateTime startDate = new DateTime(selectedYear, selectedMonth, 1);
             DateTime endDate = startDate.AddMonths(1).AddDays(-1);
 
             int subjectId = 0;
-            if (ComboSubject.SelectedItem != null)
+            if (ComboSubject.SelectedItem is Subjects selectedSubject)
             {
-                subjectId = ((Subjects)ComboSubject.SelectedItem).SubjectId;
+                subjectId = selectedSubject.SubjectId;
             }
 
             using (var db = new BDEntities())
@@ -100,18 +101,15 @@ namespace EJ.MainMenu
                             join sub in db.Subjects on a.SubjectId equals sub.SubjectId into subGroup
                             from sub in subGroup.DefaultIfEmpty()
                             let passType = a != null && a.PassType
-                            where g.GroupName == groupName
+                            where g.GroupName == selectedGroup.GroupName
                             orderby s.StudentId
                             select new { u.UserName, s.StudentId, Date = (a != null ? a.Date : default(DateTime?)), HasAbsence = (a != null), SubjectName = (sub != null ? sub.SubjectName : ""), PassType = passType };
-
-
-                var rstEdata = query.ToList();
 
                 var employeeAttendanceList = new List<EmployeeAttendance>();
                 var employeeAttendance = new EmployeeAttendance();
                 var lastEmpID = -1;
 
-                foreach (var row in rstEdata)
+                foreach (var row in query.ToList())
                 {
                     var empID = row.StudentId;
                     var day = row.Date?.Day.ToString() ?? "";
@@ -127,29 +125,23 @@ namespace EJ.MainMenu
                     }
 
                     var passType = row.HasAbsence ? (row.PassType ? "УП" : "H") : "";
-                    var propertyDescriptor = TypeDescriptor.GetProperties(typeof(EmployeeAttendance))[$"Day{day}"];
+                    var propertyDescriptor = TypeDescriptor.GetProperties(employeeAttendance)[$"Day{day}"];
                     propertyDescriptor?.SetValue(employeeAttendance, passType);
                 }
 
                 employeeAttendanceList.Add(employeeAttendance);
 
+                var attendancePropertyDescriptorH = TypeDescriptor.GetProperties(employeeAttendance)["DisrespectfulReason"];
+                var attendancePropertyDescriptorUP = TypeDescriptor.GetProperties(employeeAttendance)["ValidReason"];
+
                 foreach (var attendanceCount in employeeAttendanceList)
                 {
-                    var propertyDescriptorH = TypeDescriptor.GetProperties(typeof(EmployeeAttendance))["UnexcusedAbsences"];
-                    propertyDescriptorH?.SetValue(attendanceCount, attendanceCount.UnexcusedAbsences);
-                    var propertyDescriptorUP = TypeDescriptor.GetProperties(typeof(EmployeeAttendance))["UnAbsences"];
-                    propertyDescriptorUP?.SetValue(attendanceCount, attendanceCount.UnAbsences);
+                    attendancePropertyDescriptorH?.SetValue(attendanceCount, attendanceCount.DisrespectfulReason);
+                    attendancePropertyDescriptorUP?.SetValue(attendanceCount, attendanceCount.ValidReason);
                 }
 
                 myDataGrid.ItemsSource = employeeAttendanceList;
-
             }
-        }
-
-
-        private void ComboGroup_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            LoadGrid();
         }
 
 
@@ -167,16 +159,21 @@ namespace EJ.MainMenu
             myDataGrid.Columns.Add(new DataGridTextColumn
             {
                 Header = "Отсутствие\nпо неуважительной\nпричине",
-                Binding = new Binding("UnexcusedAbsences"),
+                Binding = new Binding("DisrespectfulReason"),
                 IsReadOnly = true
             });
             myDataGrid.Columns.Add(new DataGridTextColumn
             {
                 Header = "Отсутствие\nпо уважительной\nпричине",
-                Binding = new Binding("UnAbsences"),
+                Binding = new Binding("ValidReason"),
                 IsReadOnly = true
             });
 
+        }
+
+        private void ComboGroup_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            LoadGrid();
         }
 
         private void ComboMonth_SelectionChanged(object sender, SelectionChangedEventArgs e)

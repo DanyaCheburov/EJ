@@ -38,7 +38,7 @@ namespace EJ.MainMenu
         public string Day29 { get; set; }
         public string Day30 { get; set; }
         public string Day31 { get; set; }
-        public int UnexcusedAbsences
+        public int DisrespectfulReason
         {
             get
             {
@@ -54,7 +54,7 @@ namespace EJ.MainMenu
                 return count;
             }
         }
-        public int UnAbsences
+        public int ValidReason
         {
             get
             {
