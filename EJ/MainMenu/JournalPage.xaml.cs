@@ -586,7 +586,7 @@ namespace EJ.MainMenu
                             TableRow headerRow = new TableRow();
 
                             // Добавляем заголовок для даты темы занятия
-                            TableCell dateCell = new TableCell(new Paragraph(new Run(new Text("Дата темы занятия"))));
+                            TableCell dateCell = new TableCell(new Paragraph(new Run(new Text("Дата"))));
                             dateCell.Append(new TableCellProperties(
                                 new TableCellWidth() { Width = "10%" },
                                 new TableCellVerticalAlignment() { Val = TableVerticalAlignmentValues.Center }));
@@ -596,7 +596,7 @@ namespace EJ.MainMenu
                             TableCell themeCell = new TableCell(new Paragraph(new Run(new Text("Тема занятия"))));
                             themeCell.Append(new TableCellProperties(
                                 new TableCellWidth() { Width = "90%" },
-                                new TableCellVerticalAlignment() { Val = TableVerticalAlignmentValues.Center }));
+                                new TableCellVerticalAlignment() { Val = TableVerticalAlignmentValues.Bottom }));
                             headerRow.Append(themeCell);
 
                             table.Append(headerRow);
@@ -622,6 +622,43 @@ namespace EJ.MainMenu
                                 dataRow.Append(themeCellData);
 
                                 table.Append(dataRow);
+                            }
+                            int rowIndex = 0;
+                            foreach (TableRow row in table.Elements<TableRow>())
+                            {
+                                foreach (TableCell cell in row.Elements<TableCell>())
+                                {
+                                    if (rowIndex == 0) // Проверяем, что это заголовок таблицы
+                                    {
+                                        foreach (Paragraph paragraph in cell.Elements<Paragraph>())
+                                        {
+                                            foreach (Run run in paragraph.Elements<Run>())
+                                            {
+                                                foreach (Text text in run.Elements<Text>())
+                                                {
+                                                    RunProperties runProperties = new RunProperties();
+                                                    runProperties.Append(new Bold());
+
+                                                    run.RunProperties = runProperties;
+                                                }
+                                            }
+                                        }
+                                    }
+                                    else // Для остальных ячеек таблицы не применяем жирное начертание
+                                    {
+                                        TableCellProperties cellProperties = new TableCellProperties();
+                                        cellProperties.Append(new TableCellWidth() { Type = TableWidthUnitValues.Auto });
+                                        cellProperties.Append(new TableCellBorders(
+                                            new TopBorder() { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 2 },
+                                            new BottomBorder() { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 2 },
+                                            new LeftBorder() { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 2 },
+                                            new RightBorder() { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 2 }
+                                        ));
+
+                                        cell.Append(cellProperties);
+                                    }
+                                }
+                                rowIndex++;
                             }
                             // Добавляем таблицу в тело документа
                             mainPart.Document.Body.Append(table);
