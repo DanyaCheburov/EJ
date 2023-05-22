@@ -42,10 +42,10 @@
             <ComboBox x:Name="ComboSubject" ItemsSource="{Binding Subjects}" DisplayMemberPath="SubjectName" Grid.Column="1" Margin="10" Grid.Row="3" />
             <TextBlock Text="Выберите дату:" Margin="10" Grid.Row="4" />
             <DatePicker x:Name="datePicker" SelectedDate="{Binding Date}" Grid.Column="1" Margin="10" Grid.Row="4" />
-            <TextBlock Text="Выберите пропуск:" Margin="10" Grid.Row="5" />
+            <TextBlock Text="Выберите действие:" Margin="10" Grid.Row="5" />
             <ComboBox x:Name="ComboPassType" Grid.Column="1" Margin="10" Grid.Row="5">
-                <ComboBoxItem>Отсутствие по неуважительной причине</ComboBoxItem>
-                <ComboBoxItem>Отсутствие по уважительной причине</ComboBoxItem>
+                <ComboBoxItem>Добавить пропуск по неуважительной причине</ComboBoxItem>
+                <ComboBoxItem>Добавить пропуск по уважительной причине</ComboBoxItem>
                 <ComboBoxItem>Удалить пропуск</ComboBoxItem>
             </ComboBox>
             <Button x:Name="add_attendance" Click="Add_attendance_Click" Content="Добавить" Margin="10" Grid.Row="6" Grid.ColumnSpan="2" />
