@@ -318,6 +318,18 @@ namespace EJ.MainMenu
             else
                 MessageBox.Show("Выберите группу и предмет!");
         }
+
+        private double CalculateAverageScore(string userName, string subjectName, List<DateTime> dates, List<EstimateEntry> estimates)
+        {
+            var studentEstimates = estimates.Where(j => j.UserName == userName && j.SubjectName == subjectName).ToList();
+            int totalEstimates = studentEstimates.Count;
+            int totalScore = studentEstimates.Sum(j => j.Estimate);
+
+            double averageScore = totalEstimates > 0 ? (double)totalScore / totalEstimates : 0.0;
+
+            return averageScore;
+        }
+
         private void ExportToWord_CLick(object sender, RoutedEventArgs e)
         {
             string selectedMonthText = ((ComboBoxItem)ComboMonth.SelectedItem).Content.ToString();
@@ -327,6 +339,7 @@ namespace EJ.MainMenu
             string folderName = "Успеваемость-Отчет";
             string folderPath = Path.Combine(desktopPath, folderName);
             Directory.CreateDirectory(folderPath);
+
             if (ComboGroup.SelectedItem != null && ComboSubject.SelectedItem != null)
             {
                 try
@@ -346,16 +359,17 @@ namespace EJ.MainMenu
                                              join u in db.Users on st.UserId equals u.UserId
                                              join g in db.Groups on st.GroupId equals g.GroupId
                                              join lt in db.Lesson_themes on sb.SubjectId equals lt.Subject_id
-                                             select new
+                                             select new EstimateEntry
                                              {
-                                                 u.UserName,
-                                                 g.GroupName,
-                                                 sb.SubjectName,
-                                                 j.Date,
-                                                 j.Estimate,
-                                                 LessonDate=lt.Date,
-                                                 lt.Description
+                                                 UserName = u.UserName,
+                                                 GroupName = g.GroupName,
+                                                 SubjectName = sb.SubjectName,
+                                                 Date = j.Date,
+                                                 Estimate = j.Estimate,
+                                                 LessonDate = lt.Date,
+                                                 Description = lt.Description
                                              };
+
                         var estimates = queryInJournal.Where(j => j.GroupName == groupName && j.SubjectName == subject.SubjectName && j.Date.Month == selectedMonth).ToList();
                         var dates = estimates.Select(j => j.Date.Date).Distinct().ToList();
 
@@ -422,6 +436,7 @@ namespace EJ.MainMenu
                             p.ParagraphProperties = new ParagraphProperties(new Justification() { Val = JustificationValues.Center });
                             th.Append(p);
                             tr.Append(th);
+
                             foreach (var day in dates)
                             {
                                 TableCell cell = new TableCell(new Paragraph(new Run(new Text(day.ToString("d.MM")))));
@@ -431,6 +446,12 @@ namespace EJ.MainMenu
                                 cell.Append(cellProps);
                                 tr.Append(cell);
                             }
+                            TableCell thAverage = new TableCell(new Paragraph(new Run(new Text("Средний балл"))));
+                            thAverage.Append(new TableCellProperties(
+                                new TableCellWidth() { Width = "10%" },
+                                new TableCellVerticalAlignment() { Val = TableVerticalAlignmentValues.Center }));
+                            tr.Append(thAverage);
+
                             table.Append(tr);
 
                             foreach (var student in students)
@@ -457,6 +478,13 @@ namespace EJ.MainMenu
                                     TableCell tdEstimate = new TableCell(new Paragraph(new Run(new Text(estimateString))));
                                     trStudent.Append(tdEstimate);
                                 }
+
+                                // Добавляем ячейку для среднего балла
+                                double averageScore = CalculateAverageScore(student.UserName, subject.SubjectName, dates, estimates);
+                                string averageScoreString = averageScore != 0.0 ? averageScore.ToString() : "-";
+                                TableCell tdAverageScore = new TableCell(new Paragraph(new Run(new Text(averageScoreString))));
+                                trStudent.Append(tdAverageScore);
+
                                 table.Append(trStudent);
                             }
 
@@ -503,9 +531,103 @@ namespace EJ.MainMenu
                             doc.Append(body);
                             mainPart.Document = doc;
                             mainPart.Document.Save();
-                            wordDoc.Dispose();
+                            wordDoc.Dispose(); 
+                        }
+                        using (WordprocessingDocument wordDoc = WordprocessingDocument.Open(path, true))
+                        {
+                            // Находим последний раздел документа
+                            MainDocumentPart mainPart = wordDoc.MainDocumentPart;
+                            SectionProperties sectionProperties = mainPart.Document.Body.Elements<SectionProperties>().LastOrDefault();
+                            if (sectionProperties == null)
+                            {
+                                // Если раздел не существует, создаем новый раздел
+                                sectionProperties = new SectionProperties();
+                                mainPart.Document.Body.Append(sectionProperties);
+                            }
 
-                            
+                            // Создаем раздел со страницей
+                            SectionProperties newSectionProperties = new SectionProperties(new PageSize()
+                            {
+                                Width = (UInt32Value)15840U,
+                                Height = (UInt32Value)12240U,
+                                Orient = PageOrientationValues.Landscape
+                            },
+                            new PageMargin());
+                            mainPart.Document.Body.Append(newSectionProperties);
+
+                            // Создаем заголовок
+                            Paragraph paraTitle = new Paragraph(new Run(new Text("Темы занятий")))
+                            {
+                                ParagraphProperties = new ParagraphProperties(
+                                new Justification() { Val = JustificationValues.Center })
+                            };
+                            mainPart.Document.Body.Append(paraTitle);
+
+                            // Добавляем таблицу
+                            Table table = new Table();
+                            TableProperties tblProp = new TableProperties(new TableWidth() { Width = "100%", Type = TableWidthUnitValues.Pct },
+                                new TableCellVerticalAlignment() { Val = TableVerticalAlignmentValues.Center });
+                            tblProp.Append();
+
+                            TableBorders borders = new TableBorders
+                            {
+                                TopBorder = new TopBorder() { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 4 },
+                                BottomBorder = new BottomBorder() { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 4 },
+                                LeftBorder = new LeftBorder() { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 4 },
+                                RightBorder = new RightBorder() { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 4 },
+                                InsideHorizontalBorder = new InsideHorizontalBorder() { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 4 },
+                                InsideVerticalBorder = new InsideVerticalBorder() { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 4 }
+                            };
+                            tblProp.Append(borders);
+
+                            table.AppendChild(tblProp);
+
+                            // Добавляем заголовки столбцов
+                            TableRow headerRow = new TableRow();
+
+                            // Добавляем заголовок для даты темы занятия
+                            TableCell dateCell = new TableCell(new Paragraph(new Run(new Text("Дата темы занятия"))));
+                            dateCell.Append(new TableCellProperties(
+                                new TableCellWidth() { Width = "10%" },
+                                new TableCellVerticalAlignment() { Val = TableVerticalAlignmentValues.Center }));
+                            headerRow.Append(dateCell);
+
+                            // Добавляем заголовок для темы занятия
+                            TableCell themeCell = new TableCell(new Paragraph(new Run(new Text("Тема занятия"))));
+                            themeCell.Append(new TableCellProperties(
+                                new TableCellWidth() { Width = "90%" },
+                                new TableCellVerticalAlignment() { Val = TableVerticalAlignmentValues.Center }));
+                            headerRow.Append(themeCell);
+
+                            table.Append(headerRow);
+
+                            // Добавляем данные в таблицу
+                            foreach (var item in dates)
+                            {
+                                TableRow dataRow = new TableRow();
+
+                                // Добавляем ячейку для даты темы занятия
+                                TableCell dateCellData = new TableCell(new Paragraph(new Run(new Text(item.Date.ToString("d.MM")))));
+                                dateCellData.Append(new TableCellProperties(
+                                    new TableCellWidth() { Width = "10%" },
+                                    new TableCellVerticalAlignment() { Val = TableVerticalAlignmentValues.Center }));
+                                dataRow.Append(dateCellData);
+
+                                var lessonTheme = db.Lesson_themes.FirstOrDefault(lt => lt.Date == item.Date);
+                                string theme = lessonTheme != null ? lessonTheme.Description : "";
+                                TableCell themeCellData = new TableCell(new Paragraph(new Run(new Text(theme))));
+                                themeCellData.Append(new TableCellProperties(
+                                    new TableCellWidth() { Width = "90%" },
+                                    new TableCellVerticalAlignment() { Val = TableVerticalAlignmentValues.Center }));
+                                dataRow.Append(themeCellData);
+
+                                table.Append(dataRow);
+                            }
+                            // Добавляем таблицу в тело документа
+                            mainPart.Document.Body.Append(table);
+
+                            mainPart.Document.Save();
+                            wordDoc.Dispose();
                         }
                     }
                     MessageBox.Show("Отчет успешно сохранен на рабочем столе", "Успешно", MessageBoxButton.OK, MessageBoxImage.Information);

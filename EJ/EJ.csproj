@@ -132,6 +132,7 @@
     </Compile>
     <Compile Include="MainMenu\EmployeeAttendance.cs" />
     <Compile Include="MainMenu\EmployeeJournal.cs" />
+    <Compile Include="MainMenu\EstimateEntry.cs" />
     <Compile Include="MainMenu\JournalPage.xaml.cs">
       <DependentUpon>JournalPage.xaml</DependentUpon>
     </Compile>
