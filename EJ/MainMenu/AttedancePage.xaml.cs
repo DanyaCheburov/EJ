@@ -5,7 +5,6 @@ using EJ.AttendanceManagement;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -44,9 +43,9 @@ namespace EJ.MainMenu
             int currentYear = DateTime.Now.Year;
             for (int year = 2019; year <= currentYear; year++)
             {
-                СomboYear.Items.Add(year);
+                ComboYear.Items.Add(year);
             }
-            СomboYear.SelectedItem = currentYear;
+            ComboYear.SelectedItem = currentYear;
         }
 
         private void ComboBox_Loaded(object sender, RoutedEventArgs e)
@@ -73,7 +72,7 @@ namespace EJ.MainMenu
             if (!(ComboGroup.SelectedItem is Groups selectedGroup))
                 return;
 
-            if (!(СomboYear.SelectedItem is int selectedYear))
+            if (!(ComboYear.SelectedItem is int selectedYear))
                 return;
 
             if (ComboMonth.SelectedIndex < 0)
@@ -112,7 +111,7 @@ namespace EJ.MainMenu
                 foreach (var row in query.ToList())
                 {
                     var empID = row.StudentId;
-                    var day = row.Date?.Day.ToString() ?? "";
+                    var day = row.Date?.Day ?? 0;
 
                     if (empID != lastEmpID)
                     {
@@ -125,21 +124,13 @@ namespace EJ.MainMenu
                     }
 
                     var passType = row.HasAbsence ? (row.PassType ? "УП" : "H") : "";
-                    var propertyDescriptor = TypeDescriptor.GetProperties(employeeAttendance)[$"Day{day}"];
-                    propertyDescriptor?.SetValue(employeeAttendance, passType);
+                    var dayIndex = day - 1;
+                    if (dayIndex >= 0 && dayIndex < employeeAttendance.Days.Count)
+                    {
+                        employeeAttendance.Days[dayIndex] = passType;
+                    }
                 }
-
                 employeeAttendanceList.Add(employeeAttendance);
-
-                var attendancePropertyDescriptorH = TypeDescriptor.GetProperties(employeeAttendance)["DisrespectfulReason"];
-                var attendancePropertyDescriptorUP = TypeDescriptor.GetProperties(employeeAttendance)["ValidReason"];
-
-                foreach (var attendanceCount in employeeAttendanceList)
-                {
-                    attendancePropertyDescriptorH?.SetValue(attendanceCount, attendanceCount.DisrespectfulReason);
-                    attendancePropertyDescriptorUP?.SetValue(attendanceCount, attendanceCount.ValidReason);
-                }
-
                 myDataGrid.ItemsSource = employeeAttendanceList;
             }
         }
@@ -149,44 +140,35 @@ namespace EJ.MainMenu
         {
             for (int i = 1; i <= 31; i++)
             {
-                myDataGrid.Columns.Add(new DataGridTextColumn
+                var column = new DataGridTextColumn
                 {
                     Header = i.ToString(),
-                    Binding = new Binding($"Day{i}"),
                     IsReadOnly = true
-                });
+                };
+
+                var binding = new Binding($"Days[{i - 1}]");
+                column.Binding = binding;
+
+                myDataGrid.Columns.Add(column);
             }
+
             myDataGrid.Columns.Add(new DataGridTextColumn
             {
                 Header = "Отсутствие\nпо неуважительной\nпричине",
                 Binding = new Binding("DisrespectfulReason"),
                 IsReadOnly = true
             });
+
             myDataGrid.Columns.Add(new DataGridTextColumn
             {
                 Header = "Отсутствие\nпо уважительной\nпричине",
                 Binding = new Binding("ValidReason"),
                 IsReadOnly = true
             });
-
         }
 
-        private void ComboGroup_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            LoadGrid();
-        }
 
-        private void ComboMonth_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            LoadGrid();
-        }
-
-        private void ComboYear_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            LoadGrid();
-        }
-
-        private void ComboSubject_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void Combo_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             LoadGrid();
         }
@@ -195,7 +177,7 @@ namespace EJ.MainMenu
         {
             if (ComboGroup.SelectedItem != null && ComboSubject.SelectedItem != null)
             {
-                var report = new Report(((Groups)ComboGroup.SelectedItem).GroupName, ((Subjects)ComboSubject.SelectedItem).SubjectName, (int)СomboYear.SelectedItem, (int)ComboMonth.SelectedIndex);
+                var report = new Report(((Groups)ComboGroup.SelectedItem).GroupName, ((Subjects)ComboSubject.SelectedItem).SubjectName, (int)ComboYear.SelectedItem, (int)ComboMonth.SelectedIndex);
                 report.Show();
                 LoadGrid();
             }
@@ -233,7 +215,7 @@ namespace EJ.MainMenu
                         var attendance = queryInAttendence.Where(s => s.GroupName == groupName && s.SubjectId == subject.SubjectId && s.Date.Month == selectedMonth).ToList();
 
                         //Создаем документ Word
-                        string fileName = $"{subject.SubjectName} - {groupName} - {selectedMonthText} {СomboYear.SelectedItem}.docx".Replace('/', '-');
+                        string fileName = $"{subject.SubjectName} - {groupName} - {selectedMonthText} {ComboYear.SelectedItem}.docx".Replace('/', '-');
                         string invalidChars = new string(Path.GetInvalidFileNameChars()) + new string(Path.GetInvalidPathChars());
                         string cleanedFileName = new string(fileName.Where(x => !invalidChars.Contains(x)).ToArray());
                         string path = Path.Combine(folderPath, cleanedFileName);

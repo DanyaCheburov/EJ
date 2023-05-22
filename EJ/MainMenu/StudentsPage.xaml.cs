@@ -13,6 +13,10 @@ namespace EJ.MainMenu
         public StudentsPage()
         {
             InitializeComponent();
+            LoadStudents();
+        }
+        private void LoadStudents()
+        {
 
             using (var db = new BDEntities())
             {

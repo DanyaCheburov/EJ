@@ -15,11 +15,11 @@
         </Grid.RowDefinitions>
         <StackPanel Grid.Row="0" Orientation="Horizontal">
             <Label Content="Предмет:" Margin="10"/>
-            <ComboBox x:Name="ComboSubject" ItemsSource="{Binding Subjects}" DisplayMemberPath="SubjectName" SelectedItem="{Binding SelectedSubject}" SelectionChanged="ComboSubject_SelectionChanged" Margin="10"/>
+            <ComboBox x:Name="ComboSubject" ItemsSource="{Binding Subjects}" DisplayMemberPath="SubjectName" SelectedItem="{Binding SelectedSubject}" SelectionChanged="Combo_SelectionChanged" Margin="10"/>
             <Label Content="Группа:" Margin="10"/>
-            <ComboBox x:Name="ComboGroup" ItemsSource="{Binding Groups}" DisplayMemberPath="GroupName" SelectionChanged="ComboGroup_SelectionChanged" Margin="10"/>
+            <ComboBox x:Name="ComboGroup" ItemsSource="{Binding Groups}" DisplayMemberPath="GroupName" SelectionChanged="Combo_SelectionChanged" Margin="10"/>
             <Label Content="Месяц:" Margin="10"/>
-            <ComboBox x:Name="ComboMonth" SelectedIndex="{Binding SelectedMonthIndex}" Margin="10" Loaded="ComboBox_Loaded" SelectionChanged="ComboMonth_SelectionChanged">
+            <ComboBox x:Name="ComboMonth" SelectedIndex="{Binding SelectedMonthIndex}" Margin="10" Loaded="ComboBox_Loaded" SelectionChanged="Combo_SelectionChanged">
                 <ComboBoxItem>Январь</ComboBoxItem>
                 <ComboBoxItem>Февраль</ComboBoxItem>
                 <ComboBoxItem>Март</ComboBoxItem>
@@ -34,7 +34,7 @@
                 <ComboBoxItem>Декабрь</ComboBoxItem>
             </ComboBox>
             <Label Content="Год:" Margin="10"/>
-            <ComboBox x:Name="СomboYear" Margin="10" SelectionChanged="ComboYear_SelectionChanged"/>
+            <ComboBox x:Name="ComboYear" Margin="10" SelectionChanged="Combo_SelectionChanged"/>
             <Button x:Name="PassManagement" Click="PassManagement_Click" Content="Управление пропусками" Margin="10"/>
             <Button x:Name="Graphs" Click="Graphs_Click" Content="График" Margin="10"></Button>
             <Button x:Name="ExportToWord" Click="ExportToWord_Click" Content="Word" Width="94"/>

@@ -15,6 +15,10 @@ namespace EJ.MainMenu
         public TeachersPage()
         {
             InitializeComponent();
+            LoadTeachers();
+        }
+        private void LoadTeachers()
+        {
             using (var db = new BDEntities())
             {
                 var teachers = db.Teachers.Include("Users").ToList();
