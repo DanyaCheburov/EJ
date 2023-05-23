@@ -26,12 +26,12 @@ namespace EJ.MainMenu
             SelectedYear = selectedYear;
             SelectedGroup = selectedGroup;
             ComboGroup.ItemsSource = _context.Groups.ToList();
-            ComboGroup.SelectedItem = _context.Groups.FirstOrDefault(g => g.GroupName == SelectedGroup); // установить выбранное значение ComboGroup
+            ComboGroup.SelectedItem = _context.Groups.FirstOrDefault(g => g.GroupName == SelectedGroup); 
             SelectedSubject = selectedSubject;
             ComboSubject.ItemsSource = _context.Subjects.ToList();
             ComboSubject.SelectedItem = _context.Subjects.FirstOrDefault(s => s.SubjectName == SelectedSubject);
 
-            ComboYear.ItemsSource = Enumerable.Range(2019, DateTime.Now.Year - 2018); // используем метод Enumerable.Range для заполнения ComboBox годами с 2019 до текущего года
+            ComboYear.ItemsSource = Enumerable.Range(2019, DateTime.Now.Year - 2018); 
             ComboYear.SelectedItem = selectedYear;
 
             ComboMonth.ItemsSource = CultureInfo.CurrentCulture.DateTimeFormat.MonthNames.Take(12).ToList();
@@ -131,14 +131,13 @@ namespace EJ.MainMenu
                     {
                         double percentage = (double)item.Value / grades.Count * 100;
                         string label = $"{percentage:f2}%";
-                        gradeLabels.Add(item.Key); // добавляем оценку в коллекцию
+                        gradeLabels.Add(item.Key); 
                         currentSeries.Points.AddXY(label, item.Value);
                     }
 
                     ChartsEtimates.Series.Clear();
                     ChartsEtimates.Series.Add(currentSeries);
 
-                    // устанавливаем метки оценок в легенде
                     for (int i = 0; i < gradeLabels.Count; i++)
                     {
                         ChartsEtimates.Series[0].Points[i].LegendText = gradeLabels[i];

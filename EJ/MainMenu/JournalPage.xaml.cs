@@ -371,7 +371,7 @@ namespace EJ.MainMenu
                                              };
 
                         var estimates = queryInJournal.Where(j => j.GroupName == groupName && j.SubjectName == subject.SubjectName && j.Date.Month == selectedMonth).ToList();
-                        var dates = estimates.Select(j => j.Date.Date).Distinct().ToList();
+                        var dates = estimates.Select(j => j.Date.Date).Distinct().OrderBy(date => date).ToList();
 
                         string fileName = $"{subject.SubjectName} - {groupName} - {selectedMonthText} {СomboYear.SelectedItem}.docx".Replace('/', '-');
                         string invalidChars = new string(Path.GetInvalidFileNameChars()) + new string(Path.GetInvalidPathChars());
@@ -379,15 +379,12 @@ namespace EJ.MainMenu
                         string path = Path.Combine(folderPath, cleanedFileName);
                         using (WordprocessingDocument wordDoc = WordprocessingDocument.Create(path, WordprocessingDocumentType.Document))
                         {
-                            //Создаем главный раздел документа
                             MainDocumentPart mainPart = wordDoc.AddMainDocumentPart();
 
-                            //Добавляем стили в документ
                             StyleDefinitionsPart styleDefinitionsPart = mainPart.AddNewPart<StyleDefinitionsPart>();
                             styleDefinitionsPart.Styles = new Styles();
                             styleDefinitionsPart.Styles.Save();
 
-                            //Создаем документ и добавляем заголовок
                             Document doc = new Document();
                             Body body = new Body();
                             Paragraph orientation = new Paragraph(new ParagraphProperties(new SectionProperties(new PageSize()
@@ -404,7 +401,6 @@ namespace EJ.MainMenu
                             };
                             body.Append(paraTitle);
 
-                            //Добавляем таблицу
                             Table table = new Table();
                             TableProperties tblProp = new TableProperties(new TableWidth() { Width = "100%", Type = TableWidthUnitValues.Pct },
                                 new TableCellVerticalAlignment() { Val = TableVerticalAlignmentValues.Center });
@@ -432,14 +428,13 @@ namespace EJ.MainMenu
                                 new TableCellVerticalAlignment() { Val = TableVerticalAlignmentValues.Center });
                             th.Append(thProps);
 
-                            // устанавливаем выравнивание по центру
                             p.ParagraphProperties = new ParagraphProperties(new Justification() { Val = JustificationValues.Center });
                             th.Append(p);
                             tr.Append(th);
 
                             foreach (var day in dates)
                             {
-                                TableCell cell = new TableCell(new Paragraph(new Run(new Text(day.ToString("d.MM")))));
+                                TableCell cell = new TableCell(new Paragraph(new Run(new Text(day.ToString("dd")))));
                                 TableCellProperties cellProps = new TableCellProperties(
                                     new TableCellWidth() { Width = "2%" },
                                     new TableCellVerticalAlignment() { Val = TableVerticalAlignmentValues.Center });
@@ -493,7 +488,7 @@ namespace EJ.MainMenu
                             {
                                 foreach (TableCell cell in row.Elements<TableCell>())
                                 {
-                                    if (rowIndex == 0) // Проверяем, что это заголовок таблицы
+                                    if (rowIndex == 0)
                                     {
                                         foreach (Paragraph paragraph in cell.Elements<Paragraph>())
                                         {
@@ -509,7 +504,7 @@ namespace EJ.MainMenu
                                             }
                                         }
                                     }
-                                    else // Для остальных ячеек таблицы не применяем жирное начертание
+                                    else 
                                     {
                                         TableCellProperties cellProperties = new TableCellProperties();
                                         cellProperties.Append(new TableCellWidth() { Type = TableWidthUnitValues.Auto });
@@ -525,7 +520,6 @@ namespace EJ.MainMenu
                                 }
                                 rowIndex++;
                             }
-                            // Добавляем таблицу в тело документа
                             body.Append(table);
                             body.Append(orientation);
                             doc.Append(body);
@@ -535,17 +529,14 @@ namespace EJ.MainMenu
                         }
                         using (WordprocessingDocument wordDoc = WordprocessingDocument.Open(path, true))
                         {
-                            // Находим последний раздел документа
                             MainDocumentPart mainPart = wordDoc.MainDocumentPart;
                             SectionProperties sectionProperties = mainPart.Document.Body.Elements<SectionProperties>().LastOrDefault();
                             if (sectionProperties == null)
                             {
-                                // Если раздел не существует, создаем новый раздел
                                 sectionProperties = new SectionProperties();
                                 mainPart.Document.Body.Append(sectionProperties);
                             }
 
-                            // Создаем раздел со страницей
                             SectionProperties newSectionProperties = new SectionProperties(new PageSize()
                             {
                                 Width = (UInt32Value)15840U,
@@ -555,7 +546,6 @@ namespace EJ.MainMenu
                             new PageMargin());
                             mainPart.Document.Body.Append(newSectionProperties);
 
-                            // Создаем заголовок
                             Paragraph paraTitle = new Paragraph(new Run(new Text("Темы занятий")))
                             {
                                 ParagraphProperties = new ParagraphProperties(
@@ -563,7 +553,6 @@ namespace EJ.MainMenu
                             };
                             mainPart.Document.Body.Append(paraTitle);
 
-                            // Добавляем таблицу
                             Table table = new Table();
                             TableProperties tblProp = new TableProperties(new TableWidth() { Width = "100%", Type = TableWidthUnitValues.Pct },
                                 new TableCellVerticalAlignment() { Val = TableVerticalAlignmentValues.Center });
@@ -582,17 +571,14 @@ namespace EJ.MainMenu
 
                             table.AppendChild(tblProp);
 
-                            // Добавляем заголовки столбцов
                             TableRow headerRow = new TableRow();
 
-                            // Добавляем заголовок для даты темы занятия
                             TableCell dateCell = new TableCell(new Paragraph(new Run(new Text("Дата"))));
                             dateCell.Append(new TableCellProperties(
                                 new TableCellWidth() { Width = "10%" },
                                 new TableCellVerticalAlignment() { Val = TableVerticalAlignmentValues.Center }));
                             headerRow.Append(dateCell);
 
-                            // Добавляем заголовок для темы занятия
                             TableCell themeCell = new TableCell(new Paragraph(new Run(new Text("Тема занятия"))));
                             themeCell.Append(new TableCellProperties(
                                 new TableCellWidth() { Width = "90%" },
@@ -601,12 +587,10 @@ namespace EJ.MainMenu
 
                             table.Append(headerRow);
 
-                            // Добавляем данные в таблицу
                             foreach (var item in dates)
                             {
                                 TableRow dataRow = new TableRow();
 
-                                // Добавляем ячейку для даты темы занятия
                                 TableCell dateCellData = new TableCell(new Paragraph(new Run(new Text(item.Date.ToString("d.MM")))));
                                 dateCellData.Append(new TableCellProperties(
                                     new TableCellWidth() { Width = "10%" },
@@ -628,7 +612,7 @@ namespace EJ.MainMenu
                             {
                                 foreach (TableCell cell in row.Elements<TableCell>())
                                 {
-                                    if (rowIndex == 0) // Проверяем, что это заголовок таблицы
+                                    if (rowIndex == 0) 
                                     {
                                         foreach (Paragraph paragraph in cell.Elements<Paragraph>())
                                         {
@@ -644,7 +628,7 @@ namespace EJ.MainMenu
                                             }
                                         }
                                     }
-                                    else // Для остальных ячеек таблицы не применяем жирное начертание
+                                    else 
                                     {
                                         TableCellProperties cellProperties = new TableCellProperties();
                                         cellProperties.Append(new TableCellWidth() { Type = TableWidthUnitValues.Auto });
@@ -660,7 +644,6 @@ namespace EJ.MainMenu
                                 }
                                 rowIndex++;
                             }
-                            // Добавляем таблицу в тело документа
                             mainPart.Document.Body.Append(table);
 
                             mainPart.Document.Save();
