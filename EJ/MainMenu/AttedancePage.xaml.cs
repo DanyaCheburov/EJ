@@ -214,22 +214,18 @@ namespace EJ.MainMenu
                                                 select new { a.AttendanceId, g.GroupName, s.StudentId, a.SubjectId, a.Date, a.PassType };
                         var attendance = queryInAttendence.Where(s => s.GroupName == groupName && s.SubjectId == subject.SubjectId && s.Date.Month == selectedMonth).ToList();
 
-                        //Создаем документ Word
                         string fileName = $"{subject.SubjectName} - {groupName} - {selectedMonthText} {ComboYear.SelectedItem}.docx".Replace('/', '-');
                         string invalidChars = new string(Path.GetInvalidFileNameChars()) + new string(Path.GetInvalidPathChars());
                         string cleanedFileName = new string(fileName.Where(x => !invalidChars.Contains(x)).ToArray());
                         string path = Path.Combine(folderPath, cleanedFileName);
                         using (WordprocessingDocument wordDoc = WordprocessingDocument.Create(path, WordprocessingDocumentType.Document))
                         {
-                            //Создаем главный раздел документа
                             MainDocumentPart mainPart = wordDoc.AddMainDocumentPart();
 
-                            //Добавляем стили в документ
                             StyleDefinitionsPart styleDefinitionsPart = mainPart.AddNewPart<StyleDefinitionsPart>();
                             styleDefinitionsPart.Styles = new Styles();
                             styleDefinitionsPart.Styles.Save();
 
-                            //Создаем документ и добавляем заголовок
                             Document doc = new Document();
                             Body body = new Body();
                             Paragraph orientation = new Paragraph(new ParagraphProperties(new SectionProperties(new PageSize()
@@ -274,7 +270,6 @@ namespace EJ.MainMenu
                                 new TableCellVerticalAlignment() { Val = TableVerticalAlignmentValues.Center });
                             th.Append(thProps);
 
-                            // устанавливаем выравнивание по центру
                             p.ParagraphProperties = new ParagraphProperties(new Justification() { Val = JustificationValues.Center });
                             th.Append(p);
                             tr.Append(th);

@@ -22,7 +22,7 @@ namespace EJ.MainMenu
             SelectedYear = selectedYear;
             SelectedGroup = selectedGroup;
             ComboGroup.ItemsSource = _context.Groups.ToList();
-            ComboGroup.SelectedItem = _context.Groups.FirstOrDefault(g => g.GroupName == SelectedGroup); // установить выбранное значение ComboGroup
+            ComboGroup.SelectedItem = _context.Groups.FirstOrDefault(g => g.GroupName == SelectedGroup);
             SelectedSubject = selectedSubject;
             ComboSubject.ItemsSource = _context.Subjects.ToList();
             ComboSubject.SelectedItem = _context.Subjects.FirstOrDefault(s => s.SubjectName == SelectedSubject);
@@ -119,19 +119,18 @@ namespace EJ.MainMenu
                         {
                             string studentName = result.UserName;
                             int absences = result.Absences;
-                            //numberOfLessons *= 2;
-                            height = (double)absences * 2; // вычисляем высоту столбца
+                            height = (double)absences * 2;
                             maxNumberOfLessons = Math.Max(maxNumberOfLessons, numberOfLessons);
 
-                            var dataPoint = new System.Windows.Forms.DataVisualization.Charting.DataPoint();
-                            dataPoint.SetValueY(height); // используйте переменную height для установки значения Y
+                            var dataPoint = new DataPoint();
+                            dataPoint.SetValueY(height);
                             dataPoint.AxisLabel = studentName;
-                            double percentAbsent = (double)absences / (double)numberOfLessons; // вычисляем процент пропущенных занятий
-                            dataPoint.Label = $"{percentAbsent:P0}"; // устанавливаем метку, содержащую процентное соотношение пропущенных занятий к общему количеству занятий
+                            double percentAbsent = (double)absences / (double)numberOfLessons;
+                            dataPoint.Label = $"{percentAbsent:P0}"; 
                             currentSeries.Points.Add(dataPoint);
                         }
 
-                        ChartAttendences.ChartAreas[0].AxisY.Maximum = Math.Ceiling(maxNumberOfLessons * 2); // устанавливаем максимальное значение для оси Y
+                        ChartAttendences.ChartAreas[0].AxisY.Maximum = Math.Ceiling(maxNumberOfLessons * 2); 
                         ChartAttendences.ChartAreas[0].AxisY.Minimum = 0;
                     }
                     catch (Exception ex)
