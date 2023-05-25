@@ -4,27 +4,27 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="08d6826631914d3e9ed6081e42e2deda" Name="Diagram1">
+      <Diagram DiagramId="523397f0549f4d48ae601f5954493eb1" Name="Diagram1">
         <EntityTypeShape EntityType="AAAAEJ12Model.Administrators" Width="1.5" PointX="5.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="AAAAEJ12Model.Attendance" Width="1.5" PointX="3" PointY="5.75" IsExpanded="true" />
         <EntityTypeShape EntityType="AAAAEJ12Model.Departments" Width="1.5" PointX="7.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="AAAAEJ12Model.Groups" Width="1.5" PointX="0.75" PointY="2" IsExpanded="true" />
         <EntityTypeShape EntityType="AAAAEJ12Model.Journal" Width="1.5" PointX="6" PointY="5.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="AAAAEJ12Model.Lessons_by_subject" Width="1.5" PointX="3" PointY="12.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="AAAAEJ12Model.Lesson_themes" Width="1.5" PointX="3" PointY="1.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="AAAAEJ12Model.Lessons_by_subject" Width="1.5" PointX="3" PointY="15.375" IsExpanded="true" />
         <EntityTypeShape EntityType="AAAAEJ12Model.Students" Width="1.5" PointX="0.75" PointY="9.75" IsExpanded="true" />
         <EntityTypeShape EntityType="AAAAEJ12Model.Subjects" Width="1.5" PointX="0.75" PointY="5.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="AAAAEJ12Model.Teachers" Width="1.5" PointX="3.75" PointY="16" IsExpanded="true" />
-        <EntityTypeShape EntityType="AAAAEJ12Model.Users" Width="1.5" PointX="1.5" PointY="15.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="AAAAEJ12Model.Lesson_themes" Width="1.5" PointX="3" PointY="1.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="AAAAEJ12Model.Teachers" Width="1.5" PointX="3.75" PointY="19" IsExpanded="true" />
+        <EntityTypeShape EntityType="AAAAEJ12Model.Users" Width="1.5" PointX="1.5" PointY="18.625" IsExpanded="true" />
         <AssociationConnector Association="AAAAEJ12Model.FK__Attendanc__Stude__571DF1D5" ManuallyRouted="false" />
         <AssociationConnector Association="AAAAEJ12Model.FK__Attendanc__Subje__59063A47" ManuallyRouted="false" />
         <AssociationConnector Association="AAAAEJ12Model.FK_Lesson_themes_Groups" ManuallyRouted="false" />
         <AssociationConnector Association="AAAAEJ12Model.FK_Students_Groups" ManuallyRouted="false" />
         <AssociationConnector Association="AAAAEJ12Model.FK_Journal_Students" ManuallyRouted="false" />
         <AssociationConnector Association="AAAAEJ12Model.FK_Journal_Subjects" ManuallyRouted="false" />
+        <AssociationConnector Association="AAAAEJ12Model.FK_Lesson_themes_Subjects" ManuallyRouted="false" />
         <AssociationConnector Association="AAAAEJ12Model.FK_Lessons_by_subject_Subjects" ManuallyRouted="false" />
         <AssociationConnector Association="AAAAEJ12Model.FK__Students__UserId__59063A47" ManuallyRouted="false" />
-        <AssociationConnector Association="AAAAEJ12Model.FK_Lesson_themes_Subjects" ManuallyRouted="false" />
         <AssociationConnector Association="AAAAEJ12Model.FK__Teachers__UserId__628FA481" ManuallyRouted="false" />
       </Diagram>
     </edmx:Diagrams>

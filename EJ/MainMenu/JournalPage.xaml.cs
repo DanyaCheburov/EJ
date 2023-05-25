@@ -279,10 +279,9 @@ namespace EJ.MainMenu
 
             if (Theme.IsChecked == true)
             {
-                Add_estimate.Content = "Добавить тему";
-               // var window = new AddTheme();
-              //  window.ShowDialog
-                   
+
+                var window = new AddTheme();
+                window.ShowDialog();   
                 LoadThemeGrid();
             }
             else
@@ -299,12 +298,14 @@ namespace EJ.MainMenu
                 LoadThemeGrid();
                 myDataGrid.Visibility = Visibility.Hidden;
                 ThemeDataGrid.Visibility = Visibility.Visible;
+                Add_estimate.Content = "Добавить тему";
             }
             else
             {
                 LoadGrid();
                 myDataGrid.Visibility = Visibility.Visible;
                 ThemeDataGrid.Visibility = Visibility.Hidden;
+                Add_estimate.Content = "Добавить оценку";
             }
         }
 

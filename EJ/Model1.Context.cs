@@ -12,7 +12,7 @@ namespace EJ
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
-    
+
     public partial class BDEntities : DbContext
     {
         private static BDEntities _context;
@@ -36,7 +36,7 @@ namespace EJ
         {
             throw new UnintentionalCodeFirstException();
         }
-    
+
         public virtual DbSet<Administrators> Administrators { get; set; }
         public virtual DbSet<Attendance> Attendance { get; set; }
         public virtual DbSet<Departments> Departments { get; set; }
