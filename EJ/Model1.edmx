@@ -46,15 +46,9 @@
           <Property Name="Date" Type="date" Nullable="false" />
           <Property Name="Estimate" Type="int" Nullable="false" />
         </EntityType>
-        <!--Ошибки, обнаруженные при создании:
-предупреждение 6002: В таблице или представлении "AAAAEJ12.dbo.Lesson_themes" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.-->
         <EntityType Name="Lesson_themes">
           <Key>
             <PropertyRef Name="Themes_id" />
-            <PropertyRef Name="Group_id" />
-            <PropertyRef Name="Subject_id" />
-            <PropertyRef Name="Date" />
-            <PropertyRef Name="Description" />
           </Key>
           <Property Name="Themes_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Group_id" Type="int" Nullable="false" />
@@ -232,20 +226,12 @@
           <EntitySet Name="Departments" EntityType="Self.Departments" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Groups" EntityType="Self.Groups" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Journal" EntityType="Self.Journal" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Lesson_themes" EntityType="Self.Lesson_themes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Lessons_by_subject" EntityType="Self.Lessons_by_subject" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Students" EntityType="Self.Students" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Subjects" EntityType="Self.Subjects" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Teachers" EntityType="Self.Teachers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Lesson_themes" EntityType="Self.Lesson_themes" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [Lesson_themes].[Themes_id] AS [Themes_id], 
-    [Lesson_themes].[Group_id] AS [Group_id], 
-    [Lesson_themes].[Subject_id] AS [Subject_id], 
-    [Lesson_themes].[Date] AS [Date], 
-    [Lesson_themes].[Description] AS [Description]
-    FROM [dbo].[Lesson_themes] AS [Lesson_themes]</DefiningQuery>
-          </EntitySet>
           <AssociationSet Name="FK__Attendanc__Stude__571DF1D5" Association="Self.FK__Attendanc__Stude__571DF1D5">
             <End Role="Students" EntitySet="Students" />
             <End Role="Attendance" EntitySet="Attendance" />
@@ -339,6 +325,18 @@
           <NavigationProperty Name="Students" Relationship="Self.FK_Journal_Students" FromRole="Journal" ToRole="Students" />
           <NavigationProperty Name="Subjects" Relationship="Self.FK_Journal_Subjects" FromRole="Journal" ToRole="Subjects" />
         </EntityType>
+        <EntityType Name="Lesson_themes">
+          <Key>
+            <PropertyRef Name="Themes_id" />
+          </Key>
+          <Property Name="Themes_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Group_id" Type="Int32" Nullable="false" />
+          <Property Name="Subject_id" Type="Int32" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Groups" Relationship="Self.FK_Lesson_themes_Groups" FromRole="Lesson_themes" ToRole="Groups" />
+          <NavigationProperty Name="Subjects" Relationship="Self.FK_Lesson_themes_Subjects" FromRole="Lesson_themes" ToRole="Subjects" />
+        </EntityType>
         <EntityType Name="Lessons_by_subject">
           <Key>
             <PropertyRef Name="Id" />
@@ -368,8 +366,8 @@
           <Property Name="SubjectName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="Attendance" Relationship="Self.FK__Attendanc__Subje__59063A47" FromRole="Subjects" ToRole="Attendance" />
           <NavigationProperty Name="Journal" Relationship="Self.FK_Journal_Subjects" FromRole="Subjects" ToRole="Journal" />
-          <NavigationProperty Name="Lessons_by_subject" Relationship="Self.FK_Lessons_by_subject_Subjects" FromRole="Subjects" ToRole="Lessons_by_subject" />
           <NavigationProperty Name="Lesson_themes" Relationship="Self.FK_Lesson_themes_Subjects" FromRole="Subjects" ToRole="Lesson_themes" />
+          <NavigationProperty Name="Lessons_by_subject" Relationship="Self.FK_Lessons_by_subject_Subjects" FromRole="Subjects" ToRole="Lessons_by_subject" />
         </EntityType>
         <EntityType Name="Teachers">
           <Key>
@@ -394,22 +392,6 @@
           <Property Name="Address" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Students" Relationship="Self.FK__Students__UserId__59063A47" FromRole="Users" ToRole="Students" />
           <NavigationProperty Name="Teachers" Relationship="Self.FK__Teachers__UserId__628FA481" FromRole="Users" ToRole="Teachers" />
-        </EntityType>
-        <EntityType Name="Lesson_themes">
-          <Key>
-            <PropertyRef Name="Themes_id" />
-            <PropertyRef Name="Group_id" />
-            <PropertyRef Name="Subject_id" />
-            <PropertyRef Name="Date" />
-            <PropertyRef Name="Description" />
-          </Key>
-          <Property Name="Themes_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Group_id" Type="Int32" Nullable="false" />
-          <Property Name="Subject_id" Type="Int32" Nullable="false" />
-          <Property Name="Date" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="Groups" Relationship="Self.FK_Lesson_themes_Groups" FromRole="Lesson_themes" ToRole="Groups" />
-          <NavigationProperty Name="Subjects" Relationship="Self.FK_Lesson_themes_Subjects" FromRole="Lesson_themes" ToRole="Subjects" />
         </EntityType>
         <Association Name="FK__Attendanc__Stude__571DF1D5">
           <End Role="Students" Type="Self.Students" Multiplicity="1" />
@@ -483,6 +465,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Lesson_themes_Subjects">
+          <End Role="Subjects" Type="Self.Subjects" Multiplicity="1" />
+          <End Role="Lesson_themes" Type="Self.Lesson_themes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Subjects">
+              <PropertyRef Name="SubjectId" />
+            </Principal>
+            <Dependent Role="Lesson_themes">
+              <PropertyRef Name="Subject_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Lessons_by_subject_Subjects">
           <End Role="Subjects" Type="Self.Subjects" Multiplicity="1" />
           <End Role="Lessons_by_subject" Type="Self.Lessons_by_subject" Multiplicity="*" />
@@ -507,18 +501,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Lesson_themes_Subjects">
-          <End Role="Subjects" Type="Self.Subjects" Multiplicity="1" />
-          <End Role="Lesson_themes" Type="Self.Lesson_themes" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Subjects">
-              <PropertyRef Name="SubjectId" />
-            </Principal>
-            <Dependent Role="Lesson_themes">
-              <PropertyRef Name="Subject_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK__Teachers__UserId__628FA481">
           <End Role="Users" Type="Self.Users" Multiplicity="1" />
           <End Role="Teachers" Type="Self.Teachers" Multiplicity="*" />
@@ -537,12 +519,12 @@
           <EntitySet Name="Departments" EntityType="Self.Departments" />
           <EntitySet Name="Groups" EntityType="Self.Groups" />
           <EntitySet Name="Journal" EntityType="Self.Journal" />
+          <EntitySet Name="Lesson_themes" EntityType="Self.Lesson_themes" />
           <EntitySet Name="Lessons_by_subject" EntityType="Self.Lessons_by_subject" />
           <EntitySet Name="Students" EntityType="Self.Students" />
           <EntitySet Name="Subjects" EntityType="Self.Subjects" />
           <EntitySet Name="Teachers" EntityType="Self.Teachers" />
           <EntitySet Name="Users" EntityType="Self.Users" />
-          <EntitySet Name="Lesson_themes" EntityType="Self.Lesson_themes" />
           <AssociationSet Name="FK__Attendanc__Stude__571DF1D5" Association="Self.FK__Attendanc__Stude__571DF1D5">
             <End Role="Students" EntitySet="Students" />
             <End Role="Attendance" EntitySet="Attendance" />
@@ -567,6 +549,10 @@
             <End Role="Subjects" EntitySet="Subjects" />
             <End Role="Journal" EntitySet="Journal" />
           </AssociationSet>
+          <AssociationSet Name="FK_Lesson_themes_Subjects" Association="Self.FK_Lesson_themes_Subjects">
+            <End Role="Subjects" EntitySet="Subjects" />
+            <End Role="Lesson_themes" EntitySet="Lesson_themes" />
+          </AssociationSet>
           <AssociationSet Name="FK_Lessons_by_subject_Subjects" Association="Self.FK_Lessons_by_subject_Subjects">
             <End Role="Subjects" EntitySet="Subjects" />
             <End Role="Lessons_by_subject" EntitySet="Lessons_by_subject" />
@@ -574,10 +560,6 @@
           <AssociationSet Name="FK__Students__UserId__59063A47" Association="Self.FK__Students__UserId__59063A47">
             <End Role="Users" EntitySet="Users" />
             <End Role="Students" EntitySet="Students" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Lesson_themes_Subjects" Association="Self.FK_Lesson_themes_Subjects">
-            <End Role="Subjects" EntitySet="Subjects" />
-            <End Role="Lesson_themes" EntitySet="Lesson_themes" />
           </AssociationSet>
           <AssociationSet Name="FK__Teachers__UserId__628FA481" Association="Self.FK__Teachers__UserId__628FA481">
             <End Role="Users" EntitySet="Users" />
@@ -636,6 +618,17 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="Lesson_themes">
+            <EntityTypeMapping TypeName="AAAAEJ12Model.Lesson_themes">
+              <MappingFragment StoreEntitySet="Lesson_themes">
+                <ScalarProperty Name="Themes_id" ColumnName="Themes_id" />
+                <ScalarProperty Name="Group_id" ColumnName="Group_id" />
+                <ScalarProperty Name="Subject_id" ColumnName="Subject_id" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Lessons_by_subject">
             <EntityTypeMapping TypeName="AAAAEJ12Model.Lessons_by_subject">
               <MappingFragment StoreEntitySet="Lessons_by_subject">
@@ -682,17 +675,6 @@
                 <ScalarProperty Name="DateOfBirth" ColumnName="DateOfBirth" />
                 <ScalarProperty Name="Phone" ColumnName="Phone" />
                 <ScalarProperty Name="Address" ColumnName="Address" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Lesson_themes">
-            <EntityTypeMapping TypeName="AAAAEJ12Model.Lesson_themes">
-              <MappingFragment StoreEntitySet="Lesson_themes">
-                <ScalarProperty Name="Themes_id" ColumnName="Themes_id" />
-                <ScalarProperty Name="Group_id" ColumnName="Group_id" />
-                <ScalarProperty Name="Subject_id" ColumnName="Subject_id" />
-                <ScalarProperty Name="Date" ColumnName="Date" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
