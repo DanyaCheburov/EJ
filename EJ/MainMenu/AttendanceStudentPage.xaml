@@ -35,12 +35,6 @@
             <DatePicker x:Name="EndOfPeriod" Margin="350 0 0 0" Width="100" FontSize="15" HorizontalAlignment="Left" Grid.Row="2" Grid.Column="2"></DatePicker>
             <Button Click="ToCreate_Click" Grid.Row="3" Content="Сформировать" Grid.ColumnSpan="2" Height="30" Width="140" HorizontalAlignment="Left" Margin="15 0 0 0"></Button>
         </Grid>
-        <DataGrid x:Name="myDataGrid" Grid.Row="1" AutoGenerateColumns="False">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Предмет" Binding="{Binding SubjectName}" IsReadOnly="True"/>
-                <DataGridTextColumn Header="Дата" Binding="{Binding Date, StringFormat={}{0:dd.MM.yyyy}}" IsReadOnly="True"/>
-                <DataGridTextColumn Header="Тип пропуска" Binding="{Binding PassType}" IsReadOnly="True"/>
-            </DataGrid.Columns>
-        </DataGrid>
+        <DataGrid x:Name="myDataGrid" Grid.Row="1" AutoGenerateColumns="False" Visibility="Collapsed"/>
     </Grid>
 </Page>

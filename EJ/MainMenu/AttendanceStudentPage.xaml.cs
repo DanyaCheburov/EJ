@@ -2,17 +2,9 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace EJ.MainMenu
 {
@@ -28,13 +20,25 @@ namespace EJ.MainMenu
             string userName = Application.Current.Properties["Name"] as string;
             NameTextBlock.Text = userName;
             GetGroupName();
+            SetCurrentMonthDates();
+        }
+
+        private void SetCurrentMonthDates()
+        {
+            // Установка начала текущего месяца
+            DateTime startOfMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+            StartOfPeriod.SelectedDate = startOfMonth;
+
+            // Установка конца текущего месяца
+            DateTime endOfMonth = startOfMonth.AddMonths(1).AddDays(-1);
+            EndOfPeriod.SelectedDate = endOfMonth;
         }
 
         private void GetGroupName()
         {
             int currentUser = (int)Application.Current.Properties["UserId"];
 
-            using (var dbContext = new BDEntities()) // Замените YourDbContext на имя вашего контекста базы данных
+            using (var dbContext = new BDEntities())
             {
                 var student = dbContext.Students.FirstOrDefault(s => s.UserId == currentUser);
                 if (student != null)
@@ -71,21 +75,94 @@ namespace EJ.MainMenu
 
             var reportData = query.ToList();
 
+            // Создание списка уникальных дат и сортировка их по возрастанию
+            var uniqueDates = reportData.Select(item => item.Date.Date).Distinct().OrderBy(date => date).ToList();
+
+            // Создание списка объектов AttendanceReportItem
             List<AttendanceReportItem> reportItems = new List<AttendanceReportItem>();
 
             foreach (var item in reportData)
             {
                 string passType = item.PassType ? "УП" : "Н";
-                AttendanceReportItem reportItem = new AttendanceReportItem
+
+                // Поиск соответствующего объекта AttendanceReportItem для предмета
+                AttendanceReportItem reportItem = reportItems.FirstOrDefault(r => r.SubjectName == item.SubjectName);
+
+                if (reportItem == null)
                 {
-                    SubjectName = item.SubjectName,
-                    Date = item.Date,
-                    PassType = passType
-                };
-                reportItems.Add(reportItem);
+                    reportItem = new AttendanceReportItem
+                    {
+                        SubjectName = item.SubjectName
+                    };
+                    reportItems.Add(reportItem);
+                }
+
+                // Заполнение данных о пропусках для каждой даты
+                if (!reportItem.DateData.ContainsKey(item.Date.Date))
+                {
+                    reportItem.DateData.Add(item.Date.Date, passType);
+
+                    if (passType == "УП")
+                    {
+                        reportItem.UPCount += 2;
+                    }
+                    else if (passType == "Н")
+                    {
+                        reportItem.NCount += 2;
+                    }
+                }
             }
 
+            // Очистка существующих столбцов в DataGrid
+            myDataGrid.Columns.Clear();
+
+            // Добавление столбца для предметов в DataGrid
+            DataGridTextColumn subjectColumn = new DataGridTextColumn();
+            subjectColumn.Header = "Предмет";
+            subjectColumn.Binding = new Binding("SubjectName");
+            subjectColumn.IsReadOnly = true;
+            myDataGrid.Columns.Add(subjectColumn);
+
+            // Добавление столбцов для дат в DataGrid в отсортированном порядке
+            foreach (var date in uniqueDates)
+            {
+                DataGridTextColumn dateColumn = new DataGridTextColumn();
+                dateColumn.Header = date.ToString("dd.MM.yy");
+                dateColumn.Binding = new Binding(string.Format("DateData[{0:yyyy-MM-dd}]", date.Date));
+                dateColumn.IsReadOnly = true;
+                myDataGrid.Columns.Add(dateColumn);
+            }
+
+            // Добавление столбца "Отсутствие (считает всего УП) по уважительной причине"
+            DataGridTextColumn upCountColumn = new DataGridTextColumn();
+            upCountColumn.Header = "Отсутствие\nпо уважительной\nпричине";
+            upCountColumn.Binding = new Binding("UPCount");
+            upCountColumn.IsReadOnly = true;
+            myDataGrid.Columns.Add(upCountColumn);
+
+            // Добавление столбца "Отсутствие (считает всего Н) по неуважительной причине"
+            DataGridTextColumn nCountColumn = new DataGridTextColumn();
+            nCountColumn.Header = "Отсутствие\nпо неуважительной\nпричине";
+            nCountColumn.Binding = new Binding("NCount");
+            nCountColumn.IsReadOnly = true;
+            myDataGrid.Columns.Add(nCountColumn);
+
+            // Обновление данных в DataGrid
             myDataGrid.ItemsSource = reportItems;
+            myDataGrid.Visibility = Visibility.Visible;
+        }
+
+        public class AttendanceReportItem
+        {
+            public string SubjectName { get; set; }
+            public Dictionary<DateTime, string> DateData { get; set; }
+            public int UPCount { get; set; }
+            public int NCount { get; set; }
+
+            public AttendanceReportItem()
+            {
+                DateData = new Dictionary<DateTime, string>();
+            }
         }
 
         private int GetStudentId()
@@ -102,14 +179,6 @@ namespace EJ.MainMenu
             }
 
             return -1; // Если не удалось получить идентификатор студента, возвращаем значение по умолчанию
-        }
-
-        // Класс модели данных для отчета
-        private class AttendanceReportItem
-        {
-            public string SubjectName { get; set; }
-            public DateTime Date { get; set; }
-            public string PassType { get; set; }
         }
     }
 }
