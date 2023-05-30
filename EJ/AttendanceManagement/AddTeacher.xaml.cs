@@ -18,6 +18,7 @@ namespace EJ.AttendanceManagement
         private void Add_Teacher_Click(object sender, RoutedEventArgs e)
         {
             var selectedUser = (Users)ComboUsers.SelectedItem;
+            var selectedPosition = Position.Text;
             var existingTeacher = db.Teachers.FirstOrDefault(t => t.UserId == selectedUser.UserId);
 
             if (existingTeacher != null)
@@ -26,7 +27,7 @@ namespace EJ.AttendanceManagement
             }
             else
             {
-                var newTeacher = new Teachers { UserId = selectedUser.UserId, Department = "abc", Position = "abc"};
+                var newTeacher = new Teachers { UserId = selectedUser.UserId, Department = "abc", Position = selectedPosition};
                 db.Teachers.Add(newTeacher);
                 db.SaveChanges();
                 MessageBox.Show("Преподаватель успешно добавлен.");

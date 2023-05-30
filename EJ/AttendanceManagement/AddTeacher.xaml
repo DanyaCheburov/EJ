@@ -6,7 +6,7 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:local="clr-namespace:EJ.AttendanceManagement"
         mc:Ignorable="d"
-Title="AddTeacher" Height="300" Width="430"
+        Title="AddTeacher" Height="300" Width="460"
         
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         Background="{x:Null}"
@@ -17,6 +17,7 @@ Title="AddTeacher" Height="300" Width="430"
     <materialDesign:Card Background="{DynamicResource MaterialDesignPaper}" UniformCornerRadius="15" Margin="25" materialDesign:ElevationAssist.Elevation= "Dp4">
         <Grid Cursor="">
             <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
@@ -32,7 +33,9 @@ Title="AddTeacher" Height="300" Width="430"
             </Button>
             <TextBlock Text="Выберите пользователя:" Margin="10" Grid.Row="1" />
             <ComboBox x:Name="ComboUsers" ItemsSource="{Binding Users}" DisplayMemberPath="UserName" IsEditable="True" Grid.Column="1" Margin="10" Grid.Row="1" />
-            <Button x:Name="add_teacher" Click="Add_Teacher_Click" Content="Добавить" Margin="50" Grid.Row="2" Grid.ColumnSpan="2" />
+            <TextBlock Text="Должность:" Margin="10" Grid.Row="2" />
+            <TextBox x:Name="Position" Margin="10" Grid.Row="2" Grid.Column="2"/>
+            <Button x:Name="add_teacher" Click="Add_Teacher_Click" Content="Добавить" Margin="50" Grid.Row="3" Grid.ColumnSpan="2" />
         </Grid>
     </materialDesign:Card>
 </Window>
