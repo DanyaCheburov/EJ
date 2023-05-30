@@ -162,6 +162,7 @@ namespace EJ
                 TeacherButton.Foreground = Brushes.Black;
                 HelpButton.Foreground = Brushes.Black;
                 EstimateButton.Foreground = Brushes.Black;
+                AttendanceStudentButton.Foreground = Brushes.Black;
                 themeToggle.ToolTip = "Включить темную тему";
             }
             else
@@ -174,6 +175,7 @@ namespace EJ
                 TeacherButton.Foreground = Brushes.White;
                 EstimateButton.Foreground = Brushes.White;
                 HelpButton.Foreground = Brushes.White;
+                AttendanceStudentButton.Foreground = Brushes.White;
                 themeToggle.ToolTip = "Включить светлую тему";
             }
             paletteHelper.SetTheme(theme);
