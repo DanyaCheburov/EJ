@@ -33,6 +33,7 @@ namespace EJ.AuthorizationANDRegistration
 
                 if (currentUser != null && VerifyPassword(password, currentUser.Password))
                 {
+                    Application.Current.Properties["UserId"] = currentUser.UserId;
                     Application.Current.Properties["Email"] = currentUser.Email;
                     Application.Current.Properties["Name"] = currentUser.UserName;
                     Application.Current.Properties["DateOfBirth"] = currentUser.DateOfBirth;

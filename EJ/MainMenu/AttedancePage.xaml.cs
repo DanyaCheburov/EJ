@@ -27,6 +27,46 @@ namespace EJ.MainMenu
             ComboGroup.ItemsSource = BDEntities.GetContext().Groups.ToList();
             SetYearComboBox();
             LoadStudents();
+            AdminAndTeacher();
+        }
+        private void AdminAndTeacher()
+        {
+            // Получение информации о текущем пользователе из БД
+            int currentUser = (int)Application.Current.Properties["UserId"];
+
+            // Проверка, является ли текущий пользователь администратором
+            bool isAdmin = IsUserAdmin(currentUser);
+            bool isTeacher = IsUserTeacher(currentUser);
+
+            // Установка видимости кнопки
+            if (isAdmin || isTeacher)
+            {
+                PassManagement.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                PassManagement.Visibility = Visibility.Collapsed;
+            }
+
+            // Метод для проверки, является ли пользователь администратором
+            bool IsUserAdmin(int userId)
+            {
+                using (var context = new BDEntities())
+                {
+                    // Проверка наличия пользователя с заданным UserId в таблице Administrators
+                    isAdmin = context.Administrators.Any(a => a.UserId == userId);
+                    return isAdmin;
+                }
+            }
+            bool IsUserTeacher(int userId)
+            {
+                using (var context = new BDEntities())
+                {
+                    // Проверка наличия пользователя с заданным UserId в таблице Administrators
+                    isTeacher = context.Teachers.Any(a => a.UserId == userId);
+                    return isTeacher;
+                }
+            }
         }
         private void LoadStudents()
         {

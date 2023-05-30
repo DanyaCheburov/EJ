@@ -59,6 +59,15 @@
                         </WrapPanel>
                     </Button>
 
+                    <Button x:Name="AttendanceStudentButton" Click="AttendanceStudentButton_Click" Style="{StaticResource MaterialDesignFlatButton}" Foreground="{DynamicResource PrimaryHueLightForegroundBrush}"
+                            materialDesign:ButtonAssist.CornerRadius="6" Width="auto" Height="35" materialDesign:RippleAssist.Feedback="White"
+                            Margin="0 0 0 15" Cursor="Hand">
+                        <WrapPanel Width="120">
+                            <materialDesign:PackIcon Kind="Lecture" VerticalAlignment="Center" Foreground="DodgerBlue"/>
+                            <TextBlock>Посещаемость</TextBlock>
+                        </WrapPanel>
+                    </Button>
+
                     <Button x:Name="EstimateButton" Click="EstimateButton_Click" Style="{StaticResource MaterialDesignFlatButton}" Foreground="{DynamicResource PrimaryHueLightForegroundBrush}"
                             materialDesign:ButtonAssist.CornerRadius="6" Width="auto" Height="35" materialDesign:RippleAssist.Feedback="White"
                             Margin="0 0 0 15" Cursor="Hand">

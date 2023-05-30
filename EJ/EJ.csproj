@@ -130,6 +130,9 @@
     <Compile Include="MainMenu\AttedancePage.xaml.cs">
       <DependentUpon>AttedancePage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="MainMenu\AttendanceStudentPage.xaml.cs">
+      <DependentUpon>AttendanceStudentPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MainMenu\Editing information\AddEditUser.xaml.cs">
       <DependentUpon>AddEditUser.xaml</DependentUpon>
     </Compile>
@@ -210,6 +213,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="MainMenu\AttedancePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MainMenu\AttendanceStudentPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

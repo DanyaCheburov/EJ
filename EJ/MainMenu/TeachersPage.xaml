@@ -21,8 +21,8 @@
             </DataGrid.Columns>
         </DataGrid>
         <DockPanel Grid.Row="1">
-            <Button Content="Добавить преподавателя" Width="250" DockPanel.Dock="Left" Click="AddTeacherGroup_Click" Cursor="Hand" Margin="15"/>
-            <Button Width="250" DockPanel.Dock="Right" Content="Удалить" Click="DeleteButton_Click" Cursor="Hand" Margin="15"/>
+            <Button Content="Добавить преподавателя" Width="250" DockPanel.Dock="Left" x:Name="AddTeacher" Click="AddTeacher_Click" Cursor="Hand" Margin="15"/>
+            <Button Width="250" DockPanel.Dock="Right" Content="Удалить" x:Name="DeleteButton" Click="DeleteButton_Click" Cursor="Hand" Margin="15"/>
         </DockPanel>
     </Grid>
 </Page>

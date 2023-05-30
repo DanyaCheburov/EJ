@@ -1,6 +1,7 @@
 ﻿using EJ.AuthorizationANDRegistration;
 using MaterialDesignThemes.Wpf;
 using System;
+using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -19,6 +20,84 @@ namespace EJ
             string userName = (string)Application.Current.Properties["Name"];
             myChip.Content = userName;
             StateChanged += Window_StateChanged;
+            AdminRole();
+            StudentRole();
+        }
+
+        private void AdminRole()
+        {
+            // Получение информации о текущем пользователе из БД
+            int currentUser = (int)Application.Current.Properties["UserId"];
+
+            // Проверка, является ли текущий пользователь администратором
+            bool isAdmin = IsUserAdmin(currentUser);
+            bool isTeacher = IsUserTeacher(currentUser);
+
+            // Установка видимости кнопки
+            if (isAdmin)
+            {
+                UserButton.Visibility = Visibility.Visible;
+                StudentButton.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                UserButton.Visibility = Visibility.Collapsed;
+                StudentButton.Visibility = Visibility.Collapsed;
+            }
+            if (isAdmin || isTeacher)
+            {
+                AttendanceButton.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                AttendanceButton.Visibility = Visibility.Collapsed;
+            }
+
+            // Метод для проверки, является ли пользователь администратором
+            bool IsUserAdmin(int userId)
+            {
+                using (var context = new BDEntities())
+                {
+                    // Проверка наличия пользователя с заданным UserId в таблице Administrators
+                    isAdmin = context.Administrators.Any(a => a.UserId == userId);
+                    return isAdmin;
+                }
+            }
+            bool IsUserTeacher(int userId)
+            {
+                using (var context = new BDEntities())
+                {
+                    isTeacher = context.Teachers.Any(a => a.UserId == userId);
+                    return isTeacher;
+                }
+            }
+        }
+        private void StudentRole()
+        {
+            int currentUser = (int)Application.Current.Properties["UserId"];
+
+            // Проверка, является ли текущий пользователь администратором
+            bool isStudent = IsUserStudent(currentUser);
+
+            // Установка видимости кнопки
+            if (isStudent)
+            {
+                AttendanceStudentButton.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                AttendanceStudentButton.Visibility = Visibility.Collapsed;
+            }
+
+            // Метод для проверки, является ли пользователь администратором
+            bool IsUserStudent(int userId)
+            {
+                using (var context = new BDEntities())
+                {
+                    isStudent = context.Students.Any(a => a.UserId == userId);
+                    return isStudent;
+                }
+            }
         }
         private void Window_StateChanged(object sender, EventArgs e)
         {
@@ -144,6 +223,11 @@ namespace EJ
         private void EstimateButton_Click(object sender, RoutedEventArgs e)
         {
             MainContentFrame.Navigate(new Uri("MainMenu/JournalPage.xaml", UriKind.Relative));
+        }
+
+        private void AttendanceStudentButton_Click(object sender, RoutedEventArgs e)
+        {
+            MainContentFrame.Navigate(new Uri("MainMenu/AttendanceStudentPage.xaml", UriKind.Relative));
         }
     }
 }
