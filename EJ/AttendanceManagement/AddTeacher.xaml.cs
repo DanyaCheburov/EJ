@@ -26,7 +26,7 @@ namespace EJ.AttendanceManagement
             }
             else
             {
-                var newTeacher = new Teachers { UserId = selectedUser.UserId };
+                var newTeacher = new Teachers { UserId = selectedUser.UserId, Department = "abc", Position = "abc"};
                 db.Teachers.Add(newTeacher);
                 db.SaveChanges();
                 MessageBox.Show("Преподаватель успешно добавлен.");
