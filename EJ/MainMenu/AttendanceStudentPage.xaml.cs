@@ -234,11 +234,11 @@ namespace EJ.MainMenu
 
                     if (passType == "УП")
                     {
-                        reportItem.UPCount++;
+                        reportItem.UPCount += 2;
                     }
                     else if (passType == "Н")
                     {
-                        reportItem.NCount++;
+                        reportItem.NCount += 2;
                     }
                 }
             }
@@ -260,18 +260,16 @@ namespace EJ.MainMenu
                 document.Add(title);
 
                 // Добавление данных таблицы
-                PdfPTable table = new PdfPTable(uniqueDates.Count + 3);
+                PdfPTable table = new PdfPTable(myDataGrid.Columns.Count);
                 table.WidthPercentage = 100;
 
                 // Добавление столбцов таблицы
-                table.AddCell("Предмет");
-                foreach (var date in uniqueDates)
+                foreach (DataGridColumn column in myDataGrid.Columns)
                 {
-                    table.AddCell(date.ToString("dd.MM.yy"));
+                    PdfPCell cell = new PdfPCell(new Phrase(column.Header.ToString()));
+                    cell.BackgroundColor = new BaseColor(230, 230, 230); // Цвет фона столбца
+                    table.AddCell(cell);
                 }
-                table.AddCell("Отсутствие по уважительной причине");
-                table.AddCell("Отсутствие по неуважительной причине");
-
                 // Добавление строк и данных таблицы
                 foreach (AttendanceReportItem reportItem in reportItems)
                 {
@@ -282,7 +280,6 @@ namespace EJ.MainMenu
                         string passType = reportItem.DateData.ContainsKey(date) ? reportItem.DateData[date] : "";
                         table.AddCell(passType); // Добавление ячейки с типом пропуска для каждой даты
                     }
-
                     table.AddCell(reportItem.UPCount.ToString()); // Добавление ячейки с количеством уважительных пропусков
                     table.AddCell(reportItem.NCount.ToString()); // Добавление ячейки с количеством неуважительных пропусков
                 }
@@ -299,7 +296,6 @@ namespace EJ.MainMenu
                 MessageBox.Show("Ошибка при создании отчета: " + ex.Message);
             }
         }
-
 
 
     }
