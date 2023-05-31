@@ -34,6 +34,7 @@
             <DatePicker x:Name="StartOfPeriod" Margin="125 0 0 0" Width="100" FontSize="15" HorizontalAlignment="Left" Grid.Row="2" Grid.Column="2"></DatePicker>
             <DatePicker x:Name="EndOfPeriod" Margin="350 0 0 0" Width="100" FontSize="15" HorizontalAlignment="Left" Grid.Row="2" Grid.Column="2"></DatePicker>
             <Button Click="ToCreate_Click" Grid.Row="3" Content="Сформировать" Grid.ColumnSpan="2" Height="30" Width="140" HorizontalAlignment="Left" Margin="15 0 0 0"></Button>
+            <Button Click="ToCreatePDF_Click" Grid.Row="3" Content="Сформировать в PDF" Grid.ColumnSpan="2" Height="30" Width="170" HorizontalAlignment="Left" Margin="180 0 0 0"/>
         </Grid>
         <DataGrid x:Name="myDataGrid" Grid.Row="1" AutoGenerateColumns="False" Visibility="Collapsed"/>
     </Grid>
