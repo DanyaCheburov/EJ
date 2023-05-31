@@ -244,13 +244,12 @@ namespace EJ.MainMenu
             }
 
             // Создание документа PDF
-            Document document = new Document();
-            string fileName = "AttendanceReport.pdf";
-            string filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), fileName);
-
-            try
+            Microsoft.Win32.SaveFileDialog saveFileDialog = new Microsoft.Win32.SaveFileDialog();
+            saveFileDialog.Filter = "PDF файлы (*.pdf)|*.pdf";
+            if (saveFileDialog.ShowDialog() == true)
             {
-                PdfWriter writer = PdfWriter.GetInstance(document, new FileStream(filePath, FileMode.Create));
+                Document document = new Document();
+                PdfWriter writer = PdfWriter.GetInstance(document, new FileStream(saveFileDialog.FileName, FileMode.Create));
                 document.Open();
 
                 // Добавление заголовка
@@ -264,21 +263,45 @@ namespace EJ.MainMenu
                 table.WidthPercentage = 100;
 
                 // Добавление столбцов таблицы
-                foreach (DataGridColumn column in myDataGrid.Columns)
+                // Создание базового шрифта для русского языка
+                BaseFont russianBaseFont = BaseFont.CreateFont("c:/windows/fonts/arial.ttf", BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
+
+                // Создание шрифта с русским базовым шрифтом
+                Font russianFont = new Font(russianBaseFont, 10, Font.NORMAL);
+
+                // Добавление столбца "Предмет"
+                PdfPCell subjectCell = new PdfPCell(new Phrase("Предмет", russianFont));
+                subjectCell.BackgroundColor = new BaseColor(230, 230, 230);
+                subjectCell.FixedHeight = 245f;
+                table.AddCell(subjectCell);
+
+                foreach (var date in uniqueDates)
                 {
-                    PdfPCell cell = new PdfPCell(new Phrase(column.Header.ToString()));
-                    cell.BackgroundColor = new BaseColor(230, 230, 230); // Цвет фона столбца
-                    table.AddCell(cell);
+                    table.AddCell(date.ToString("dd.MM.yy"));
                 }
+
+
+                // Добавление столбца "Отсутствие по уважительной причине"
+                PdfPCell upCountCell = new PdfPCell(new Phrase("Отсутствие\nпо уважительной\nпричине", russianFont));
+                upCountCell.BackgroundColor = new BaseColor(230, 230, 230);
+                table.AddCell(upCountCell);
+
+                // Добавление столбца "Отсутствие по неуважительной причине"
+                PdfPCell nCountCell = new PdfPCell(new Phrase("Отсутствие\nпо неуважительной\nпричине", russianFont));
+                nCountCell.BackgroundColor = new BaseColor(230, 230, 230);
+                table.AddCell(nCountCell);
+
                 // Добавление строк и данных таблицы
                 foreach (AttendanceReportItem reportItem in reportItems)
                 {
-                    table.AddCell(reportItem.SubjectName); // Добавление ячейки с названием предмета
+                    PdfPCell subjectName = new PdfPCell(new Phrase(reportItem.SubjectName, russianFont));
+                    table.AddCell(subjectName);
 
                     foreach (var date in uniqueDates)
                     {
                         string passType = reportItem.DateData.ContainsKey(date) ? reportItem.DateData[date] : "";
-                        table.AddCell(passType); // Добавление ячейки с типом пропуска для каждой даты
+                        PdfPCell passTypePDF = new PdfPCell(new Phrase(passType, russianFont));
+                        table.AddCell(passTypePDF); // Добавление ячейки с типом пропуска для каждой даты
                     }
                     table.AddCell(reportItem.UPCount.ToString()); // Добавление ячейки с количеством уважительных пропусков
                     table.AddCell(reportItem.NCount.ToString()); // Добавление ячейки с количеством неуважительных пропусков
@@ -288,12 +311,6 @@ namespace EJ.MainMenu
 
                 // Закрытие документа
                 document.Close();
-
-                MessageBox.Show("Отчет успешно создан и сохранен в документе " + fileName);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Ошибка при создании отчета: " + ex.Message);
             }
         }
 
