@@ -272,7 +272,6 @@ namespace EJ.MainMenu
                 // Добавление столбца "Предмет"
                 PdfPCell subjectCell = new PdfPCell(new Phrase("Предмет", russianFont));
                 subjectCell.BackgroundColor = new BaseColor(230, 230, 230);
-                subjectCell.FixedHeight = 245f;
                 table.AddCell(subjectCell);
 
                 foreach (var date in uniqueDates)
