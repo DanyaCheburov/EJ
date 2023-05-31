@@ -6,15 +6,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EJ.AttendanceManagement"
         mc:Ignorable="d"
-        Title="PassManagement" Height="400" Width="430"
-        
+        Title="PassManagement" Height="350" Width="450"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         Background="{x:Null}"
         AllowsTransparency="True"
         WindowStyle="None"
         WindowStartupLocation="CenterScreen">
-    
-    <materialDesign:Card Background="{DynamicResource MaterialDesignPaper}" UniformCornerRadius="15" Margin="25" materialDesign:ElevationAssist.Elevation= "Dp4">
+
+    <materialDesign:Card Background="{DynamicResource MaterialDesignPaper}" UniformCornerRadius="15" Margin="25" materialDesign:ElevationAssist.Elevation="Dp4">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
@@ -26,24 +25,36 @@
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <TextBlock Text="Управления пропусками" FontSize="15" FontWeight="Bold" Margin="10 15 0 0"></TextBlock>
+            <TextBlock Text="Управления пропусками" FontSize="15" FontWeight="Bold" Margin="10 15 0 0" Grid.ColumnSpan="2" />
             <Button Name="BtnExit" Click="BtnExit_Click" Style="{StaticResource MaterialDesignIconButton}" materialDesign:ButtonAssist.CornerRadius="6"
-                                Width="40" Height="40" DockPanel.Dock="Right" HorizontalAlignment="Right" Grid.Column="2">
+                        Width="40" Height="40" DockPanel.Dock="Right" HorizontalAlignment="Right" Grid.Column="1">
                 <materialDesign:PackIcon Kind="Close" />
             </Button>
-            <TextBlock Text="Выберите группу:" Margin="10" Grid.Row="1"/>
-            <ComboBox x:Name="ComboGroup" ItemsSource="{Binding Groups}" DisplayMemberPath="GroupName" SelectionChanged="ComboGroup_SelectionChanged" Grid.Row="1" Grid.Column="1" Margin="10" />
-            <TextBlock Text="Выберите студента:" Margin="10" Grid.Row="2" />
-            <ComboBox x:Name="ComboStudent" ItemsSource="{Binding Students}" DisplayMemberPath="Users.UserName" Grid.Column="1" Margin="10" Grid.Row="2" />
-            <TextBlock Text="Выберите предмет:" Margin="10" Grid.Row="3" />
-            <ComboBox x:Name="ComboSubject" ItemsSource="{Binding Subjects}" DisplayMemberPath="SubjectName" Grid.Column="1" Margin="10" Grid.Row="3" />
-            <TextBlock Text="Выберите дату:" Margin="10" Grid.Row="4" />
-            <DatePicker x:Name="datePicker" SelectedDate="{Binding Date}" Grid.Column="1" Margin="10" Grid.Row="4" />
-            <TextBlock Text="Выберите действие:" Margin="10" Grid.Row="5" />
-            <ComboBox x:Name="ComboPassType" Grid.Column="1" Margin="10" Grid.Row="5">
+            <ComboBox x:Name="ComboGroup" ItemsSource="{Binding Groups}" DisplayMemberPath="GroupName" SelectionChanged="ComboGroup_SelectionChanged" Visibility="Hidden" Margin="10" Grid.ColumnSpan="2" />
+            <Grid Grid.Row="1" Grid.ColumnSpan="2">
+                <Button x:Name="OpenStudentsButton" Click="OpenStudentsButton_Click" Style="{StaticResource MaterialDesignFlatButton}" Foreground="{DynamicResource PrimaryHueLightForegroundBrush}"
+            materialDesign:ButtonAssist.CornerRadius="6" Margin="10" Width="336" Height="45" materialDesign:RippleAssist.Feedback="White"
+            HorizontalAlignment="Center" Cursor="Hand">
+                    <WrapPanel Width="313">
+                        <materialDesign:PackIcon Kind="ArrowRightDropCircleOutline" VerticalAlignment="Center" Foreground="DodgerBlue" HorizontalAlignment="Center"/>
+                        <TextBlock Width="276" Height="22"><Run Text="Выберите cтудента"/></TextBlock>
+                    </WrapPanel>
+                </Button>
+                <Popup x:Name="StudentsPopup" PlacementTarget="{Binding ElementName=OpenStudentsButton}" Placement="Bottom" HorizontalOffset="0" VerticalOffset="5">
+                    <Border Background="White">
+                        <ListBox x:Name="ListBoxStudents" ItemsSource="{Binding Students}" DisplayMemberPath="Users.UserName" SelectionMode="Multiple" />
+                    </Border>
+                </Popup>
+            </Grid>
+
+            <ComboBox x:Name="ComboSubject" ItemsSource="{Binding Subjects}" DisplayMemberPath="SubjectName" Visibility="Hidden" Grid.ColumnSpan="2" />
+            <TextBlock Text="Выберите дату:" Margin="10" Grid.Row="2" />
+            <DatePicker x:Name="datePicker" SelectedDate="{Binding Date}" Grid.Column="1" Margin="10" Grid.Row="2" />
+            <TextBlock Text="Выберите действие:" Margin="10" Grid.Row="3" />
+            <ComboBox x:Name="ComboPassType" Grid.Column="1" Margin="10" Grid.Row="3">
                 <ComboBoxItem>Добавить пропуск по неуважительной причине</ComboBoxItem>
                 <ComboBoxItem>Добавить пропуск по уважительной причине</ComboBoxItem>
                 <ComboBoxItem>Удалить пропуск</ComboBoxItem>

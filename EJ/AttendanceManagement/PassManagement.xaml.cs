@@ -24,7 +24,7 @@ namespace EJ.AttendanceManagement
             ComboSubject.ItemsSource = _context.Subjects.ToList();
             ComboSubject.SelectedItem = _context.Subjects.FirstOrDefault(s => s.SubjectName == SelectedSubject);
 
-            ComboStudent.ItemsSource = Students;
+            ListBoxStudents.ItemsSource = Students;
         }
 
         private List<Students> Students
@@ -44,70 +44,83 @@ namespace EJ.AttendanceManagement
             base.OnMouseLeftButtonDown(e);
             DragMove();
         }
-
+        private void OpenStudentsButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (StudentsPopup.IsOpen)
+            {
+                StudentsPopup.IsOpen = false; // Закрыть Popup
+            }
+            else
+            {
+                StudentsPopup.IsOpen = true; // Открыть Popup
+            }
+        }
         private void ComboGroup_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            ComboStudent.ItemsSource = Students;
+            ListBoxStudents.ItemsSource = Students;
         }
 
         private void Add_attendance_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                var selectedStudent = ComboStudent.SelectedItem as Students;
                 var selectedSubject = ComboSubject.SelectedItem as Subjects;
 
-                if (selectedStudent == null || selectedSubject == null || datePicker.SelectedDate == null)
+                if (selectedSubject == null || datePicker.SelectedDate == null)
                 {
-                    MessageBox.Show("Пожалуйста, выберите действительного студента и дату из комбо-боксов.");
-                    return;
-                }
-
-                var attendance = _context.Attendance.FirstOrDefault(a => a.StudentId == selectedStudent.StudentId && a.Date == datePicker.SelectedDate.Value && a.SubjectId == selectedSubject.SubjectId);
-
-                if (ComboPassType.SelectedIndex == 2) // Удаление пропуска
-                {
-                    if (attendance != null)
-                    {
-                        _context.Attendance.Remove(attendance);
-                        _context.SaveChanges();
-                        MessageBox.Show("Пропуск удален.");
-                    }
-                    else
-                    {
-                        MessageBox.Show("Пропуска нет, чтобы его удалить.");
-                    }
+                    MessageBox.Show("Пожалуйста, выберите действительный предмет и дату из комбо-боксов.");
                     return;
                 }
 
                 bool passType = ComboPassType.SelectedIndex == 1; // Отсутствие по уважительной причине
 
-                if (attendance != null)
+                foreach (var selectedStudent in ListBoxStudents.SelectedItems.Cast<Students>())
                 {
-                    if (attendance.PassType == passType)
+                    var attendance = _context.Attendance.FirstOrDefault(a => a.StudentId == selectedStudent.StudentId && a.Date == datePicker.SelectedDate.Value && a.SubjectId == selectedSubject.SubjectId);
+
+                    if (ComboPassType.SelectedIndex == 2) // Удаление пропуска
                     {
-                        MessageBox.Show("Пропуск уже существует.");
-                        return;
+                        if (attendance != null)
+                        {
+                            _context.Attendance.Remove(attendance);
+                            MessageBox.Show("Пропуск для студента " + selectedStudent.Users.UserName + " удален.");
+                        }
+                        else
+                        {
+                            MessageBox.Show("Пропуска нет, чтобы его удалить для студента " + selectedStudent.Users.UserName + ".");
+                        }
                     }
-
-                    attendance.PassType = passType;
-                    _context.SaveChanges();
-                    MessageBox.Show("Пропуск обновлен.");
-                }
-                else
-                {
-                    Attendance newAttendance = new Attendance()
+                    else
                     {
-                        StudentId = selectedStudent.StudentId,
-                        Date = datePicker.SelectedDate.Value,
-                        SubjectId = selectedSubject.SubjectId,
-                        PassType = passType
-                    };
+                        if (attendance != null)
+                        {
+                            if (attendance.PassType == passType)
+                            {
+                                MessageBox.Show("Пропуск уже существует для студента " + selectedStudent.Users.UserName + ".");
+                            }
+                            else
+                            {
+                                attendance.PassType = passType;
+                                MessageBox.Show("Пропуск для студента " + selectedStudent.Users.UserName + " обновлен.");
+                            }
+                        }
+                        else
+                        {
+                            Attendance newAttendance = new Attendance()
+                            {
+                                StudentId = selectedStudent.StudentId,
+                                Date = datePicker.SelectedDate.Value,
+                                SubjectId = selectedSubject.SubjectId,
+                                PassType = passType
+                            };
 
-                    _context.Attendance.Add(newAttendance);
-                    _context.SaveChanges();
-                    MessageBox.Show("Пропуск добавлен.");
+                            _context.Attendance.Add(newAttendance);
+                            MessageBox.Show("Пропуск для студента " + selectedStudent.Users.UserName + " добавлен.");
+                        }
+                    }
                 }
+
+                _context.SaveChanges();
             }
             catch (Exception ex)
             {
