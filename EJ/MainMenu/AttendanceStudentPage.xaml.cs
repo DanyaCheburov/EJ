@@ -120,34 +120,42 @@ namespace EJ.MainMenu
             myDataGrid.Columns.Clear();
 
             // Добавление столбца для предметов в DataGrid
-            DataGridTextColumn subjectColumn = new DataGridTextColumn();
-            subjectColumn.Header = "Предмет";
-            subjectColumn.Binding = new Binding("SubjectName");
-            subjectColumn.IsReadOnly = true;
+            DataGridTextColumn subjectColumn = new DataGridTextColumn
+            {
+                Header = "Предмет",
+                Binding = new Binding("SubjectName"),
+                IsReadOnly = true
+            };
             myDataGrid.Columns.Add(subjectColumn);
 
             // Добавление столбцов для дат в DataGrid в отсортированном порядке
             foreach (var date in uniqueDates)
             {
-                DataGridTextColumn dateColumn = new DataGridTextColumn();
-                dateColumn.Header = date.ToString("dd.MM.yy");
-                dateColumn.Binding = new Binding(string.Format("DateData[{0:yyyy-MM-dd}]", date.Date));
-                dateColumn.IsReadOnly = true;
+                DataGridTextColumn dateColumn = new DataGridTextColumn
+                {
+                    Header = date.ToString("dd.MM.yy"),
+                    Binding = new Binding(string.Format("DateData[{0:yyyy-MM-dd}]", date.Date)),
+                    IsReadOnly = true
+                };
                 myDataGrid.Columns.Add(dateColumn);
             }
 
             // Добавление столбца "Отсутствие (считает всего УП) по уважительной причине"
-            DataGridTextColumn upCountColumn = new DataGridTextColumn();
-            upCountColumn.Header = "Отсутствие\nпо уважительной\nпричине";
-            upCountColumn.Binding = new Binding("UPCount");
-            upCountColumn.IsReadOnly = true;
+            DataGridTextColumn upCountColumn = new DataGridTextColumn
+            {
+                Header = "Отсутствие\nпо уважительной\nпричине",
+                Binding = new Binding("UPCount"),
+                IsReadOnly = true
+            };
             myDataGrid.Columns.Add(upCountColumn);
 
             // Добавление столбца "Отсутствие (считает всего Н) по неуважительной причине"
-            DataGridTextColumn nCountColumn = new DataGridTextColumn();
-            nCountColumn.Header = "Отсутствие\nпо неуважительной\nпричине";
-            nCountColumn.Binding = new Binding("NCount");
-            nCountColumn.IsReadOnly = true;
+            DataGridTextColumn nCountColumn = new DataGridTextColumn
+            {
+                Header = "Отсутствие\nпо неуважительной\nпричине",
+                Binding = new Binding("NCount"),
+                IsReadOnly = true
+            };
             myDataGrid.Columns.Add(nCountColumn);
 
             // Обновление данных в DataGrid
@@ -244,51 +252,71 @@ namespace EJ.MainMenu
             }
 
             // Создание документа PDF
-            Microsoft.Win32.SaveFileDialog saveFileDialog = new Microsoft.Win32.SaveFileDialog();
-            saveFileDialog.Filter = "PDF файлы (*.pdf)|*.pdf";
+            Microsoft.Win32.SaveFileDialog saveFileDialog = new Microsoft.Win32.SaveFileDialog
+            {
+                Filter = "PDF файлы (*.pdf)|*.pdf"
+            };
             if (saveFileDialog.ShowDialog() == true)
             {
+                // Создание базового шрифта для русского языка
+                BaseFont russianBaseFont = BaseFont.CreateFont("c:/windows/fonts/arial.ttf", BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
                 Document document = new Document();
                 PdfWriter writer = PdfWriter.GetInstance(document, new FileStream(saveFileDialog.FileName, FileMode.Create));
                 document.Open();
 
+                // Создание шрифта с русским базовым шрифтом
+                Font russianFont = new Font(russianBaseFont, 9, Font.NORMAL);
+                Font russianFont2 = new Font(russianBaseFont, 8, Font.NORMAL);
+                Font russianFont1 = new Font(russianBaseFont, 20f, Font.BOLD);
+
                 // Добавление заголовка
-                Paragraph title = new Paragraph("Attendance Report");
-                title.Alignment = Element.ALIGN_CENTER;
-                title.Font = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 20f);
+                Paragraph title = new Paragraph("Отчет об посещаемости студента", russianFont1)
+                {
+                    Alignment = Element.ALIGN_CENTER
+                };
                 document.Add(title);
 
+                // Добавление отступа
+                Paragraph emptyParagraph = new Paragraph(" "); // Пустой абзац
+                document.Add(emptyParagraph);
+
                 // Добавление данных таблицы
-                PdfPTable table = new PdfPTable(myDataGrid.Columns.Count);
-                table.WidthPercentage = 100;
-
-                // Добавление столбцов таблицы
-                // Создание базового шрифта для русского языка
-                BaseFont russianBaseFont = BaseFont.CreateFont("c:/windows/fonts/arial.ttf", BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
-
-                // Создание шрифта с русским базовым шрифтом
-                Font russianFont = new Font(russianBaseFont, 10, Font.NORMAL);
+                PdfPTable table = new PdfPTable(myDataGrid.Columns.Count)
+                {
+                    WidthPercentage = 100
+                };
 
                 // Добавление столбца "Предмет"
-                PdfPCell subjectCell = new PdfPCell(new Phrase("Предмет", russianFont));
-                subjectCell.BackgroundColor = new BaseColor(230, 230, 230);
+                PdfPCell subjectCell = new PdfPCell(new Phrase("Предмет", russianFont))
+                {
+                    BackgroundColor = new BaseColor(230, 230, 230)
+                };
                 table.AddCell(subjectCell);
 
                 foreach (var date in uniqueDates)
                 {
-                    table.AddCell(date.ToString("dd.MM.yy"));
+                    PdfPCell dateCell = new PdfPCell(new Phrase(date.ToString("dd.MM.yy"), russianFont));
+                    table.AddCell(dateCell);
                 }
 
 
                 // Добавление столбца "Отсутствие по уважительной причине"
-                PdfPCell upCountCell = new PdfPCell(new Phrase("Отсутствие\nпо уважительной\nпричине", russianFont));
-                upCountCell.BackgroundColor = new BaseColor(230, 230, 230);
+                PdfPCell upCountCell = new PdfPCell(new Phrase("Отсутствие\nпо уважительной\nпричине", russianFont2))
+                {
+                    BackgroundColor = new BaseColor(230, 230, 230)
+                };
                 table.AddCell(upCountCell);
 
                 // Добавление столбца "Отсутствие по неуважительной причине"
-                PdfPCell nCountCell = new PdfPCell(new Phrase("Отсутствие\nпо неуважительной\nпричине", russianFont));
-                nCountCell.BackgroundColor = new BaseColor(230, 230, 230);
+                PdfPCell nCountCell = new PdfPCell(new Phrase("Отсутствие\nпо неуважительной\nпричине", russianFont2))
+                {
+                    BackgroundColor = new BaseColor(230, 230, 230)
+                };
                 table.AddCell(nCountCell);
+
+
+                PdfPCell upCountCell1; // Объявление переменной upCountCell перед циклом
+                PdfPCell nCountCell1; // Объявление переменной nCountCell перед циклом
 
                 // Добавление строк и данных таблицы
                 foreach (AttendanceReportItem reportItem in reportItems)
@@ -299,11 +327,20 @@ namespace EJ.MainMenu
                     foreach (var date in uniqueDates)
                     {
                         string passType = reportItem.DateData.ContainsKey(date) ? reportItem.DateData[date] : "";
-                        PdfPCell passTypePDF = new PdfPCell(new Phrase(passType, russianFont));
+                        PdfPCell passTypePDF = new PdfPCell(new Phrase(passType, russianFont))
+                        {
+                            HorizontalAlignment = Element.ALIGN_CENTER // Центрирование содержимого
+                        };
                         table.AddCell(passTypePDF); // Добавление ячейки с типом пропуска для каждой даты
                     }
-                    table.AddCell(reportItem.UPCount.ToString()); // Добавление ячейки с количеством уважительных пропусков
-                    table.AddCell(reportItem.NCount.ToString()); // Добавление ячейки с количеством неуважительных пропусков
+
+                    // Присваивание значений переменным upCountCell и nCountCell
+                    upCountCell1 = new PdfPCell(new Phrase(reportItem.UPCount.ToString(), russianFont));
+                    nCountCell1 = new PdfPCell(new Phrase(reportItem.NCount.ToString(), russianFont));
+
+                    // Добавление ячеек с количеством уважительных и неуважительных пропусков
+                    table.AddCell(upCountCell1);
+                    table.AddCell(nCountCell1);
                 }
 
                 document.Add(table);
