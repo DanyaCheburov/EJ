@@ -68,7 +68,7 @@ namespace EJ.AttendanceManagement
 
                 if (selectedSubject == null || datePicker.SelectedDate == null)
                 {
-                    MessageBox.Show("Пожалуйста, выберите действительный предмет и дату из комбо-боксов.");
+                    MessageBox.Show("Пожалуйста, выберите дату из комбо-боксов.");
                     return;
                 }
 

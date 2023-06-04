@@ -1,4 +1,6 @@
-﻿using System;
+﻿using iTextSharp.text;
+using iTextSharp.text.pdf;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
@@ -6,8 +8,6 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using iTextSharp.text;
-using iTextSharp.text.pdf;
 
 namespace EJ.MainMenu
 {
@@ -20,9 +20,7 @@ namespace EJ.MainMenu
         public AttendanceStudentPage()
         {
             InitializeComponent();
-            string userName = Application.Current.Properties["Name"] as string;
-            NameTextBlock.Text = userName;
-            GetGroupName();
+            SetUserInfo();
             SetCurrentMonthDates();
         }
 
@@ -36,9 +34,11 @@ namespace EJ.MainMenu
             DateTime endOfMonth = startOfMonth.AddMonths(1).AddDays(-1);
             EndOfPeriod.SelectedDate = endOfMonth;
         }
-
-        private void GetGroupName()
+        private void SetUserInfo()
         {
+            string userName = Application.Current.Properties["Name"] as string;
+            NameTextBlock.Text = userName;
+
             int currentUser = (int)Application.Current.Properties["UserId"];
 
             using (var dbContext = new BDEntities())
@@ -55,7 +55,6 @@ namespace EJ.MainMenu
                     }
                 }
             }
-
         }
         private void ToCreate_Click(object sender, RoutedEventArgs e)
         {
@@ -268,6 +267,36 @@ namespace EJ.MainMenu
                 Font russianFont = new Font(russianBaseFont, 9, Font.NORMAL);
                 Font russianFont2 = new Font(russianBaseFont, 8, Font.NORMAL);
                 Font russianFont1 = new Font(russianBaseFont, 20f, Font.BOLD);
+                Font russianFont3 = new Font(russianBaseFont, 15, Font.NORMAL);
+
+                string studentName = NameTextBlock.Text;
+                string groupName = GroupsTextBlock.Text;
+                string period = startDate.ToString("dd.MM.yy") + " - " + endDate.ToString("dd.MM.yy");
+
+
+                // Добавление информации о студенте
+                Paragraph studentParagraph = new Paragraph("Студент: " + studentName, russianFont3)
+                {
+                    Alignment = Element.ALIGN_LEFT
+                };
+                document.Add(studentParagraph);
+
+                // Добавление информации о группе
+                Paragraph groupParagraph = new Paragraph("Группа: " + groupName, russianFont3)
+                {
+                    Alignment = Element.ALIGN_LEFT
+                };
+                document.Add(groupParagraph);
+
+                // Добавление информации о периоде
+                Paragraph periodParagraph = new Paragraph("Период: " + period, russianFont3)
+                {
+                    Alignment = Element.ALIGN_LEFT
+                };
+                document.Add(periodParagraph);
+
+                // Добавление отступа
+                document.Add(new Paragraph(" ")); // Пустой абзац
 
                 // Добавление заголовка
                 Paragraph title = new Paragraph("Отчет об посещаемости студента", russianFont1)
@@ -295,10 +324,12 @@ namespace EJ.MainMenu
 
                 foreach (var date in uniqueDates)
                 {
-                    PdfPCell dateCell = new PdfPCell(new Phrase(date.ToString("dd.MM.yy"), russianFont));
+                    PdfPCell dateCell = new PdfPCell(new Phrase(date.ToString("dd.MM.yy"), russianFont))
+                    {
+                        HorizontalAlignment = Element.ALIGN_CENTER // Выравнивание содержимого по центру
+                    };
                     table.AddCell(dateCell);
                 }
-
 
                 // Добавление столбца "Отсутствие по уважительной причине"
                 PdfPCell upCountCell = new PdfPCell(new Phrase("Отсутствие\nпо уважительной\nпричине", russianFont2))
@@ -349,7 +380,5 @@ namespace EJ.MainMenu
                 document.Close();
             }
         }
-
-
     }
 }
