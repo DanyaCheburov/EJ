@@ -139,6 +139,7 @@
     <Compile Include="MainMenu\AttedancePage.xaml.cs">
       <DependentUpon>AttedancePage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="MainMenu\AttendanceReportItem.cs" />
     <Compile Include="MainMenu\AttendanceStudentPage.xaml.cs">
       <DependentUpon>AttendanceStudentPage.xaml</DependentUpon>
     </Compile>
