@@ -104,7 +104,7 @@ namespace EJ.MainMenu
 
             foreach (var item in reportData)
             {
-                string passType = item.PassType ? "УП" : "Н";
+                string passType = item.PassType ? "УП" : "НП";
                 AttendanceReportItem reportItem = reportItems.FirstOrDefault(r => r.SubjectName == item.SubjectName);
 
                 if (reportItem == null)
@@ -124,7 +124,7 @@ namespace EJ.MainMenu
                     {
                         reportItem.UPCount += 2;
                     }
-                    else if (passType == "Н")
+                    else if (passType == "НП")
                     {
                         reportItem.NCount += 2;
                     }
@@ -133,6 +133,7 @@ namespace EJ.MainMenu
 
             return reportItems;
         }
+        private bool isToCreateDone = false;
         private void ToCreate_Click(object sender, RoutedEventArgs e)
         {
             DateTime startDate = StartOfPeriod.SelectedDate ?? DateTime.MinValue;
@@ -187,10 +188,16 @@ namespace EJ.MainMenu
             // Обновление данных в DataGrid
             myDataGrid.ItemsSource = reportItems;
             myDataGrid.Visibility = Visibility.Visible;
+            isToCreateDone = true;
         }
 
-        private void ToCreatePDF_Click(object sender, RoutedEventArgs e)
+        private void ExportPDF_Click(object sender, RoutedEventArgs e)
         {
+            if (!isToCreateDone)
+            {
+                MessageBox.Show("Необходимо выполнить 'Сформировать отчет' перед 'Экспорт в PDF'");
+                return;
+            }
             DateTime startDate = StartOfPeriod.SelectedDate ?? DateTime.MinValue;
             DateTime endDate = EndOfPeriod.SelectedDate ?? DateTime.MaxValue;
 
@@ -326,6 +333,7 @@ namespace EJ.MainMenu
 
                 // Закрытие документа
                 document.Close();
+                MessageBox.Show("Отчет успешно создан!");
             }
         }
     }

@@ -163,7 +163,7 @@ namespace EJ.MainMenu
                         lastEmpID = empID;
                     }
 
-                    var passType = row.HasAbsence ? (row.PassType ? "УП" : "H") : "";
+                    var passType = row.HasAbsence ? (row.PassType ? "УП" : "HП") : "";
                     var dayIndex = day - 1;
                     if (dayIndex >= 0 && dayIndex < employeeAttendance.Days.Count)
                     {

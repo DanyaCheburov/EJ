@@ -17,7 +17,7 @@ namespace EJ.MainMenu
                 int count = 0;
                 foreach (var day in days)
                 {
-                    if (day == "H")
+                    if (day == "HП")
                     {
                         count += 2;
                     }

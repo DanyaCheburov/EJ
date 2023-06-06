@@ -12,8 +12,9 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="25"/>
         </Grid.RowDefinitions>
-        <StackPanel Grid.Row="0" Orientation="Horizontal">
+        <StackPanel Orientation="Horizontal">
             <Label Content="Предмет:" Margin="10"/>
             <ComboBox x:Name="ComboSubject" ItemsSource="{Binding Subjects}" DisplayMemberPath="SubjectName" SelectedItem="{Binding SelectedSubject}" SelectionChanged="Combo_SelectionChanged" Margin="10"/>
             <Label Content="Группа:" Margin="10"/>
@@ -44,5 +45,7 @@
                 <DataGridTextColumn Header="ФИО" Binding="{Binding Name}" IsReadOnly="True"/>
             </DataGrid.Columns>
         </DataGrid>
+        <TextBlock Text="УП - Пропуск по уважительной причине" Grid.Row="2" HorizontalAlignment="Left" FontSize="15"></TextBlock>
+        <TextBlock Text="НП - Пропуск по неуважительной причине" Grid.Row="2" Margin="300 0 0 0" HorizontalAlignment="Left" FontSize="15"></TextBlock>
     </Grid>
 </Page>
