@@ -117,8 +117,6 @@ namespace EJ.MainMenu
                 }
             }
         }
-
-
         private void SetYearComboBox()
         {
             int currentYear = DateTime.Now.Year;
