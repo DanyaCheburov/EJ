@@ -40,7 +40,7 @@ namespace EJ.AttendanceManagement
                     var selectedGroup = ComboGroup.SelectedItem as Groups;
 
                     var existingRecord = context.Lesson_themes
-                        .FirstOrDefault(t => t.Subject_id == selectedSubject.SubjectId &&
+                        .FirstOrDefault(t => t.SubjectId == selectedSubject.SubjectId &&
                                              t.Date == datePicker.SelectedDate.Value);
 
                     if (existingRecord != null)
@@ -67,8 +67,8 @@ namespace EJ.AttendanceManagement
 
                             var newRecord = new Lesson_themes
                             {
-                                Group_id=selectedGroup.GroupId,
-                                Subject_id = selectedSubject.SubjectId,
+                                GroupId=selectedGroup.GroupId,
+                                SubjectId = selectedSubject.SubjectId,
                                 Date = datePicker.SelectedDate.Value,
                                 Description = description
                             };

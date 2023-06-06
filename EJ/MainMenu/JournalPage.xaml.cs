@@ -158,11 +158,11 @@ namespace EJ.MainMenu
             {
                 // Выполнение запроса LINQ to Entities без операции .Date
                 var query = from l in db.Lesson_themes
-                            join g in db.Groups on l.Group_id equals g.GroupId
-                            join t in db.Lesson_themes.Where(j => j.Date >= startDate && j.Date <= endDate && j.Subject_id == subjectId)
-                                on l.Subject_id equals t.Subject_id into aGroup
+                            join g in db.Groups on l.GroupId equals g.GroupId
+                            join t in db.Lesson_themes.Where(j => j.Date >= startDate && j.Date <= endDate && j.SubjectId == subjectId)
+                                on l.SubjectId equals t.SubjectId into aGroup
                             from a in aGroup.DefaultIfEmpty()
-                            join sub in db.Subjects on a.Subject_id equals sub.SubjectId into subGroup
+                            join sub in db.Subjects on a.SubjectId equals sub.SubjectId into subGroup
                             from sub in subGroup.DefaultIfEmpty()
                             where g.GroupName == groupName
                             select new { Date = (a != null ? a.Date : default(DateTime?)), Description = (a != null ? a.Description : "") };
@@ -378,7 +378,7 @@ namespace EJ.MainMenu
                                              join st in db.Students on j.StudentId equals st.StudentId
                                              join u in db.Users on st.UserId equals u.UserId
                                              join g in db.Groups on st.GroupId equals g.GroupId
-                                             join lt in db.Lesson_themes on sb.SubjectId equals lt.Subject_id
+                                             join lt in db.Lesson_themes on sb.SubjectId equals lt.SubjectId
                                              select new EstimateEntry
                                              {
                                                  UserName = u.UserName,

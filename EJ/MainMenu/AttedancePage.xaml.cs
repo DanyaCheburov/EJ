@@ -77,6 +77,48 @@ namespace EJ.MainMenu
             }
             DataContext = this;
         }
+        private void TeachersBySubjects()
+        {
+            // Получение информации о текущем пользователе из БД
+            int currentUser = (int)Application.Current.Properties["UserId"];
+
+            int currentTeacherId = GetTeacherIdByUserId(currentUser);
+            if (currentTeacherId != 0 && ComboSubject.SelectedItem is Subjects selectedSubject)
+            {
+                int selectedSubjectId = selectedSubject.SubjectId;
+                bool isAssignedSubject = IsUserAssignedToSubject(currentTeacherId, selectedSubjectId);
+
+                if (isAssignedSubject)
+                {
+                    PassManagement.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    PassManagement.Visibility = Visibility.Collapsed;
+                }
+            }
+            int GetTeacherIdByUserId(int userId)
+            {
+                using (var context = new BDEntities())
+                {
+                    var teacher = context.Teachers.FirstOrDefault(t => t.UserId == userId);
+                    if (teacher != null)
+                    {
+                        return teacher.TeacherId;
+                    }
+                    return 0; // или другое значение по умолчанию, если учитель не найден
+                }
+            }
+
+            bool IsUserAssignedToSubject(int teacherId, int subjectId)
+            {
+                using (var context = new BDEntities())
+                {
+                    return context.TeachersBySubjects.Any(a => a.TeacherId == teacherId && a.SubjectId == subjectId);
+                }
+            }
+        }
+
 
         private void SetYearComboBox()
         {
@@ -211,6 +253,7 @@ namespace EJ.MainMenu
         private void Combo_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             LoadGrid();
+            TeachersBySubjects();
         }
 
         private void Graphs_Click(object sender, RoutedEventArgs e)

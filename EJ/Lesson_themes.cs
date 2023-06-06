@@ -14,9 +14,9 @@ namespace EJ
     
     public partial class Lesson_themes
     {
-        public int Themes_id { get; set; }
-        public int Group_id { get; set; }
-        public int Subject_id { get; set; }
+        public int ThemesId { get; set; }
+        public int GroupId { get; set; }
+        public int SubjectId { get; set; }
         public System.DateTime Date { get; set; }
         public string Description { get; set; }
     

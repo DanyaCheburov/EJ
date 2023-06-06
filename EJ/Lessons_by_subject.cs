@@ -15,8 +15,8 @@ namespace EJ
     public partial class Lessons_by_subject
     {
         public int Id { get; set; }
-        public int Subject_Id { get; set; }
-        public int Nubmer_of_lessons { get; set; }
+        public int SubjectId { get; set; }
+        public int NubmerOfLessons { get; set; }
     
         public virtual Subjects Subjects { get; set; }
     }

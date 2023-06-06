@@ -21,6 +21,7 @@ namespace EJ
             this.Journal = new HashSet<Journal>();
             this.Lesson_themes = new HashSet<Lesson_themes>();
             this.Lessons_by_subject = new HashSet<Lessons_by_subject>();
+            this.TeachersBySubjects = new HashSet<TeachersBySubjects>();
         }
     
         public int SubjectId { get; set; }
@@ -34,5 +35,7 @@ namespace EJ
         public virtual ICollection<Lesson_themes> Lesson_themes { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Lessons_by_subject> Lessons_by_subject { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<TeachersBySubjects> TeachersBySubjects { get; set; }
     }
 }

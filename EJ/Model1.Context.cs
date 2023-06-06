@@ -12,7 +12,7 @@ namespace EJ
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
-
+    
     public partial class BDEntities : DbContext
     {
         private static BDEntities _context;
@@ -36,17 +36,18 @@ namespace EJ
         {
             throw new UnintentionalCodeFirstException();
         }
-
+    
         public virtual DbSet<Administrators> Administrators { get; set; }
         public virtual DbSet<Attendance> Attendance { get; set; }
-        public virtual DbSet<Departments> Departments { get; set; }
         public virtual DbSet<Groups> Groups { get; set; }
         public virtual DbSet<Journal> Journal { get; set; }
+        public virtual DbSet<Lesson_themes> Lesson_themes { get; set; }
         public virtual DbSet<Lessons_by_subject> Lessons_by_subject { get; set; }
         public virtual DbSet<Students> Students { get; set; }
         public virtual DbSet<Subjects> Subjects { get; set; }
+        public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
         public virtual DbSet<Teachers> Teachers { get; set; }
+        public virtual DbSet<TeachersBySubjects> TeachersBySubjects { get; set; }
         public virtual DbSet<Users> Users { get; set; }
-        public virtual DbSet<Lesson_themes> Lesson_themes { get; set; }
     }
 }

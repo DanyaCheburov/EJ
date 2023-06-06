@@ -80,11 +80,11 @@ namespace EJ.MainMenu
                 using (var context = new BDEntities())
                 {
                     var numberOfLessonsQuery = context.Lessons_by_subject
-                        .Where(l => l.Subject_Id == currentSubject.SubjectId)
-                        .Select(l => new { l.Subject_Id, l.Nubmer_of_lessons })
+                        .Where(l => l.SubjectId == currentSubject.SubjectId)
+                        .Select(l => new { l.SubjectId, l.NubmerOfLessons })
                         .ToList();
 
-                    numberOfLessons = numberOfLessonsQuery.Sum(l => l.Nubmer_of_lessons);
+                    numberOfLessons = numberOfLessonsQuery.Sum(l => l.NubmerOfLessons);
 
                     currentSeries["PointHeight"] = $"{numberOfLessons / 100.0:P0}";
                     currentSeries["HeightPercent"] = "100";
@@ -96,19 +96,19 @@ namespace EJ.MainMenu
                                 join g in context.Groups on s.GroupId equals g.GroupId
                                 join a in context.Attendance on s.StudentId equals a.StudentId
                                 join s1 in context.Subjects on a.SubjectId equals s1.SubjectId
-                                join l in context.Lessons_by_subject on s1.SubjectId equals l.Subject_Id
+                                join l in context.Lessons_by_subject on s1.SubjectId equals l.SubjectId
                                 where g.GroupName == currentGroup.GroupName &&
                                       s1.SubjectName == currentSubject.SubjectName &&
                                       a.PassType == false &&
                                       a.Date.Month == selectedMonth + 1 &&
                                       a.Date.Year == SelectedYear
-                                group new { u.UserName, l.Nubmer_of_lessons } by new { u.UserName, l.Nubmer_of_lessons } into grp
+                                group new { u.UserName, l.NubmerOfLessons } by new { u.UserName, l.NubmerOfLessons } into grp
                                 where grp.Count() > 0
                                 select new
                                 {
                                     grp.Key.UserName,
                                     Absences = grp.Count(),
-                                    Lessons = grp.Key.Nubmer_of_lessons
+                                    Lessons = grp.Key.NubmerOfLessons
                                 };
 
                     try
