@@ -51,6 +51,7 @@ namespace EJ.MainMenu
                 }
             }
             СomboYear.SelectedItem = currentYear;
+            StudentRole();
         }
         private void ComboBox_Loaded(object sender, RoutedEventArgs e)
         {
@@ -320,6 +321,24 @@ namespace EJ.MainMenu
                 MessageBox.Show("Выберите группу и предмет!");
         }
 
+        private void StudentRole()
+        {
+            int currentUser = (int)Application.Current.Properties["UserId"];
+            bool isStudent = IsUserStudent(currentUser);
+            bool IsUserStudent(int userId)
+            {
+                using (var context = new BDEntities())
+                {
+                    // Проверка наличия пользователя с заданным UserId в таблице Administrators
+                    isStudent = context.Students.Any(a => a.UserId == userId);
+                    return isStudent;
+                }
+            }
+            if (isStudent)
+            {
+                ExportToWordBtn.Visibility = Visibility.Collapsed;
+            }
+        }
         private double CalculateAverageScore(string userName, string subjectName, List<DateTime> dates, List<EstimateEntry> estimates)
         {
             var studentEstimates = estimates.Where(j => j.UserName == userName && j.SubjectName == subjectName).ToList();
