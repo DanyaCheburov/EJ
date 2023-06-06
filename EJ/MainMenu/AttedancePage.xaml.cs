@@ -79,7 +79,6 @@ namespace EJ.MainMenu
         }
         private void TeachersBySubjects()
         {
-            // Получение информации о текущем пользователе из БД
             int currentUser = (int)Application.Current.Properties["UserId"];
 
             int currentTeacherId = GetTeacherIdByUserId(currentUser);
@@ -106,7 +105,7 @@ namespace EJ.MainMenu
                     {
                         return teacher.TeacherId;
                     }
-                    return 0; // или другое значение по умолчанию, если учитель не найден
+                    return 0;
                 }
             }
 
