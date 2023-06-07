@@ -133,9 +133,6 @@
     <Compile Include="Lesson_themes.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
-    <Compile Include="MainMenu\AttedancePage.xaml.cs">
-      <DependentUpon>AttedancePage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="MainMenu\AttendanceReportItem.cs" />
     <Compile Include="MainMenu\AttendanceStudentPage.xaml.cs">
       <DependentUpon>AttendanceStudentPage.xaml</DependentUpon>
@@ -225,10 +222,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="AuthorizationANDRegistration\Registration.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="MainMenu\AttedancePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

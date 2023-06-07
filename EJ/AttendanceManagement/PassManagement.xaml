@@ -59,7 +59,7 @@
                 <ComboBoxItem>Добавить пропуск по уважительной причине</ComboBoxItem>
                 <ComboBoxItem>Удалить пропуск</ComboBoxItem>
             </ComboBox>
-            <Button x:Name="add_attendance" Click="Add_attendance_Click" Content="Добавить" Margin="10" Grid.Row="6" Grid.ColumnSpan="2" />
+            <Button x:Name="AddAttendance" Click="AddAttendance_Click" Content="Добавить" Margin="10" Grid.Row="6" Grid.ColumnSpan="2" />
         </Grid>
     </materialDesign:Card>
 </Window>

@@ -48,11 +48,11 @@ namespace EJ.AttendanceManagement
         {
             if (StudentsPopup.IsOpen)
             {
-                StudentsPopup.IsOpen = false; // Закрыть Popup
+                StudentsPopup.IsOpen = false;
             }
             else
             {
-                StudentsPopup.IsOpen = true; // Открыть Popup
+                StudentsPopup.IsOpen = true;
             }
         }
         private void ComboGroup_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -60,7 +60,7 @@ namespace EJ.AttendanceManagement
             ListBoxStudents.ItemsSource = Students;
         }
 
-        private void Add_attendance_Click(object sender, RoutedEventArgs e)
+        private void AddAttendance_Click(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -68,7 +68,7 @@ namespace EJ.AttendanceManagement
 
                 if (selectedSubject == null || datePicker.SelectedDate == null)
                 {
-                    MessageBox.Show("Пожалуйста, выберите дату из комбо-боксов.");
+                    MessageBox.Show("Пожалуйста, выберите дату");
                     return;
                 }
 
