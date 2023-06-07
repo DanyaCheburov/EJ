@@ -13,60 +13,17 @@ using System.Windows.Data;
 
 namespace EJ.MainMenu
 {
-    /// <summary>
-    /// Логика взаимодействия для AttedancePage.xaml
-    /// </summary>
-    public partial class AttedancePage : Page
+    public partial class AttendanceTeacherPage : Page
     {
         public ObservableCollection<Students> Students { get; set; }
-        public AttedancePage()
+        public AttendanceTeacherPage()
         {
             InitializeComponent();
-            CreateTable();
             ComboSubject.ItemsSource = BDEntities.GetContext().Subjects.ToList();
             ComboGroup.ItemsSource = BDEntities.GetContext().Groups.ToList();
             SetYearComboBox();
             LoadStudents();
-            AdminAndTeacher();
-        }
-        private void AdminAndTeacher()
-        {
-            // Получение информации о текущем пользователе из БД
-            int currentUser = (int)Application.Current.Properties["UserId"];
-
-            // Проверка, является ли текущий пользователь администратором
-            bool isAdmin = IsUserAdmin(currentUser);
-            bool isTeacher = IsUserTeacher(currentUser);
-
-            // Установка видимости кнопки
-            if (isAdmin || isTeacher)
-            {
-                PassManagement.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                PassManagement.Visibility = Visibility.Collapsed;
-            }
-
-            // Метод для проверки, является ли пользователь администратором
-            bool IsUserAdmin(int userId)
-            {
-                using (var context = new BDEntities())
-                {
-                    // Проверка наличия пользователя с заданным UserId в таблице Administrators
-                    isAdmin = context.Administrators.Any(a => a.UserId == userId);
-                    return isAdmin;
-                }
-            }
-            bool IsUserTeacher(int userId)
-            {
-                using (var context = new BDEntities())
-                {
-                    // Проверка наличия пользователя с заданным UserId в таблице Administrators
-                    isTeacher = context.Teachers.Any(a => a.UserId == userId);
-                    return isTeacher;
-                }
-            }
+            TeacherPassManagementVisibility();
         }
         private void LoadStudents()
         {
@@ -77,7 +34,7 @@ namespace EJ.MainMenu
             }
             DataContext = this;
         }
-        private void TeachersBySubjects()
+        private void TeacherPassManagementVisibility()
         {
             int currentUser = (int)Application.Current.Properties["UserId"];
 
@@ -162,11 +119,7 @@ namespace EJ.MainMenu
             DateTime startDate = new DateTime(selectedYear, selectedMonth, 1);
             DateTime endDate = startDate.AddMonths(1).AddDays(-1);
 
-            int subjectId = 0;
-            if (ComboSubject.SelectedItem is Subjects selectedSubject)
-            {
-                subjectId = selectedSubject.SubjectId;
-            }
+            int subjectId = (ComboSubject.SelectedItem as Subjects)?.SubjectId ?? 0;
 
             using (var db = new BDEntities())
             {
@@ -213,22 +166,37 @@ namespace EJ.MainMenu
                 myDataGrid.ItemsSource = employeeAttendanceList;
             }
         }
-
-
         private void CreateTable()
         {
-            for (int i = 1; i <= 31; i++)
+            myDataGrid.Columns.Clear();
+            myDataGrid.Columns.Add(new DataGridTextColumn
             {
-                var column = new DataGridTextColumn
+                Header = "ФИО",
+                Binding = new Binding("Name"),
+                IsReadOnly = true
+            });
+            int selectedMonthIndex = ComboMonth.SelectedIndex;
+
+            if (selectedMonthIndex >= 0 && ComboYear.SelectedItem != null)
+            {
+                int selectedMonth = selectedMonthIndex + 1;
+                int selectedYear = (int)ComboYear.SelectedItem;
+
+                int daysInMonth = DateTime.DaysInMonth(selectedYear, selectedMonth);
+
+                for (int i = 1; i <= daysInMonth; i++)
                 {
-                    Header = i.ToString(),
-                    IsReadOnly = true
-                };
+                    var column = new DataGridTextColumn
+                    {
+                        Header = i.ToString(),
+                        IsReadOnly = true
+                    };
 
-                var binding = new Binding($"Days[{i - 1}]");
-                column.Binding = binding;
+                    var binding = new Binding($"Days[{i - 1}]");
+                    column.Binding = binding;
 
-                myDataGrid.Columns.Add(column);
+                    myDataGrid.Columns.Add(column);
+                }
             }
 
             myDataGrid.Columns.Add(new DataGridTextColumn
@@ -245,12 +213,11 @@ namespace EJ.MainMenu
                 IsReadOnly = true
             });
         }
-
-
         private void Combo_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             LoadGrid();
-            TeachersBySubjects();
+            CreateTable();
+            TeacherPassManagementVisibility();
         }
 
         private void Graphs_Click(object sender, RoutedEventArgs e)

@@ -126,14 +126,9 @@ namespace EJ
             MainContentFrame.Navigate(new Uri("MainMenu/TeachersPage.xaml", UriKind.Relative));
         }
 
-        private void DepartmentButton_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
         private void AttendanceButton_Click(object sender, RoutedEventArgs e)
         {
-            MainContentFrame.Navigate(new Uri("MainMenu/AttedancePage.xaml", UriKind.Relative));
+            MainContentFrame.Navigate(new Uri("MainMenu/AttendanceTeacherPage.xaml", UriKind.Relative));
         }
 
         private void BtnExit_Click(object sender, RoutedEventArgs e)

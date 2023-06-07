@@ -1,4 +1,4 @@
-﻿<Page x:Class="EJ.MainMenu.AttedancePage"
+﻿<Page x:Class="EJ.MainMenu.AttendanceTeacherPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -6,7 +6,7 @@
       xmlns:local="clr-namespace:EJ.MainMenu"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="1000"
-      Title="AttedancePage">
+      Title="AttendanceTeacherPage">
 
     <Grid>
         <Grid.RowDefinitions>
@@ -41,9 +41,6 @@
             <Button x:Name="ExportToWord" Click="ExportToWord_Click" Content="Word" Width="94"/>
         </StackPanel>
         <DataGrid x:Name="myDataGrid" Grid.Row="1" AutoGenerateColumns="False">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="ФИО" Binding="{Binding Name}" IsReadOnly="True"/>
-            </DataGrid.Columns>
         </DataGrid>
         <TextBlock Text="УП - Пропуск по уважительной причине" Grid.Row="2" HorizontalAlignment="Left" FontSize="15"></TextBlock>
         <TextBlock Text="НП - Пропуск по неуважительной причине" Grid.Row="2" Margin="300 0 0 0" HorizontalAlignment="Left" FontSize="15"></TextBlock>
