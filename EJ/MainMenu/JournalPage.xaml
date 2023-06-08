@@ -35,7 +35,7 @@
             </ComboBox>
             <Label Content="Год:" Margin="10"/>
             <ComboBox x:Name="СomboYear" Margin="10" SelectionChanged="ComboYear_SelectionChanged"/>
-            <Button x:Name="Add_estimate" Click="Add_estimate_Click" Content="Добавить оценку" Margin="10"/>
+            <Button x:Name="Add_estimate" Click="Add_estimate_Click" Content="Добавить оценку" Visibility="Hidden" Margin="10"/>
             <Button x:Name="Graphs" Click="Graphs_Click" Content="График" Margin="10"/>
             <Button x:Name="ExportToWordBtn" Click="ExportToWord_CLick" Content="Word" Margin="10"/>
             <CheckBox x:Name="Theme" Click="Theme_Click" Content="Показать темы" Margin="10"/>

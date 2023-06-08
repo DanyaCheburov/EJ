@@ -6,7 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Dynamic;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -32,27 +31,109 @@ namespace EJ.MainMenu
             CreateTable();
             ComboSubject.ItemsSource = BDEntities.GetContext().Subjects.ToList();
             ComboGroup.ItemsSource = BDEntities.GetContext().Groups.ToList();
-
-            using (var db = new BDEntities())
+            LoadStudents();
+            AdminAndTeacher();
+            SetYearComboBox();
+        }
+            private void AdminAndTeacher()
             {
-                var students = db.Students.Include("Users").ToList();
-                Students = new ObservableCollection<Students>(students);
+                // Получение информации о текущем пользователе из БД
+                int currentUser = (int)Application.Current.Properties["UserId"];
+
+                // Проверка, является ли текущий пользователь администратором
+                bool isAdmin = IsUserAdmin(currentUser);
+                bool isTeacher = IsUserTeacher(currentUser);
+
+                // Установка видимости кнопки
+                if (isAdmin || isTeacher)
+                {
+                    Add_estimate.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    Add_estimate.Visibility = Visibility.Collapsed;
+                }
+
+                // Метод для проверки, является ли пользователь администратором
+                bool IsUserAdmin(int userId)
+                {
+                    using (var context = new BDEntities())
+                    {
+                        // Проверка наличия пользователя с заданным UserId в таблице Administrators
+                        isAdmin = context.Administrators.Any(a => a.UserId == userId);
+                        return isAdmin;
+                    }
+                }
+                bool IsUserTeacher(int userId)
+                {
+                    using (var context = new BDEntities())
+                    {
+                        // Проверка наличия пользователя с заданным UserId в таблице Administrators
+                        isTeacher = context.Teachers.Any(a => a.UserId == userId);
+                        return isTeacher;
+                    }
+                }
+            }
+             private void LoadStudents()
+            {
+                using (var db = new BDEntities())
+                {
+                    var students = db.Students.Include("Users").ToList();
+                    Students = new ObservableCollection<Students>(students);
+                }
+                DataContext = this;
+            }
+            private void TeachersBySubjects()
+            {
+                int currentUser = (int)Application.Current.Properties["UserId"];
+
+                int currentTeacherId = GetTeacherIdByUserId(currentUser);
+                if (currentTeacherId != 0 && ComboSubject.SelectedItem is Subjects selectedSubject)
+                {
+                    int selectedSubjectId = selectedSubject.SubjectId;
+                    bool isAssignedSubject = IsUserAssignedToSubject(currentTeacherId, selectedSubjectId);
+
+                    if (isAssignedSubject)
+                    {
+                        Add_estimate.Visibility = Visibility.Visible;
+                    }
+                    else
+                    {
+                        Add_estimate.Visibility = Visibility.Collapsed;
+                    }
+                }
+                int GetTeacherIdByUserId(int userId)
+                {
+                    using (var context = new BDEntities())
+                    {
+                        var teacher = context.Teachers.FirstOrDefault(t => t.UserId == userId);
+                        if (teacher != null)
+                        {
+                            return teacher.TeacherId;
+                        }
+                        return 0;
+                    }
+                }
+
+                bool IsUserAssignedToSubject(int teacherId, int subjectId)
+                {
+                    using (var context = new BDEntities())
+                    {
+                        return context.TeachersBySubjects.Any(a => a.TeacherId == teacherId && a.SubjectId == subjectId);
+                    }
+                }
             }
 
-            DataContext = this;
-
-            СomboYear.Items.Add(2019);
+        private void SetYearComboBox()
+        {
             int currentYear = DateTime.Now.Year;
             for (int year = 2019; year <= currentYear; year++)
             {
-                if (!СomboYear.Items.Contains(year))
-                {
-                    СomboYear.Items.Add(year);
-                }
+                СomboYear.Items.Add(year);
             }
             СomboYear.SelectedItem = currentYear;
-            StudentRole();
         }
+    
         private void ComboBox_Loaded(object sender, RoutedEventArgs e)
         {
             int currentMonthIndex = DateTime.Now.Month - 1;
@@ -261,6 +342,7 @@ namespace EJ.MainMenu
 
         private void ComboSubject_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            TeachersBySubjects();
             if (Theme.IsChecked == true)
             {
                 LoadThemeGrid();
